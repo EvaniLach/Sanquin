@@ -1,0 +1,6 @@
+pandas
+tensorflow
+gym
+
+gurobipy
+pickle
