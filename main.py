@@ -13,6 +13,7 @@ from demand import *
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument("--n_antigens", type=int, default=1, help="number of antigens")
+argparser.add_argument("--dev", default=None, help="GPU ID to use")
 args = argparser.parse_args()
 
 def main():
