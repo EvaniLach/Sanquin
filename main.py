@@ -3,6 +3,7 @@ from dqn import *
 
 from settings import *
 from params import *
+import argparse
 from supply import *
 from demand import *
 
@@ -10,11 +11,14 @@ from demand import *
 # We currently assume that each requested unit is a separate request.
 # Compatibility now only on major antigens -> specify to include patient group specific mandatory combinations.
 
+argparser = argparse.ArgumentParser()
+argparser.add_argument("--n_antigens", type=int, default=1, help="number of antigens")
+args = argparser.parse_args()
 
 def main():
 
     SETTINGS = Settings()
-    PARAMS = Params(SETTINGS)
+    PARAMS = Params(SETTINGS, args.n_antigens)
 
     paths = [
         "results", f"results/{SETTINGS.model_name}", f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}", 
