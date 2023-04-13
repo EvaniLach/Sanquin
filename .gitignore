@@ -2,7 +2,6 @@
 *.ipynb
 
 # data files
-*.csv
 *.pickle
 *.xml
 *.odp
