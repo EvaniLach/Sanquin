@@ -96,7 +96,7 @@ class Settings():
     def generate_filename(self, SETTINGS, output_type, e):
 
         path = self.home_dir + f"/{output_type}/{self.model_name}/"
-        path += f"a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/"
+        path += f"a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}_{SETTINGS.minor}/"
         path += f"{self.method}_{e}"
 
         return path
