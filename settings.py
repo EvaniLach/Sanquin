@@ -6,7 +6,7 @@ class Settings():
     def __init__(self):
 
         # Working directory.
-        self.home_dir = "/home/s1949624/Sanquin"
+        self.home_dir = "/home/s1949624/Sanquin/"
 
         # Output files will be stored in directory results/[model_name].
         # self.model_name = "daily_scratch"       # matching per day, training from scratch
