@@ -3,7 +3,7 @@ import os
 
 class Settings():
 
-    def __init__(self):
+    def __init__(self, minor):
 
         # Working directory.
         self.home_dir = "/home/s1949624/Sanquin/"
@@ -51,7 +51,10 @@ class Settings():
         # "relimm": Use relative immunogenicity weights for mismatching.
         # "patgroups": Use patient group specific mismatching weights.
         self.strategy = "patgroups"
-        self.patgroup_musts = True 
+        self.patgroup_musts = True
+
+        # Which minor antigens to use
+        self.minor = minor
 
         ##############################
         # GENERATING DEMAND / SUPPLY #
@@ -93,7 +96,7 @@ class Settings():
     def generate_filename(self, SETTINGS, output_type, e):
 
         path = self.home_dir + f"/{output_type}/{self.model_name}/"
-        path += f"a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/"
+        path += f"a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}_{SETTINGS.minor}/"
         path += f"{self.method}_{e}"
 
         return path

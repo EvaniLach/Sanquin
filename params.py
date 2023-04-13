@@ -2,7 +2,7 @@ import pandas as pd
 
 class Params():
     
-    def __init__(self, SETTINGS, n):
+    def __init__(self, SETTINGS):
 
 
         ####################
@@ -17,7 +17,8 @@ class Params():
         self.ABOD =  ["O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"]
         self.major = ["A", "B", "D"]
         # self.minor = ["C", "c", "E", "e", "K", "k", "M", "N", "S", "s", "Fya", "Fyb", "Jka", "Jkb"] 
-        self.minor = ["C", "c", "E", "e", "K"][:n]
+        # self.minor = ["C", "c", "E", "e", "K"]
+        self.minor = SETTINGS.minor
 
 
         ##################
