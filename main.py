@@ -12,7 +12,7 @@ from demand import *
 # Compatibility now only on major antigens -> specify to include patient group specific mandatory combinations.
 
 argparser = argparse.ArgumentParser()
-argparser.add_argument("--minor", nargs='+', default='', help="select minor antigens")
+argparser.add_argument("--minor", type=int, default=0, help="select minor antigens")
 argparser.add_argument("--dev", default=None, help="GPU ID to use")
 args = argparser.parse_args()
 
