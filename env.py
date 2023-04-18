@@ -94,7 +94,7 @@ class MatchingEnv(gym.Env):
 
             # All requests from the state that need to be satisfied today.
             requests_today.extend([bg] * int(R[bg,-1]))
-
+        print(requests_today)
         df.loc[day,"num units requested"] = len(requests_today)
         df.loc[day,"num supplied products"] = sum(I[:,0])
 
