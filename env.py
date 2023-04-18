@@ -76,7 +76,7 @@ class MatchingEnv(gym.Env):
         self.state = np.concatenate((I, R, current_r), axis=1)  # REQUEST-BASED  
 
     # REQUEST-BASED
-    def log_state(self, PARAMS):
+    def log_state(self, PARAMS, day, df):
 
         # List of all considered bloogroups in integer representation.
         bloodgroups = list(range(self.num_bloodgroups))
@@ -87,7 +87,7 @@ class MatchingEnv(gym.Env):
         current_r = self.state[:,-1]
         
         # Create lists of blood groups in integer representation.
-        inventory, requests_today = [], [], []
+        inventory, requests_today = [], []
         for bg in bloodgroups:
             # All blood groups present in the inventory.
             inventory.extend([bg] * int(sum(I[bg])))
@@ -97,6 +97,8 @@ class MatchingEnv(gym.Env):
 
         df.loc[day,"num units requested"] = len(requests_today)
         df.loc[day,"num supplied products"] = sum(I[:,0])
+
+        ABOD_names = PARAMS.ABOD
 
         major_bins = len(bloodgroups) / len(ABOD_names)
         for m in range(len(ABOD_names)):

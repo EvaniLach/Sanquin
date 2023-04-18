@@ -177,6 +177,9 @@ class DQN:
                 # REQUEST-BASED 
                 # If there are requests for today, loop through each request.
                 while not done:
+                    # Update log df
+                    self.env.log_state(PARAMS, day, df)
+                    print(self.env.state)
                     # Select an action using the model's epsilon-greedy policy.
                     action = self.select_action(state)
                     # Calculate the reward and update the dataframe.
