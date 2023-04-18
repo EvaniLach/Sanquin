@@ -1,1 +1,1 @@
-python3 -u main.py --minor --dev cuda:0
+python3 -u main.py --minor '' --dev cuda:0
