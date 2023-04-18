@@ -50,7 +50,7 @@ class Settings():
         # "major": Only match on the major antigens.
         # "relimm": Use relative immunogenicity weights for mismatching.
         # "patgroups": Use patient group specific mismatching weights.
-        self.strategy = "patgroups"
+        self.strategy = "major"
         self.patgroup_musts = True
 
         # Which minor antigens to use
