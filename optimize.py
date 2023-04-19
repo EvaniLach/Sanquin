@@ -15,7 +15,7 @@ from matplotlib import pyplot as plt
 import main
 
 
-def make_config_space() -> ConfigurationSpace:
+def make_config_space():
     cs = ConfigurationSpace(seed=0)
     n_layers = cs.add_hyperparameter(OrdinalHyperparameter('n_layers', [1, 2, 3, 4]))
     n_neurons1 = cs.add_hyperparameter(UniformIntegerHyperparameter('n_neurons1', lower=16, upper=256, q=16))
