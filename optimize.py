@@ -36,7 +36,7 @@ def make_config_space():
     return cs
 
 
-def run_a(config, seed: int = 20):
+def run_a(config, seed=20):
     print(config)
     n_neurons = [config['n_neurons1']]
 
