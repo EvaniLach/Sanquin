@@ -58,25 +58,6 @@ def run_a(config, seed=20):
     print(reward)
     return np.mean(reward)
 
-def plot(runhistory: RunHistory, incumbent: Configuration) -> None:
-    plt.figure()
-
-    # Plot ground truth
-    x = list(np.linspace(-5, 5, 100))
-    y = [xi * xi for xi in x]
-    plt.plot(x, y)
-
-    # Plot all trials
-    for k, v in runhistory.items():
-        config = runhistory.get_config(k.config_id)
-        x = config["x"]
-        y = v.cost  # type: ignore
-        plt.scatter(x, y, c="blue", alpha=0.1, zorder=9999, marker="o")
-
-    # Plot incumbent
-    plt.scatter(incumbent["x"], incumbent["x"] * incumbent["x"], c="red", zorder=10000, marker="x")
-
-    plt.show()
 
 
 def run(config, budget):
