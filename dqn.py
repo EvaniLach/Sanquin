@@ -3,21 +3,25 @@ import gym
 import random
 import os
 
+from tensorflow.keras.layers import Conv2D, BatchNormalization, Dense, Input
+from keras.models import Sequential, Model
+from tensorflow import keras
 from dc import *
 from hospital import *
 from log import *
 
 # Define the Deep Q-Learning algorithm.
 class DQN:
-    def __init__(self, SETTINGS, env):
+    def __init__(self, SETTINGS, env, n_neurons, activation, alpha):
         self.env = env                          # learning environment
-        self.alpha = SETTINGS.alpha             # learning rate
+        self.alpha = alpha                      # learning rate
         self.gamma = SETTINGS.gamma             # discount factor
         self.batch_size = SETTINGS.batch_size   # batch size for replay buffer
-        
-        # Initialize the NN for generating Q-matrices.
-        self.model = self.build_model()                  
+        self.n_neurons = n_neurons
+        self.activation = activation
 
+        # Initialize the NN for generating Q-matrices.
+        self.model = self._make_network()
 
     def save(self, SETTINGS, df, e):
 
@@ -50,6 +54,21 @@ class DQN:
 
         return model
 
+    def _make_network(self):
+
+        output_size = self.env.action_space.shape[0]
+        input_size = len(np.ravel(self.env.state))
+
+        model = Sequential()
+        model.add(Dense(self.n_neurons[0], activation=self.activation, input_shape=(input_size,)))
+
+        for n in self.n_neurons[1:]:
+            model.add(Dense(n, activation=self.activation))
+
+        model.add(Dense(output_size, activation='sigmoid'))
+        model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(learning_rate=self.alpha))
+
+        return model
 
     def select_action(self, state):                         # Method to select the action to take
         if np.random.rand() <= self.epsilon:                # Choose a random action with probability epsilon
@@ -133,6 +152,8 @@ class DQN:
         # Determine the days at which to save the model.
         model_saving_days = [day for day in range(n_days) if day % 100 == 0] + [n_days-1]
 
+        # Total reward
+        total_reward = 0
         # Run the simulation for the given range of episodes.
         for e in range(SETTINGS.episodes[0], SETTINGS.episodes[1]):
             print(f"\nEpisode: {e}")
@@ -153,6 +174,8 @@ class DQN:
             state = self.env.state
             day = self.env.day
 
+            # Total reward per episode
+            year_reward = 0
             # Loop through each day in the simulation.
             while day < n_days:
 
@@ -188,6 +211,8 @@ class DQN:
                     self.memory.append([state, action, reward, next_state, day])
                     # Update the current state to the next state.
                     state = next_state
+                # Add day reward to episode reward
+                year_reward += todays_reward
 
                 # If there are enough experiences in memory, update the model.
                 if len(self.memory) >= self.batch_size:
@@ -211,3 +236,6 @@ class DQN:
                 # Set the current day to the environment's current day.
                 day = self.env.day
                 
+        total_reward += year_reward
+
+        return total_reward
