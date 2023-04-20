@@ -60,7 +60,7 @@ class DQN:
         input_size = len(np.ravel(self.env.state))
 
         model = Sequential()
-        model.add(Dense(self.n_neurons[0], activation=self.activation, input_shape=(input_size,)))
+        model.add(Input(shape=(input_size,)))
 
         for n in self.n_neurons[1:]:
             model.add(Dense(n, activation=self.activation))
