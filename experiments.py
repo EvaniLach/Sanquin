@@ -17,9 +17,9 @@ argparser.add_argument("--minor", type=int, default=0, help="select minor antige
 argparser.add_argument("--dev", default=None, help="GPU ID to use")
 args = argparser.parse_args()
 
-def main():
+def main(method, n_neurons, alpha, minor):
 
-    SETTINGS = Settings('request', [64, 64], 0.001, args.minor)
+    SETTINGS = Settings(method, n_neurons, alpha, minor)
     PARAMS = Params(SETTINGS)
 
     paths = [
@@ -39,6 +39,9 @@ def main():
     dqn.train(SETTINGS, PARAMS)
     # test comment
 
-
 if __name__ == "__main__":
-    main()
+    n_neurons = [64, 32, 16]
+    alphas = [0.01, 0.001, 0.001, 0.0001, 0.00001]
+
+    for alpha in alphas:
+        main(args.method, n_neurons, alpha, args.minor)

@@ -13,31 +13,30 @@ class MatchingEnv(gym.Env):
 
         self.num_bloodgroups = 2**len(PARAMS.major + PARAMS.minor)
 
-        # # DAY-BASED
-        # # Each state is a matrix of 2**len(antigens) × (35 + 8)
-        # # Vertical: all considered blood groups, each row index representing the integer representation of a blood group.
-        # # Horizontal: product age (0,1,...,34) + number of days until issuing (6,5,...,0)
-        # # Each cell contains the number of requests/products of that type
-        # self.state = np.zeros([self.num_bloodgroups, PARAMS.max_age + PARAMS.max_lead_time])
-
-        # # DAY-BASED
-        # # Each action is a matrix of 2**len(antigens) × inventory size
-        # # Vertical: all considered blood groups
-        # # Horizontal: number of products issued from that blood group (possibly in binary notation)
-        # I_size = SETTINGS.inv_size_factor_hosp * SETTINGS.avg_daily_demand[htype]
-        # self.action_space = gym.spaces.Box(low=0, high=1, shape=(self.num_bloodgroups, I_size))                     # real number, one-hot encoded
+        # DAY-BASED
+        # Each state is a matrix of 2**len(antigens) × (35 + 8)
+        # Vertical: all considered blood groups, each row index representing the integer representation of a blood group.
+        # Horizontal: product age (0,1,...,34) + number of days until issuing (6,5,...,0)
+        # Each cell contains the number of requests/products of that type
+        if SETTINGS.method == 'day':
+            self.state = np.zeros([self.num_bloodgroups, PARAMS.max_age + PARAMS.max_lead_time])
+            # Set hospital type to 'regional', since we are only using this one for now
+            I_size = SETTINGS.inv_size_factor_hosp * SETTINGS.avg_daily_demand[0]
+            # Each action is a matrix of 2**len(antigens) × inventory size
+            # Vertical: all considered blood groups
+            # Horizontal: number of products issued from that blood group (possibly in binary notation)
+            self.action_space = gym.spaces.Box(low=0, high=1, shape=(self.num_bloodgroups, I_size))                     # real number, one-hot encoded
 
         # REQUEST-BASED
         # Each state is a matrix of 2**len(antigens) × (35 + 8 + 1)
         # Vertical: all considered blood groups, each row index representing the integer representation of a blood group.
         # Horizontal: product age (0,1,...,34) + number of days until issuing (7,6,...,0) + binary indicating which request is considered currently.
         # Each cell (except for the right-most column) contains the number of requests/products of that type.
-        self.state = np.zeros([self.num_bloodgroups, PARAMS.max_age + PARAMS.max_lead_time + 1])
-
-        # REQUEST-BASED
-        # Each state is an array of len(antigens), representing the antigen profile of the issued product.
-        # self.action_space = gym.spaces.MultiBinary(len(antigens))
-        self.action_space = gym.spaces.Box(low=0, high=1, shape=(self.num_bloodgroups,))
+        else:
+            self.state = np.zeros([self.num_bloodgroups, PARAMS.max_age + PARAMS.max_lead_time + 1])
+            # Each action is an array of len(antigens), representing the antigen profile of the issued product.
+            # self.action_space = gym.spaces.MultiBinary(len(antigens))
+            self.action_space = gym.spaces.Box(low=0, high=1, shape=(self.num_bloodgroups,))
         
         # Current day in the simulation.
         self.day = 0
@@ -73,7 +72,7 @@ class MatchingEnv(gym.Env):
             current_r[r[0]] = 1
 
         # self.state = np.concatenate((I, R), axis=1)  # DAY-BASED
-        self.state = np.concatenate((I, R, current_r), axis=1)  # REQUEST-BASED  
+        self.state = np.concatenate((I, R, current_r), axis=1)  # REQUEST-BASED
 
     # REQUEST-BASED
     def log_state(self, PARAMS, day, df):
@@ -228,106 +227,106 @@ class MatchingEnv(gym.Env):
 
         self.state = np.concatenate((I, R, current_r), axis=1)  # REQUEST-BASED  
 
-    # # DAY-BASED
-    # def step(self, SETTINGS, PARAMS, action, day, df):
+    # DAY-BASED
+    def step(self, SETTINGS, PARAMS, action, day, df):
 
-    #     ABOD_names = PARAMS.ABOD
+        ABOD_names = PARAMS.ABOD
 
-    #     ######################
-    #     ## STATE AND ACTION ##
-    #     ######################
+        ######################
+        ## STATE AND ACTION ##
+        ######################
 
-    #     # List of all considered bloogroups in integer representation.
-    #     bloodgroups = list(range(self.num_bloodgroups))
+        # List of all considered bloogroups in integer representation.
+        bloodgroups = list(range(self.num_bloodgroups))
 
-    #     # The inventory is represented by the left part of the state -> matrix of size |bloodgroups| × max age
-    #     I = self.state[:,:PARAMS.max_age]
-    #     R = self.state[:,PARAMS.max_age:]
+        # The inventory is represented by the left part of the state -> matrix of size |bloodgroups| × max age
+        I = self.state[:,:PARAMS.max_age]
+        R = self.state[:,PARAMS.max_age:]
         
-    #     # Create lists of blood groups in integer representation.
-    #     inventory, issued_action, requests_today = [], [], []
-    #     for bg in bloodgroups:
-    #         # All blood groups present in the inventory.
-    #         inventory.extend([bg] * int(sum(I[bg])))
+        # Create lists of blood groups in integer representation.
+        inventory, issued_action, requests_today = [], [], []
+        for bg in bloodgroups:
+            # All blood groups present in the inventory.
+            inventory.extend([bg] * int(sum(I[bg])))
 
-    #         # All inventory products from the action that should be issued today.
-    #         # issued_action.extend([bg] * int(np.where(action[bg]==1)[0]))
-    #         issued_action.extend([bg] * action[bg])
+            # All inventory products from the action that should be issued today.
+            # issued_action.extend([bg] * int(np.where(action[bg]==1)[0]))
+            issued_action.extend([bg] * action[bg])
 
-    #         # All requests from the state that need to be satisfied today.
-    #         requests_today.extend([bg] * int(R[bg,-1]))
+            # All requests from the state that need to be satisfied today.
+            requests_today.extend([bg] * int(R[bg,-1]))
 
-    #     df.loc[day,"num units requested"] = len(requests_today)
-    #     df.loc[day,"num supplied products"] = sum(I[:,0])
+        df.loc[day,"num units requested"] = len(requests_today)
+        df.loc[day,"num supplied products"] = sum(I[:,0])
 
-    #     major_bins = len(bloodgroups) / len(ABOD_names)
-    #     for m in range(len(ABOD_names)):
-    #         start = int(m * major_bins)
-    #         end = int((m * major_bins) + major_bins)
-    #         df.loc[day,f"num supplied {ABOD_names[m]}"] = sum(I[start:end, 0])
-    #         df.loc[day,f"num requests {ABOD_names[m]}"] = sum(R[start:end, -1])
-    #         df.loc[day,f"num {ABOD_names[m]} in inventory"] = sum(sum(I[start:end]))
+        major_bins = len(bloodgroups) / len(ABOD_names)
+        for m in range(len(ABOD_names)):
+            start = int(m * major_bins)
+            end = int((m * major_bins) + major_bins)
+            df.loc[day,f"num supplied {ABOD_names[m]}"] = sum(I[start:end, 0])
+            df.loc[day,f"num requests {ABOD_names[m]}"] = sum(R[start:end, -1])
+            df.loc[day,f"num {ABOD_names[m]} in inventory"] = sum(sum(I[start:end]))
 
-    #     #####################
-    #     ## GET ASSIGNMENTS ##
-    #     #####################
+        #####################
+        ## GET ASSIGNMENTS ##
+        #####################
         
-    #     # Divide the 'issued' list in two, depending on whether they are actually present in the inventory.
-    #     inv = collections.Counter(inventory)
-    #     iss = collections.Counter(issued_action)
-    #     nonexistent = list((iss - inv).elements())      # Products attempted to issue, but not present in the inventory.
-    #     issued = list((inv & iss).elements())           # Products issued and available for issuing.
+        # Divide the 'issued' list in two, depending on whether they are actually present in the inventory.
+        inv = collections.Counter(inventory)
+        iss = collections.Counter(issued_action)
+        nonexistent = list((iss - inv).elements())      # Products attempted to issue, but not present in the inventory.
+        issued = list((inv & iss).elements())           # Products issued and available for issuing.
 
-    #     if len(requests_today) > 0:
-    #         # Assign all issued products to today's requests, first minimizing shortages, then minimizing the mismatch penalty.
-    #         shortages, mismatches, assigned, discarded, df = action_to_matches(PARAMS, issued, requests_today, day, df)
-    #     else:
-    #         shortages, mismatches, assigned = 0, 0, 0
-    #         discarded = issued.copy()
+        if len(requests_today) > 0:
+            # Assign all issued products to today's requests, first minimizing shortages, then minimizing the mismatch penalty.
+            shortages, mismatches, assigned, discarded, df = action_to_matches(PARAMS, issued, requests_today, day, df)
+        else:
+            shortages, mismatches, assigned = 0, 0, 0
+            discarded = issued.copy()
 
-    #     num_outdates = sum(I[:,PARAMS.max_age-1])
+        num_outdates = sum(I[:,PARAMS.max_age-1])
 
-    #     ######################
-    #     ## CALCULATE REWARD ##
-    #     ######################
+        ######################
+        ## CALCULATE REWARD ##
+        ######################
 
-    #     reward = 0
-    #     reward -= 50 * len(nonexistent)         # Penalty of 50 for each nonexistent product that was attempted to issue.
-    #     reward -= 10 * shortages                # Penalty of 10 for each shortage.
-    #     reward -= 5 * mismatches                # Penalty of 5 multiplied by the total mismatch penalty, which is weighted according to relative immunogenicity.
-    #     reward -= num_outdates                  # Penalty of 1 for each outdated product.
-    #     reward -= len(discarded)                # Penalty of 1 for each discarded product (issued but not assigned).
+        reward = 0
+        reward -= 50 * len(nonexistent)         # Penalty of 50 for each nonexistent product that was attempted to issue.
+        reward -= 10 * shortages                # Penalty of 10 for each shortage.
+        reward -= 5 * mismatches                # Penalty of 5 multiplied by the total mismatch penalty, which is weighted according to relative immunogenicity.
+        reward -= num_outdates                  # Penalty of 1 for each outdated product.
+        reward -= len(discarded)                # Penalty of 1 for each discarded product (issued but not assigned).
 
-    #     df.loc[day,"reward"] = reward
-    #     df.loc[day,"issued but nonexistent"] = len(nonexistent)
-    #     df.loc[day,"num shortages"] = shortages
-    #     df.loc[day,"num outdates"] = num_outdates
-    #     df.loc[day,"issued but discarded"] = len(discarded)
+        df.loc[day,"reward"] = reward
+        df.loc[day,"issued but nonexistent"] = len(nonexistent)
+        df.loc[day,"num shortages"] = shortages
+        df.loc[day,"num outdates"] = num_outdates
+        df.loc[day,"issued but discarded"] = len(discarded)
 
-    #     ######################
-    #     ## GO TO NEXT STATE ##
-    #     ######################
+        ######################
+        ## GO TO NEXT STATE ##
+        ######################
 
-    #     # Increase the day count.
-    #     self.day += 1
+        # Increase the day count.
+        self.day += 1
 
-    #     # Remove all issued products from the inventory, where the oldest products are removed first.
-    #     for bg in issued:
-    #         I[bg, np.where(I[bg] > 0)[0][-1]] -= 1
+        # Remove all issued products from the inventory, where the oldest products are removed first.
+        for bg in issued:
+            I[bg, np.where(I[bg] > 0)[0][-1]] -= 1
 
-    #     # Increase the age of all products (also removing all outdated products).
-    #     I[:,1:PARAMS.max_age] = I[:,:PARAMS.max_age-1]
+        # Increase the age of all products (also removing all outdated products).
+        I[:,1:PARAMS.max_age] = I[:,:PARAMS.max_age-1]
 
-    #     # Return the number of products to be supplied, in order to fill the inventory upto its maximum capacity.
-    #     I[:,0] = self.dc.sample_supply_single_day(PARAMS, len(I), max(0, self.hospital.inventory_size - int(sum(sum(I)))))
+        # Return the number of products to be supplied, in order to fill the inventory upto its maximum capacity.
+        I[:,0] = self.dc.sample_supply_single_day(PARAMS, len(I), max(0, self.hospital.inventory_size - int(sum(sum(I)))))
 
-    #     # Remove all today's requests and increase lead time of all other requests.
-    #     R = np.insert(R[:, :-1], 0, values=0, axis=1)
+        # Remove all today's requests and increase lead time of all other requests.
+        R = np.insert(R[:, :-1], 0, values=0, axis=1)
 
-    #     # Sample new requests
-    #     R += self.hospital.sample_requests_single_day(PARAMS, R.shape, self.day)
+        # Sample new requests
+        R += self.hospital.sample_requests_single_day(PARAMS, R.shape, self.day)
 
-    #     # Update the state with the updated inventory and requests.
-    #     self.state = np.concatenate((I, R), axis=1)
+        # Update the state with the updated inventory and requests.
+        self.state = np.concatenate((I, R), axis=1)
 
-    #     return self.state, reward, self.day, df
+        return self.state, reward, self.day, df

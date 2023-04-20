@@ -3,18 +3,20 @@ import os
 
 class Settings():
 
-    def __init__(self, minor):
+    def __init__(self, method, n_neurons, alpha, minor):
 
         # Working directory.
         # self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/Github Merel/RL_matching-main/"
         self.home_dir = r"/home/s1949624/Sanquin/"
 
         # Output files will be stored in directory results/[model_name].
-        # self.model_name = "daily_scratch"       # matching per day, training from scratch
+        if method == 'day':
+            self.model_name = "daily_scratch"       # matching per day, training from scratch
         # self.model_name = "daily_guided"        # matching per day, training guided by MINRAR strategy
-        self.model_name = "request_scratch"     # matching per request, training from scratch
+        else:
+            self.model_name = "request_scratch"     # matching per request, training from scratch
         # self.model_name = "request_guided"      # matching per request, training guided by MINRAR strategy
-        self.method = 'request'
+        self.method = method
 
         #########################
         # SIMULATION PARAMETERS #
@@ -26,7 +28,7 @@ class Settings():
 
         # (x,y): Episode numbers range(x,y) will be optimized.
         # The total number of simulations executed will thus be y - x.
-        self.episodes = (0,10)
+        self.episodes = (0,100)
 
         # Number of hospitals considered. If more than 1 (regional and university combined), a distribution center is included.
         # "regional": Use the patient group distribution of the OLVG, a regional hospital, with average daily demand of 50 products.
@@ -80,9 +82,10 @@ class Settings():
         self.epsilon = 1.0
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.995
-        self.alpha = 0.1           # learning rate
+        self.alpha = alpha         # learning rate
         self.gamma = 0.5           # discount factor
-        self.batch_size = 50        # batch size for replay buffer
+        self.batch_size = 50       # batch size for replay buffer
+        self.n_neurons = n_neurons
 
         ####################
         # GUROBI OPTIMIZER #

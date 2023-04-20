@@ -5,6 +5,7 @@ import os
 
 from tensorflow.keras.layers import Conv2D, BatchNormalization, Dense, Input
 from keras.models import Sequential, Model
+import matplotlib as plt
 from tensorflow import keras
 from dc import *
 from hospital import *
@@ -12,13 +13,14 @@ from log import *
 
 # Define the Deep Q-Learning algorithm.
 class DQN:
-    def __init__(self, SETTINGS, env, n_neurons, activation, alpha):
+    def __init__(self, SETTINGS, env):
         self.env = env                          # learning environment
-        self.alpha = alpha                      # learning rate
+        self.alpha = SETTINGS.alpha                      # learning rate
         self.gamma = SETTINGS.gamma             # discount factor
         self.batch_size = SETTINGS.batch_size   # batch size for replay buffer
-        self.n_neurons = n_neurons
-        self.activation = activation
+        self.n_neurons = SETTINGS.n_neurons
+        self.method = SETTINGS.method
+        self.activation = 'relu'
 
         # Initialize the NN for generating Q-matrices.
         self.model = self._make_network()
@@ -29,30 +31,28 @@ class DQN:
 
         self.model.save(SETTINGS.generate_filename(SETTINGS, "models", e))
 
-
     def load(self, SETTINGS, e):
         self.model = tf.keras.models.load_model(SETTINGS.generate_filename(SETTINGS, "models", e))
 
-    
     # Initialize the NN for generating Q-matrices.
-    def build_model(self):
-
-        # Get the size of the input state and output action spaces
-        input_size = len(np.ravel(self.env.state))          
-        # output_size = self.env.action_space.shape[0]*self.env.action_space.shape[1]   # DAY-BASED
-        output_size = self.env.action_space.shape[0]                                      # REQUEST-BASED  
-
-        # Create the input layer and two hidden layers with relu activation and output layer with sigmoid activation
-        inputs = tf.keras.layers.Input(shape=(input_size,))
-        layer_0 = tf.keras.layers.Dense(self.env.num_bloodgroups, activation='relu')(inputs)
-        layer_1 = tf.keras.layers.Dense(64, activation='tanh')(layer_0)
-        layer_2 = tf.keras.layers.Dense(32, activation='tanh')(layer_1)
-        outputs = tf.keras.layers.Dense(output_size, activation='sigmoid')(layer_2)
-        model = tf.keras.models.Model(inputs=inputs, outputs=outputs)
-
-        model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(learning_rate=self.alpha))
-
-        return model
+    # def build_model(self):
+    #
+    #     # Get the size of the input state and output action spaces
+    #     input_size = len(np.ravel(self.env.state))
+    #     # output_size = self.env.action_space.shape[0]*self.env.action_space.shape[1]   # DAY-BASED
+    #     output_size = self.env.action_space.shape[0]                                      # REQUEST-BASED
+    #
+    #     # Create the input layer and two hidden layers with relu activation and output layer with sigmoid activation
+    #     inputs = tf.keras.layers.Input(shape=(input_size,))
+    #     layer_0 = tf.keras.layers.Dense(self.env.num_bloodgroups, activation='relu')(inputs)
+    #     layer_1 = tf.keras.layers.Dense(64, activation='tanh')(layer_0)
+    #     layer_2 = tf.keras.layers.Dense(32, activation='tanh')(layer_1)
+    #     outputs = tf.keras.layers.Dense(output_size, activation='sigmoid')(layer_2)
+    #     model = tf.keras.models.Model(inputs=inputs, outputs=outputs)
+    #
+    #     model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(learning_rate=self.alpha))
+    #
+    #     return model
 
     def _make_network(self):
 
@@ -83,9 +83,8 @@ class DQN:
         
         return action
 
-
     # REQUEST-BASED
-    def update(self):
+    def update_request(self):
         
         # Sample a batch of experiences from the model's memory.
         batch = random.sample(self.memory, self.batch_size)
@@ -118,32 +117,32 @@ class DQN:
         self.model.train_on_batch(np.concatenate(states, axis=0), np.concatenate(Q_matrices, axis=0))
 
 
-    # # DAY-DASED
-    # def update(self):
+    # DAY-DASED
+    def update_day(self):
 
-    #     batch = random.sample(self.memory, self.batch_size)
+        batch = random.sample(self.memory, self.batch_size)
 
-    #     states = []
-    #     Q_tables = []
+        states = []
+        Q_tables = []
 
-    #     for sample in batch:
+        for sample in batch:
 
-    #         state, action, reward, next_state, _ = sample
+            state, action, reward, next_state, _ = sample
 
-    #         # Compute the target Q-values
-    #         Q_next = np.reshape(self.model.predict(np.ravel(next_state).reshape(1,-1), verbose=0), self.env.action_space.shape)             # Predict the Q-values for the next states
-    #         max_Q_next = np.max(Q_next, axis=1)
-    #         Q_target = reward + (self.gamma * max_Q_next)  # Compute the target Q-values using the Bellman equation
+            # Compute the target Q-values
+            Q_next = np.reshape(self.model.predict(np.ravel(next_state).reshape(1,-1), verbose=0), self.env.action_space.shape)             # Predict the Q-values for the next states
+            max_Q_next = np.max(Q_next, axis=1)
+            Q_target = reward + (self.gamma * max_Q_next)  # Compute the target Q-values using the Bellman equation
 
-    #         # Compute the current Q-values
-    #         Q_table = np.reshape(self.model.predict(np.ravel(state).reshape(1,-1), verbose=0), self.env.action_space.shape)             # Predict the Q-values for the next states
-    #         Q_table[:,action] = Q_target # Update the target Q-values for the actions taken
+            # Compute the current Q-values
+            Q_table = np.reshape(self.model.predict(np.ravel(state).reshape(1,-1), verbose=0), self.env.action_space.shape)             # Predict the Q-values for the next states
+            Q_table[:,action] = Q_target # Update the target Q-values for the actions taken
 
-    #         states.append(np.ravel(state).reshape(1,-1))
-    #         Q_tables.append(np.ravel(Q_table).reshape(1,-1))
+            states.append(np.ravel(state).reshape(1,-1))
+            Q_tables.append(np.ravel(Q_table).reshape(1,-1))
 
-    #     # Train the model on the batch using the target Q-values as the target output
-    #     self.model.train_on_batch(np.concatenate(states, axis=0), np.concatenate(Q_tables, axis=0))
+        # Train the model on the batch using the target Q-values as the target output
+        self.model.train_on_batch(np.concatenate(states, axis=0), np.concatenate(Q_tables, axis=0))
 
 
     def train(self, SETTINGS, PARAMS):
@@ -153,7 +152,7 @@ class DQN:
         model_saving_days = [day for day in range(n_days) if day % 100 == 0] + [n_days-1]
 
         # Total reward
-        total_reward = 0
+        total_reward = []
         # Run the simulation for the given range of episodes.
         for e in range(SETTINGS.episodes[0], SETTINGS.episodes[1]):
             print(f"\nEpisode: {e}")
@@ -175,7 +174,7 @@ class DQN:
             day = self.env.day
 
             # Total reward per episode
-            year_reward = 0
+            episode_reward = 0
             # Loop through each day in the simulation.
             while day < n_days:
 
@@ -188,35 +187,37 @@ class DQN:
                     self.env.next_day(PARAMS)
                     done = True
 
-                # # DAY-BASED
-                # action = self.select_action(state)    # Select an action using the Q-network's epsilon-greedy policy
-                # next_state, reward, df = self.env.step(SETTINGS, PARAMS, action, dc, hospital, day, df)   # Take the action and receive the next state, reward and next day
-                # self.memory.append([state, action, reward, next_state, day])    # Store the experience tuple in memory
-                # state = next_state
-                # # Update the Q-network using a batch of experiences from memory
-                # if len(self.memory) >= self.batch_size: 
-                #     self.update()
-
-                # REQUEST-BASED 
-                # If there are requests for today, loop through each request.
-                while not done:
-                    # Select an action using the model's epsilon-greedy policy.
-                    action = self.select_action(state)
-                    # Calculate the reward and update the dataframe.
-                    reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
-                    todays_reward += reward
-                    # Get the next state and whether the episode is done.
-                    next_state, done = self.env.next_request(PARAMS)
-                    # Store the experience tuple in memory.
-                    self.memory.append([state, action, reward, next_state, day])
-                    # Update the current state to the next state.
+                if self.method == 0:
+                    # DAY-BASED
+                    action = self.select_action(state)    # Select an action using the Q-network's epsilon-greedy policy
+                    next_state, reward, df = self.env.step(SETTINGS, PARAMS, action, day, df)   # Take the action and receive the next state, reward and next day
+                    self.memory.append([state, action, reward, next_state, day])    # Store the experience tuple in memory
                     state = next_state
+
+                else:
+                    # REQUEST-BASED
+                    # If there are requests for today, loop through each request.
+                    while not done:
+                        # Select an action using the model's epsilon-greedy policy.
+                        action = self.select_action(state)
+                        # Calculate the reward and update the dataframe.
+                        reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
+                        todays_reward += reward
+                        # Get the next state and whether the episode is done.
+                        next_state, done = self.env.next_request(PARAMS)
+                        # Store the experience tuple in memory.
+                        self.memory.append([state, action, reward, next_state, day])
+                        # Update the current state to the next state.
+                        state = next_state
                 # Add day reward to episode reward
-                year_reward += todays_reward
+                episode_reward += todays_reward
 
                 # If there are enough experiences in memory, update the model.
                 if len(self.memory) >= self.batch_size:
-                    self.update()
+                    if self.method == 0:
+                        self.update_day()
+                    else:
+                        self.update_request()
 
                 # Update the dataframe with the current day's information.
                 df.loc[day,"logged"] = True
@@ -229,13 +230,18 @@ class DQN:
                 df.loc[day,"epsilon current"] = self.epsilon
                 self.epsilon = max(self.epsilon * SETTINGS.epsilon_decay, SETTINGS.epsilon_min)
 
-                # Save model and log file on predifined days.
+                # Save model and log file on predefined days.
                 if day in model_saving_days:
                     self.save(SETTINGS, df, e)
 
                 # Set the current day to the environment's current day.
                 day = self.env.day
-                
-        total_reward += year_reward
 
-        return total_reward
+            # Since number of timesteps depends on requests, we use the episode rewards to plot
+            total_reward.append(episode_reward)
+
+        np.savetxt(self.method + self.alpha + '.csv', total_reward, delimiter=",")
+        plt.plot(total_reward)
+        plt.savefig(self.method + self.alpha + '.png')
+
+        return sum(total_reward)
