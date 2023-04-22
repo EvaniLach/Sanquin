@@ -23,7 +23,8 @@ class DQN:
         self.activation = 'relu'
 
         # Initialize the NN for generating Q-matrices.
-        self.model = self._make_network()
+        # self.model = self._make_network()
+        self.model = self.build_model()
 
     def save(self, SETTINGS, df, e):
 
@@ -35,24 +36,24 @@ class DQN:
         self.model = tf.keras.models.load_model(SETTINGS.generate_filename(SETTINGS, "models", e))
 
     # Initialize the NN for generating Q-matrices.
-    # def build_model(self):
-    #
-    #     # Get the size of the input state and output action spaces
-    #     input_size = len(np.ravel(self.env.state))
-    #     # output_size = self.env.action_space.shape[0]*self.env.action_space.shape[1]   # DAY-BASED
-    #     output_size = self.env.action_space.shape[0]                                      # REQUEST-BASED
-    #
-    #     # Create the input layer and two hidden layers with relu activation and output layer with sigmoid activation
-    #     inputs = tf.keras.layers.Input(shape=(input_size,))
-    #     layer_0 = tf.keras.layers.Dense(self.env.num_bloodgroups, activation='relu')(inputs)
-    #     layer_1 = tf.keras.layers.Dense(64, activation='tanh')(layer_0)
-    #     layer_2 = tf.keras.layers.Dense(32, activation='tanh')(layer_1)
-    #     outputs = tf.keras.layers.Dense(output_size, activation='sigmoid')(layer_2)
-    #     model = tf.keras.models.Model(inputs=inputs, outputs=outputs)
-    #
-    #     model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(learning_rate=self.alpha))
-    #
-    #     return model
+    def build_model(self):
+
+        # Get the size of the input state and output action spaces
+        input_size = len(np.ravel(self.env.state))
+        # output_size = self.env.action_space.shape[0]*self.env.action_space.shape[1]   # DAY-BASED
+        output_size = self.env.action_space.shape[0]                                      # REQUEST-BASED
+
+        # Create the input layer and two hidden layers with relu activation and output layer with sigmoid activation
+        inputs = tf.keras.layers.Input(shape=(input_size,))
+        layer_0 = tf.keras.layers.Dense(self.env.num_bloodgroups, activation='relu')(inputs)
+        layer_1 = tf.keras.layers.Dense(64, activation='tanh')(layer_0)
+        layer_2 = tf.keras.layers.Dense(32, activation='tanh')(layer_1)
+        outputs = tf.keras.layers.Dense(output_size, activation='sigmoid')(layer_2)
+        model = tf.keras.models.Model(inputs=inputs, outputs=outputs)
+
+        model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(learning_rate=self.alpha))
+
+        return model
 
     def _make_network(self):
 
@@ -187,11 +188,12 @@ class DQN:
                     self.env.next_day(PARAMS)
                     done = True
 
-                if self.method == 0:
+                if self.method == 'day':
                     # DAY-BASED
                     action = self.select_action(state)    # Select an action using the Q-network's epsilon-greedy policy
                     next_state, reward, df = self.env.step(SETTINGS, PARAMS, action, day, df)   # Take the action and receive the next state, reward and next day
-                    self.memory.append([state, action, reward, next_state, day])    # Store the experience tuple in memory
+                    if day >= SETTINGS.init_days:
+                        self.memory.append([state, action, reward, next_state, day])    # Store the experience tuple in memory
                     state = next_state
 
                 else:
@@ -206,15 +208,14 @@ class DQN:
                         # Get the next state and whether the episode is done.
                         next_state, done = self.env.next_request(PARAMS)
                         # Store the experience tuple in memory.
-                        self.memory.append([state, action, reward, next_state, day])
+                        if day >= SETTINGS.init_days:
+                            self.memory.append([state, action, reward, next_state, day])
                         # Update the current state to the next state.
                         state = next_state
-                # Add day reward to episode reward
-                episode_reward += todays_reward
 
                 # If there are enough experiences in memory, update the model.
                 if len(self.memory) >= self.batch_size:
-                    if self.method == 0:
+                    if self.method == 'day':
                         self.update_day()
                     else:
                         self.update_request()
@@ -236,9 +237,6 @@ class DQN:
 
                 # Set the current day to the environment's current day.
                 day = self.env.day
-
-            # Since number of timesteps depends on requests, we use the episode rewards to plot
-            total_reward.append(episode_reward)
 
         np.savetxt(self.method + self.alpha + '.csv', total_reward, delimiter=",")
         plt.plot(total_reward)

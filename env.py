@@ -84,16 +84,8 @@ class MatchingEnv(gym.Env):
         I = self.state[:,:PARAMS.max_age]
         R = self.state[:,PARAMS.max_age:-1]
         current_r = self.state[:,-1]
-        
-        # Create lists of blood groups in integer representation.
-        inventory, requests_today = [], []
-        for bg in bloodgroups:
-            # All blood groups present in the inventory.
-            inventory.extend([bg] * int(sum(I[bg])))
 
-            # All requests from the state that need to be satisfied today.
-            requests_today.extend([bg] * int(R[bg,-1]))
-        df.loc[day,"num units requested"] = len(requests_today)
+        df.loc[day,"num units requested"] = sum(R[:,-1])
         df.loc[day,"num supplied products"] = sum(I[:,0])
 
         ABOD_names = PARAMS.ABOD
@@ -105,6 +97,8 @@ class MatchingEnv(gym.Env):
             df.loc[day,f"num supplied {ABOD_names[m]}"] = sum(I[start:end, 0])
             df.loc[day,f"num requests {ABOD_names[m]}"] = sum(R[start:end, -1])
             df.loc[day,f"num {ABOD_names[m]} in inventory"] = sum(sum(I[start:end]))
+
+        return df
 
     # REQUEST-BASED
     def calculate_reward(self, SETTINGS, PARAMS, action, day, df):
@@ -135,8 +129,7 @@ class MatchingEnv(gym.Env):
 
             # Remove the issued products from the inventory, where the oldest product is removed first.
             I[action, np.where(I[action] > 0)[0][-1]] -= 1
-
-            comp = binarray(not_compatible(r, action))
+            comp = binarray(not_compatible(r, action), len(antigens))
             
             # The issued product is not compatible with the request -> shortage.
             if sum(comp[:3]) > 0:

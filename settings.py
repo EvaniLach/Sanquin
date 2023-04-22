@@ -3,11 +3,11 @@ import os
 
 class Settings():
 
-    def __init__(self, method, n_neurons, alpha, minor):
+    def __init__(self, method, minor, n_neurons=64, alpha=0.01, ):
 
         # Working directory.
-        # self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/Github Merel/RL_matching-main/"
-        self.home_dir = r"/home/s1949624/Sanquin/"
+        self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/Github Merel/RL_matching-main/"
+        # self.home_dir = r"/home/s1949624/Sanquin/"
 
         # Output files will be stored in directory results/[model_name].
         if method == 'day':
@@ -100,13 +100,14 @@ class Settings():
     def generate_filename(self, SETTINGS, output_type, e):
 
         path = self.home_dir + f"/{output_type}/{self.model_name}/"
-        path += f"a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}_{SETTINGS.minor}/"
+        path += f"learning_rates/"
+        path += f"a{SETTINGS.alpha}/"
         path += f"{self.method}_{e}"
 
         return path
 
-
     # Check whether a given path exists, and create the path if it doesn't.
     def check_dir_existence(self, path):
+        print(path)
         if os.path.exists(path) == False:
             os.mkdir(path)

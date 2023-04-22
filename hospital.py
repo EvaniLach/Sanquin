@@ -1,5 +1,6 @@
 import pandas as pd
 import pickle
+from bitstring import BitArray
 
 from blood import *
 
@@ -26,8 +27,7 @@ class Hospital():
         requests = np.zeros([R_shape[0], R_shape[1]])
         for i in data.index:
             lead_time = data.loc[i,"Day Needed"] - day
-            bg_index = vector_to_bloodgroup_index(data.loc[i, PARAMS.major + PARAMS.minor])
-            requests[bg_index, lead_time] += 1
+            requests[BitArray(data.loc[i, PARAMS.major + PARAMS.minor]).uint, lead_time] += data.loc[i, "Num Units"]
 
         return requests
 

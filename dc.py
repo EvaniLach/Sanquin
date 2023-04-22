@@ -1,5 +1,6 @@
 import pandas as pd
 import pickle
+from bitstring import BitArray
 
 from blood import *
 
@@ -28,7 +29,7 @@ class Distribution_center():
         # and increase the number of products of that blood group in stock by 1.
         supply = [0] * len_I
         for i in data.index:
-            supply[vector_to_bloodgroup_index(data.loc[i, PARAMS.major + PARAMS.minor])] += 1
+            supply[BitArray(data.loc[i, PARAMS.major + PARAMS.minor]).uint] += 1
 
         return supply
 

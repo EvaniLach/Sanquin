@@ -10,7 +10,7 @@ def initialize_output_dataframe(SETTINGS, PARAMS, hospital, episode):
     ##########
 
     antigens = PARAMS.major + PARAMS.minor
-    ABOD_names = PARAMS.ABOD
+    ABOD_names = PARAMS.ABOD.values()
     patgroups = PARAMS.patgroups
     ethnicities = ["Caucasian", "African", "Asian"]
     days = [i for i in range(SETTINGS.init_days + SETTINGS.test_days)]

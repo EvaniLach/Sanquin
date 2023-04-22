@@ -14,7 +14,7 @@ class Params():
         self.max_lead_time = 8      # Days 0,1,...,7.
 
         # Major blood groups, major antigens, and minor antigens.
-        self.ABOD =  ["O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"]
+        self.ABOD =  {0:"O-", 1:"O+", 2:"B-", 3:"B+", 4:"A-", 5:"A+", 6:"AB-", 7:"AB+"}
         self.major = ["A", "B", "D"]
         # self.minor = ["C", "c", "E", "e", "K", "k", "M", "N", "S", "s", "Fya", "Fyb", "Jka", "Jkb"] 
         self.minor = ["C", "c", "E", "e", "K"][:SETTINGS.minor]
