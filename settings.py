@@ -7,7 +7,7 @@ class Settings():
 
         # Working directory.
         # self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
-        self.home_dir = r"/home/RL_matching/Sanquin/"
+        self.home_dir = r"/home/s1949624/RL_matching/"
 
         # Output files will be stored in directory results/[model_name].
         if method == 'day':
