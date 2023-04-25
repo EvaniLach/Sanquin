@@ -17,9 +17,8 @@ argparser.add_argument("--minor", type=int, default=0, help="select minor antige
 argparser.add_argument("--dev", default=None, help="GPU ID to use")
 args = argparser.parse_args()
 
-def main(method, alpha, minor):
-    print(minor)
-    SETTINGS = Settings(method, alpha, minor)
+def main(alpha):
+    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=alpha)
     PARAMS = Params(SETTINGS)
 
     paths = [
@@ -46,4 +45,4 @@ if __name__ == "__main__":
     alphas = [0.01, 0.001, 0.001, 0.0001, 0.00001]
 
     for alpha in alphas:
-        main(method=args.method, alpha=alpha, minor=args.minor)
+        main(alpha=alpha)
