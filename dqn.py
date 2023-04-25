@@ -147,6 +147,7 @@ class DQN:
 
 
     def train(self, SETTINGS, PARAMS):
+        print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
         # Calculate the total number of days for the simulation.
         n_days = SETTINGS.init_days + SETTINGS.test_days
         # Determine the days at which to save the model.
@@ -237,9 +238,5 @@ class DQN:
 
                 # Set the current day to the environment's current day.
                 day = self.env.day
-
-        np.savetxt(self.method + self.alpha + '.csv', total_reward, delimiter=",")
-        plt.plot(total_reward)
-        plt.savefig(self.method + self.alpha + '.png')
 
         return sum(total_reward)

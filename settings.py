@@ -6,7 +6,7 @@ class Settings():
     def __init__(self, method, minor, n_neurons=64, alpha=0.01, ):
 
         # Working directory.
-        self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/Github Merel/RL_matching-main/"
+        self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
         # self.home_dir = r"/home/s1949624/Sanquin/"
 
         # Output files will be stored in directory results/[model_name].
@@ -23,7 +23,7 @@ class Settings():
         #########################
 
         # Only the results of test days will be logged.
-        self.test_days = 365
+        self.test_days = 5 * 365
         self.init_days = 2 * 35
 
         # (x,y): Episode numbers range(x,y) will be optimized.
