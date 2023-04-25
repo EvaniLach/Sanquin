@@ -18,7 +18,7 @@ argparser.add_argument("--dev", default=None, help="GPU ID to use")
 args = argparser.parse_args()
 
 def main(method, alpha, minor):
-
+    print(minor)
     SETTINGS = Settings(method, alpha, minor)
     PARAMS = Params(SETTINGS)
 
