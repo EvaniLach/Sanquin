@@ -17,6 +17,7 @@ class Params():
         self.ABOD =  {0:"O-", 1:"O+", 2:"B-", 3:"B+", 4:"A-", 5:"A+", 6:"AB-", 7:"AB+"}
         self.major = ["A", "B", "D"]
         # self.minor = ["C", "c", "E", "e", "K", "k", "M", "N", "S", "s", "Fya", "Fyb", "Jka", "Jkb"] 
+        print(SETTINGS.minor)
         self.minor = ["C", "c", "E", "e", "K"][:SETTINGS.minor]
         # self.minor = SETTINGS.minor
 
