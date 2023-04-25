@@ -21,7 +21,7 @@ class MatchingEnv(gym.Env):
         if SETTINGS.method == 'day':
             self.state = np.zeros([self.num_bloodgroups, PARAMS.max_age + PARAMS.max_lead_time])
             # Set hospital type to 'regional', since we are only using this one for now
-            I_size = SETTINGS.inv_size_factor_hosp * SETTINGS.avg_daily_demand[0]
+            I_size = SETTINGS.inv_size_factor_hosp * SETTINGS.avg_daily_demand['regional']
             # Each action is a matrix of 2**len(antigens) × inventory size
             # Vertical: all considered blood groups
             # Horizontal: number of products issued from that blood group (possibly in binary notation)
@@ -235,6 +235,7 @@ class MatchingEnv(gym.Env):
         # The inventory is represented by the left part of the state -> matrix of size |bloodgroups| × max age
         I = self.state[:,:PARAMS.max_age]
         R = self.state[:,PARAMS.max_age:]
+        print('daaay')
         
         # Create lists of blood groups in integer representation.
         inventory, issued_action, requests_today = [], [], []
@@ -248,7 +249,7 @@ class MatchingEnv(gym.Env):
 
             # All requests from the state that need to be satisfied today.
             requests_today.extend([bg] * int(R[bg,-1]))
-
+        print(inventory)
         df.loc[day,"num units requested"] = len(requests_today)
         df.loc[day,"num supplied products"] = sum(I[:,0])
 

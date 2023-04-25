@@ -19,7 +19,7 @@ args = argparser.parse_args()
 
 def main():
 
-    SETTINGS = Settings(method='request', minor=args.minor)
+    SETTINGS = Settings(method=args.method, minor=args.minor)
     PARAMS = Params(SETTINGS)
 
     paths = [
