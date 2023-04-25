@@ -108,6 +108,5 @@ class Settings():
 
     # Check whether a given path exists, and create the path if it doesn't.
     def check_dir_existence(self, path):
-        print(path)
         if os.path.exists(path) == False:
             os.mkdir(path)
