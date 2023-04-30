@@ -1,7 +1,11 @@
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 import tensorflow as tf
 import gym
 import random
-import os
+
+from tensorflow.python.client import device_lib
+print device_lib.list_local_devices()
 
 from tensorflow.keras.layers import Conv2D, BatchNormalization, Dense, Input
 from keras.models import Sequential, Model
@@ -156,7 +160,6 @@ class DQN:
 
 
     def train(self, SETTINGS, PARAMS):
-        os.environ['CUDA_VISIBLE_DEVICES'] = '1'
         # Calculate the total number of days for the simulation.
         n_days = SETTINGS.init_days + SETTINGS.test_days
         # Determine the days at which to save the model.
