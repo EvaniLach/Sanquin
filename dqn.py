@@ -22,6 +22,15 @@ class DQN:
         self.method = SETTINGS.method
         self.activation = 'relu'
 
+        gpus = tf.config.experimental.list_physical_devices('GPU')
+        if gpus:
+            try:
+                for gpu in gpus:
+                    tf.config.experimental.set_memory_growth(gpu, True)
+            except RuntimeError as e:
+                print(e)
+
+
         # Initialize the NN for generating Q-matrices.
         # self.model = self._make_network()
         self.model = self.build_model()
@@ -147,7 +156,7 @@ class DQN:
 
 
     def train(self, SETTINGS, PARAMS):
-        print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+        os.environ['CUDA_VISIBLE_DEVICES'] = '0'
         # Calculate the total number of days for the simulation.
         n_days = SETTINGS.init_days + SETTINGS.test_days
         # Determine the days at which to save the model.
