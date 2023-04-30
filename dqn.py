@@ -156,7 +156,7 @@ class DQN:
 
 
     def train(self, SETTINGS, PARAMS):
-        os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+        os.environ['CUDA_VISIBLE_DEVICES'] = '1'
         # Calculate the total number of days for the simulation.
         n_days = SETTINGS.init_days + SETTINGS.test_days
         # Determine the days at which to save the model.
