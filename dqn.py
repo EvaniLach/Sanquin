@@ -1,11 +1,14 @@
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 import tensorflow as tf
 import gym
 import random
 
 from tensorflow.python.client import device_lib
 print(device_lib.list_local_devices())
+
 
 from tensorflow.keras.layers import Conv2D, BatchNormalization, Dense, Input
 from keras.models import Sequential, Model
