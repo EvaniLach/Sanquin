@@ -1,10 +1,11 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 import tensorflow as tf
 import gym
 import random
+import gc
 
 from tensorflow.python.client import device_lib
 
@@ -167,13 +168,14 @@ class DQN:
         # Determine the days at which to save the model.
         model_saving_days = [day for day in range(n_days) if day % 100 == 0] + [n_days-1]
 
-        # Total reward
-        total_reward = []
         # Run the simulation for the given range of episodes.
         for e in range(SETTINGS.episodes[0], SETTINGS.episodes[1]):
             print(f"\nEpisode: {e}")
             # If this isn't the first episode, load the previous episode's saved model.
             if e > 0:
+                tf.keras.backend.clear_session()
+                del self.model
+                gc.collect()
                 self.load(SETTINGS, e-1)
 
             # Start with an empty memory and initial epsilon.
@@ -189,8 +191,6 @@ class DQN:
             state = self.env.state
             day = self.env.day
 
-            # Total reward per episode
-            episode_reward = 0
             # Loop through each day in the simulation.
             while day < n_days:
 
@@ -252,5 +252,3 @@ class DQN:
 
                 # Set the current day to the environment's current day.
                 day = self.env.day
-
-        return sum(total_reward)
