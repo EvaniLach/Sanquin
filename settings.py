@@ -23,12 +23,12 @@ class Settings():
         #########################
 
         # Only the results of test days will be logged.
-        self.test_days = 5 * 365
+        self.test_days = 2 * 365
         self.init_days = 2 * 35
 
         # (x,y): Episode numbers range(x,y) will be optimized.
         # The total number of simulations executed will thus be y - x.
-        self.episodes = (0,100)
+        self.episodes = (0,50)
 
         # Number of hospitals considered. If more than 1 (regional and university combined), a distribution center is included.
         # "regional": Use the patient group distribution of the OLVG, a regional hospital, with average daily demand of 50 products.

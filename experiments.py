@@ -42,7 +42,7 @@ def main(alpha):
 
 if __name__ == "__main__":
    # n_neurons = [64, 32, 16]
-    alphas = [0.01, 0.001, 0.001]
+    alphas = [0.01]
 
     for alpha in alphas:
         main(alpha=alpha)
