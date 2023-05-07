@@ -1,344 +1,227 @@
 CREATING ENVIRONMENT
 CREATING DQN
+2023-05-07 18:15:19.590825: E tensorflow/compiler/xla/stream_executor/cuda/cuda_driver.cc:266] failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device is detected
 alpha: 0.001, gamma: 0.5, batch size: 50.
 
 Episode: 0
 Day 0, reward 0
 WARNING:absl:Found untraced functions such as _update_step_xla while saving (showing 1 of 1). These functions will not be directly callable after loading.
-Day 1, reward 0.0
-Day 2, reward -284.0
-Day 3, reward -1822.0
-Day 4, reward -2422.0
-Day 5, reward -2062.0
-Day 6, reward -5095.0
-Day 7, reward -6142.0
-Day 8, reward -3535.0
-Day 9, reward -1522.0
-Day 10, reward -3082.0
-Day 11, reward -1773.0
-Day 12, reward -3000.0
-Day 13, reward -1642.0
-Day 14, reward -3933.0
-Day 15, reward -2411.0
-Day 16, reward -3393.0
-Day 17, reward -2411.0
-Day 18, reward -2111.0
+Day 1, reward -11.0
+Day 2, reward -251.0
+Day 3, reward -2182.0
+Day 4, reward -2760.0
+Day 5, reward -2051.0
+Day 6, reward -5313.0
+Day 7, reward -5591.0
+Day 8, reward -4075.0
+Day 9, reward -1582.0
+Day 10, reward -3131.0
+Day 11, reward -1593.0
+Day 12, reward -3360.0
+Day 13, reward -1833.0
+Day 14, reward -3846.0
+Day 15, reward -2231.0
+Day 16, reward -3311.0
+Day 17, reward -2171.0
+Day 18, reward -1751.0
 Day 19, reward -1451.0
 Day 20, reward -1740.0
-Day 21, reward -1751.0
-Day 22, reward -2542.0
-Day 23, reward -3540.0
-Day 24, reward -2531.0
-Day 25, reward -1975.0
-Day 26, reward -1511.0
-Day 27, reward -1391.0
-Day 28, reward -2471.0
-Day 29, reward -2133.0
-Day 30, reward -2340.0
-Day 31, reward -2684.0
-Day 32, reward -1942.0
-Day 33, reward -2542.0
-Day 34, reward -660.0
-Day 35, reward -2580.0
-Day 36, reward -1620.0
-Day 37, reward -2013.0
-Day 38, reward -1920.0
-Day 39, reward -2171.0
-Day 40, reward -1102.0
-Day 41, reward -2564.0
-Day 42, reward -1211.0
-Day 43, reward -2400.0
-Day 44, reward -1462.0
-Day 45, reward -2520.0
+Day 21, reward -1571.0
+Day 22, reward -2433.0
+Day 23, reward -3191.0
+Day 24, reward -2831.0
+Day 25, reward -1582.0
+Day 26, reward -2171.0
+Day 27, reward -1762.0
+Day 28, reward -1942.0
+Day 29, reward -2073.0
+Day 30, reward -1904.0
+Day 31, reward -3006.0
+Day 32, reward -1473.0
+Day 33, reward -2793.0
+Day 34, reward -960.0
+Day 35, reward -2940.0
+Day 36, reward -960.0
+Day 37, reward -2171.0
+Day 38, reward -1331.0
+Day 39, reward -2411.0
+Day 40, reward -1211.0
+Day 41, reward -2924.0
+Day 42, reward -1331.0
+Day 43, reward -2640.0
+Day 44, reward -1680.0
+Day 45, reward -2531.0
 Day 46, reward -1435.0
-Day 47, reward -1593.0
-Day 48, reward -3055.0
-Day 49, reward -1800.0
-Day 50, reward -2280.0
-Day 51, reward -1751.0
-Day 52, reward -1522.0
-Day 53, reward -1211.0
-Day 54, reward -1871.0
-Day 55, reward -851.0
-Day 56, reward -3431.0
-Day 57, reward -1953.0
-Day 58, reward -1773.0
-Day 59, reward -2040.0
-Day 60, reward -3131.0
-Day 61, reward -960.0
-Day 62, reward -3060.0
-Day 63, reward -1620.0
-Day 64, reward -2711.0
-Day 65, reward -1931.0
-Day 66, reward -3180.0
-Day 67, reward -1871.0
-Day 68, reward -2820.0
-Day 69, reward -1762.0
-Day 70, reward -1920.0
-2023-05-07 17:16:24.507541: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:429] Could not create cudnn handle: CUDNN_STATUS_NOT_INITIALIZED
-2023-05-07 17:16:24.507763: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:438] Possibly insufficient driver version: 460.32.3
-2023-05-07 17:16:24.721939: E tensorflow/compiler/xla/status_macros.cc:57] INTERNAL: RET_CHECK failure (tensorflow/compiler/xla/service/gpu/gpu_compiler.cc:618) dnn != nullptr 
-*** Begin stack trace ***
-	tsl::CurrentStackTrace[abi:cxx11]()
-	
-	xla::status_macros::MakeErrorStream::Impl::GetStatus()
-	xla::gpu::GpuCompiler::OptimizeHloModule(xla::HloModule*, stream_executor::StreamExecutor*, stream_executor::DeviceMemoryAllocator*, xla::gpu::GpuTargetConfig const&, xla::AutotuneResults const*)
-	xla::gpu::GpuCompiler::RunHloPasses(std::unique_ptr<xla::HloModule, std::default_delete<xla::HloModule> >, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&)
-	xla::Service::BuildExecutable(xla::HloModuleProto const&, std::unique_ptr<xla::HloModuleConfig, std::default_delete<xla::HloModuleConfig> >, xla::Backend*, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&, bool)
-	xla::LocalService::CompileExecutables(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	xla::LocalClient::Compile(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	tensorflow::XlaDeviceCompilerClient::BuildExecutable(tensorflow::XlaCompiler::Options const&, tensorflow::XlaCompilationResult const&)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileStrict(tensorflow::DeviceCompilationClusterSignature const&, tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::NameAttrList const&, tensorflow::DeviceCompilationCache<xla::LocalExecutable>::Value, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tsl::mutex*)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileImpl(tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, tensorflow::NameAttrList const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::DeviceCompileMode, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tensorflow::XlaCompilationResult const**, xla::LocalExecutable**)
-	
-	tensorflow::XlaLocalLaunchBase::ComputeAsync(tensorflow::OpKernelContext*, std::function<void ()>)
-	tensorflow::BaseGPUDevice::ComputeAsync(tensorflow::AsyncOpKernel*, tensorflow::OpKernelContext*, std::function<void ()>)
-	
-	
-	Eigen::ThreadPoolTempl<tsl::thread::EigenEnvironment>::WorkerLoop(int)
-	std::_Function_handler<void (), tsl::thread::EigenEnvironment::CreateThread(std::function<void ()>)::{lambda()#1}>::_M_invoke(std::_Any_data const&)
-	
-	
-	clone
-*** End stack trace ***
-
-2023-05-07 17:16:24.744339: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:429] Could not create cudnn handle: CUDNN_STATUS_NOT_INITIALIZED
-2023-05-07 17:16:24.744505: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:438] Possibly insufficient driver version: 460.32.3
-2023-05-07 17:16:24.774780: E tensorflow/compiler/xla/status_macros.cc:57] INTERNAL: RET_CHECK failure (tensorflow/compiler/xla/service/gpu/gpu_compiler.cc:618) dnn != nullptr 
-*** Begin stack trace ***
-	tsl::CurrentStackTrace[abi:cxx11]()
-	
-	xla::status_macros::MakeErrorStream::Impl::GetStatus()
-	xla::gpu::GpuCompiler::OptimizeHloModule(xla::HloModule*, stream_executor::StreamExecutor*, stream_executor::DeviceMemoryAllocator*, xla::gpu::GpuTargetConfig const&, xla::AutotuneResults const*)
-	xla::gpu::GpuCompiler::RunHloPasses(std::unique_ptr<xla::HloModule, std::default_delete<xla::HloModule> >, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&)
-	xla::Service::BuildExecutable(xla::HloModuleProto const&, std::unique_ptr<xla::HloModuleConfig, std::default_delete<xla::HloModuleConfig> >, xla::Backend*, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&, bool)
-	xla::LocalService::CompileExecutables(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	xla::LocalClient::Compile(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	tensorflow::XlaDeviceCompilerClient::BuildExecutable(tensorflow::XlaCompiler::Options const&, tensorflow::XlaCompilationResult const&)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileStrict(tensorflow::DeviceCompilationClusterSignature const&, tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::NameAttrList const&, tensorflow::DeviceCompilationCache<xla::LocalExecutable>::Value, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tsl::mutex*)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileImpl(tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, tensorflow::NameAttrList const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::DeviceCompileMode, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tensorflow::XlaCompilationResult const**, xla::LocalExecutable**)
-	
-	tensorflow::XlaLocalLaunchBase::ComputeAsync(tensorflow::OpKernelContext*, std::function<void ()>)
-	tensorflow::BaseGPUDevice::ComputeAsync(tensorflow::AsyncOpKernel*, tensorflow::OpKernelContext*, std::function<void ()>)
-	
-	
-	Eigen::ThreadPoolTempl<tsl::thread::EigenEnvironment>::WorkerLoop(int)
-	std::_Function_handler<void (), tsl::thread::EigenEnvironment::CreateThread(std::function<void ()>)::{lambda()#1}>::_M_invoke(std::_Any_data const&)
-	
-	
-	clone
-*** End stack trace ***
-
-2023-05-07 17:16:24.819625: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:429] Could not create cudnn handle: CUDNN_STATUS_NOT_INITIALIZED
-2023-05-07 17:16:24.819775: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:438] Possibly insufficient driver version: 460.32.3
-2023-05-07 17:16:24.850665: E tensorflow/compiler/xla/status_macros.cc:57] INTERNAL: RET_CHECK failure (tensorflow/compiler/xla/service/gpu/gpu_compiler.cc:618) dnn != nullptr 
-*** Begin stack trace ***
-	tsl::CurrentStackTrace[abi:cxx11]()
-	
-	xla::status_macros::MakeErrorStream::Impl::GetStatus()
-	xla::gpu::GpuCompiler::OptimizeHloModule(xla::HloModule*, stream_executor::StreamExecutor*, stream_executor::DeviceMemoryAllocator*, xla::gpu::GpuTargetConfig const&, xla::AutotuneResults const*)
-	xla::gpu::GpuCompiler::RunHloPasses(std::unique_ptr<xla::HloModule, std::default_delete<xla::HloModule> >, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&)
-	xla::Service::BuildExecutable(xla::HloModuleProto const&, std::unique_ptr<xla::HloModuleConfig, std::default_delete<xla::HloModuleConfig> >, xla::Backend*, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&, bool)
-	xla::LocalService::CompileExecutables(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	xla::LocalClient::Compile(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	tensorflow::XlaDeviceCompilerClient::BuildExecutable(tensorflow::XlaCompiler::Options const&, tensorflow::XlaCompilationResult const&)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileStrict(tensorflow::DeviceCompilationClusterSignature const&, tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::NameAttrList const&, tensorflow::DeviceCompilationCache<xla::LocalExecutable>::Value, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tsl::mutex*)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileImpl(tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, tensorflow::NameAttrList const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::DeviceCompileMode, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tensorflow::XlaCompilationResult const**, xla::LocalExecutable**)
-	
-	tensorflow::XlaLocalLaunchBase::ComputeAsync(tensorflow::OpKernelContext*, std::function<void ()>)
-	tensorflow::BaseGPUDevice::ComputeAsync(tensorflow::AsyncOpKernel*, tensorflow::OpKernelContext*, std::function<void ()>)
-	
-	
-	Eigen::ThreadPoolTempl<tsl::thread::EigenEnvironment>::WorkerLoop(int)
-	std::_Function_handler<void (), tsl::thread::EigenEnvironment::CreateThread(std::function<void ()>)::{lambda()#1}>::_M_invoke(std::_Any_data const&)
-	
-	
-	clone
-*** End stack trace ***
-
-2023-05-07 17:16:24.872694: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:429] Could not create cudnn handle: CUDNN_STATUS_NOT_INITIALIZED
-2023-05-07 17:16:24.872854: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:438] Possibly insufficient driver version: 460.32.3
-2023-05-07 17:16:24.903129: E tensorflow/compiler/xla/status_macros.cc:57] INTERNAL: RET_CHECK failure (tensorflow/compiler/xla/service/gpu/gpu_compiler.cc:618) dnn != nullptr 
-*** Begin stack trace ***
-	tsl::CurrentStackTrace[abi:cxx11]()
-	
-	xla::status_macros::MakeErrorStream::Impl::GetStatus()
-	xla::gpu::GpuCompiler::OptimizeHloModule(xla::HloModule*, stream_executor::StreamExecutor*, stream_executor::DeviceMemoryAllocator*, xla::gpu::GpuTargetConfig const&, xla::AutotuneResults const*)
-	xla::gpu::GpuCompiler::RunHloPasses(std::unique_ptr<xla::HloModule, std::default_delete<xla::HloModule> >, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&)
-	xla::Service::BuildExecutable(xla::HloModuleProto const&, std::unique_ptr<xla::HloModuleConfig, std::default_delete<xla::HloModuleConfig> >, xla::Backend*, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&, bool)
-	xla::LocalService::CompileExecutables(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	xla::LocalClient::Compile(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	tensorflow::XlaDeviceCompilerClient::BuildExecutable(tensorflow::XlaCompiler::Options const&, tensorflow::XlaCompilationResult const&)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileStrict(tensorflow::DeviceCompilationClusterSignature const&, tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::NameAttrList const&, tensorflow::DeviceCompilationCache<xla::LocalExecutable>::Value, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tsl::mutex*)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileImpl(tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, tensorflow::NameAttrList const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::DeviceCompileMode, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tensorflow::XlaCompilationResult const**, xla::LocalExecutable**)
-	
-	tensorflow::XlaLocalLaunchBase::ComputeAsync(tensorflow::OpKernelContext*, std::function<void ()>)
-	tensorflow::BaseGPUDevice::ComputeAsync(tensorflow::AsyncOpKernel*, tensorflow::OpKernelContext*, std::function<void ()>)
-	
-	
-	Eigen::ThreadPoolTempl<tsl::thread::EigenEnvironment>::WorkerLoop(int)
-	std::_Function_handler<void (), tsl::thread::EigenEnvironment::CreateThread(std::function<void ()>)::{lambda()#1}>::_M_invoke(std::_Any_data const&)
-	
-	
-	clone
-*** End stack trace ***
-
-2023-05-07 17:16:24.926024: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:429] Could not create cudnn handle: CUDNN_STATUS_NOT_INITIALIZED
-2023-05-07 17:16:24.926149: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:438] Possibly insufficient driver version: 460.32.3
-2023-05-07 17:16:24.956518: E tensorflow/compiler/xla/status_macros.cc:57] INTERNAL: RET_CHECK failure (tensorflow/compiler/xla/service/gpu/gpu_compiler.cc:618) dnn != nullptr 
-*** Begin stack trace ***
-	tsl::CurrentStackTrace[abi:cxx11]()
-	
-	xla::status_macros::MakeErrorStream::Impl::GetStatus()
-	xla::gpu::GpuCompiler::OptimizeHloModule(xla::HloModule*, stream_executor::StreamExecutor*, stream_executor::DeviceMemoryAllocator*, xla::gpu::GpuTargetConfig const&, xla::AutotuneResults const*)
-	xla::gpu::GpuCompiler::RunHloPasses(std::unique_ptr<xla::HloModule, std::default_delete<xla::HloModule> >, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&)
-	xla::Service::BuildExecutable(xla::HloModuleProto const&, std::unique_ptr<xla::HloModuleConfig, std::default_delete<xla::HloModuleConfig> >, xla::Backend*, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&, bool)
-	xla::LocalService::CompileExecutables(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	xla::LocalClient::Compile(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	tensorflow::XlaDeviceCompilerClient::BuildExecutable(tensorflow::XlaCompiler::Options const&, tensorflow::XlaCompilationResult const&)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileStrict(tensorflow::DeviceCompilationClusterSignature const&, tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::NameAttrList const&, tensorflow::DeviceCompilationCache<xla::LocalExecutable>::Value, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tsl::mutex*)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileImpl(tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, tensorflow::NameAttrList const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::DeviceCompileMode, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tensorflow::XlaCompilationResult const**, xla::LocalExecutable**)
-	
-	tensorflow::XlaLocalLaunchBase::ComputeAsync(tensorflow::OpKernelContext*, std::function<void ()>)
-	tensorflow::BaseGPUDevice::ComputeAsync(tensorflow::AsyncOpKernel*, tensorflow::OpKernelContext*, std::function<void ()>)
-	
-	
-	Eigen::ThreadPoolTempl<tsl::thread::EigenEnvironment>::WorkerLoop(int)
-	std::_Function_handler<void (), tsl::thread::EigenEnvironment::CreateThread(std::function<void ()>)::{lambda()#1}>::_M_invoke(std::_Any_data const&)
-	
-	
-	clone
-*** End stack trace ***
-
-2023-05-07 17:16:24.978682: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:429] Could not create cudnn handle: CUDNN_STATUS_NOT_INITIALIZED
-2023-05-07 17:16:24.978827: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:438] Possibly insufficient driver version: 460.32.3
-2023-05-07 17:16:25.009261: E tensorflow/compiler/xla/status_macros.cc:57] INTERNAL: RET_CHECK failure (tensorflow/compiler/xla/service/gpu/gpu_compiler.cc:618) dnn != nullptr 
-*** Begin stack trace ***
-	tsl::CurrentStackTrace[abi:cxx11]()
-	
-	xla::status_macros::MakeErrorStream::Impl::GetStatus()
-	xla::gpu::GpuCompiler::OptimizeHloModule(xla::HloModule*, stream_executor::StreamExecutor*, stream_executor::DeviceMemoryAllocator*, xla::gpu::GpuTargetConfig const&, xla::AutotuneResults const*)
-	xla::gpu::GpuCompiler::RunHloPasses(std::unique_ptr<xla::HloModule, std::default_delete<xla::HloModule> >, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&)
-	xla::Service::BuildExecutable(xla::HloModuleProto const&, std::unique_ptr<xla::HloModuleConfig, std::default_delete<xla::HloModuleConfig> >, xla::Backend*, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&, bool)
-	xla::LocalService::CompileExecutables(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	xla::LocalClient::Compile(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	tensorflow::XlaDeviceCompilerClient::BuildExecutable(tensorflow::XlaCompiler::Options const&, tensorflow::XlaCompilationResult const&)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileStrict(tensorflow::DeviceCompilationClusterSignature const&, tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::NameAttrList const&, tensorflow::DeviceCompilationCache<xla::LocalExecutable>::Value, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tsl::mutex*)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileImpl(tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, tensorflow::NameAttrList const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::DeviceCompileMode, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tensorflow::XlaCompilationResult const**, xla::LocalExecutable**)
-	
-	tensorflow::XlaLocalLaunchBase::ComputeAsync(tensorflow::OpKernelContext*, std::function<void ()>)
-	tensorflow::BaseGPUDevice::ComputeAsync(tensorflow::AsyncOpKernel*, tensorflow::OpKernelContext*, std::function<void ()>)
-	
-	
-	Eigen::ThreadPoolTempl<tsl::thread::EigenEnvironment>::WorkerLoop(int)
-	std::_Function_handler<void (), tsl::thread::EigenEnvironment::CreateThread(std::function<void ()>)::{lambda()#1}>::_M_invoke(std::_Any_data const&)
-	
-	
-	clone
-*** End stack trace ***
-
-2023-05-07 17:16:25.031514: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:429] Could not create cudnn handle: CUDNN_STATUS_NOT_INITIALIZED
-2023-05-07 17:16:25.031662: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:438] Possibly insufficient driver version: 460.32.3
-2023-05-07 17:16:25.062050: E tensorflow/compiler/xla/status_macros.cc:57] INTERNAL: RET_CHECK failure (tensorflow/compiler/xla/service/gpu/gpu_compiler.cc:618) dnn != nullptr 
-*** Begin stack trace ***
-	tsl::CurrentStackTrace[abi:cxx11]()
-	
-	xla::status_macros::MakeErrorStream::Impl::GetStatus()
-	xla::gpu::GpuCompiler::OptimizeHloModule(xla::HloModule*, stream_executor::StreamExecutor*, stream_executor::DeviceMemoryAllocator*, xla::gpu::GpuTargetConfig const&, xla::AutotuneResults const*)
-	xla::gpu::GpuCompiler::RunHloPasses(std::unique_ptr<xla::HloModule, std::default_delete<xla::HloModule> >, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&)
-	xla::Service::BuildExecutable(xla::HloModuleProto const&, std::unique_ptr<xla::HloModuleConfig, std::default_delete<xla::HloModuleConfig> >, xla::Backend*, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&, bool)
-	xla::LocalService::CompileExecutables(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	xla::LocalClient::Compile(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	tensorflow::XlaDeviceCompilerClient::BuildExecutable(tensorflow::XlaCompiler::Options const&, tensorflow::XlaCompilationResult const&)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileStrict(tensorflow::DeviceCompilationClusterSignature const&, tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::NameAttrList const&, tensorflow::DeviceCompilationCache<xla::LocalExecutable>::Value, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tsl::mutex*)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileImpl(tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, tensorflow::NameAttrList const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::DeviceCompileMode, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tensorflow::XlaCompilationResult const**, xla::LocalExecutable**)
-	
-	tensorflow::XlaLocalLaunchBase::ComputeAsync(tensorflow::OpKernelContext*, std::function<void ()>)
-	tensorflow::BaseGPUDevice::ComputeAsync(tensorflow::AsyncOpKernel*, tensorflow::OpKernelContext*, std::function<void ()>)
-	
-	
-	Eigen::ThreadPoolTempl<tsl::thread::EigenEnvironment>::WorkerLoop(int)
-	std::_Function_handler<void (), tsl::thread::EigenEnvironment::CreateThread(std::function<void ()>)::{lambda()#1}>::_M_invoke(std::_Any_data const&)
-	
-	
-	clone
-*** End stack trace ***
-
-2023-05-07 17:16:25.081511: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:429] Could not create cudnn handle: CUDNN_STATUS_NOT_INITIALIZED
-2023-05-07 17:16:25.081650: E tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:438] Possibly insufficient driver version: 460.32.3
-2023-05-07 17:16:25.106881: E tensorflow/compiler/xla/status_macros.cc:57] INTERNAL: RET_CHECK failure (tensorflow/compiler/xla/service/gpu/gpu_compiler.cc:618) dnn != nullptr 
-*** Begin stack trace ***
-	tsl::CurrentStackTrace[abi:cxx11]()
-	
-	xla::status_macros::MakeErrorStream::Impl::GetStatus()
-	xla::gpu::GpuCompiler::OptimizeHloModule(xla::HloModule*, stream_executor::StreamExecutor*, stream_executor::DeviceMemoryAllocator*, xla::gpu::GpuTargetConfig const&, xla::AutotuneResults const*)
-	xla::gpu::GpuCompiler::RunHloPasses(std::unique_ptr<xla::HloModule, std::default_delete<xla::HloModule> >, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&)
-	xla::Service::BuildExecutable(xla::HloModuleProto const&, std::unique_ptr<xla::HloModuleConfig, std::default_delete<xla::HloModuleConfig> >, xla::Backend*, stream_executor::StreamExecutor*, xla::Compiler::CompileOptions const&, bool)
-	xla::LocalService::CompileExecutables(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	xla::LocalClient::Compile(xla::XlaComputation const&, absl::lts_20220623::Span<xla::Shape const* const>, xla::ExecutableBuildOptions const&)
-	tensorflow::XlaDeviceCompilerClient::BuildExecutable(tensorflow::XlaCompiler::Options const&, tensorflow::XlaCompilationResult const&)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileStrict(tensorflow::DeviceCompilationClusterSignature const&, tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::NameAttrList const&, tensorflow::DeviceCompilationCache<xla::LocalExecutable>::Value, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tsl::mutex*)
-	tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileImpl(tensorflow::XlaCompiler::CompileOptions const&, tensorflow::XlaCompiler::Options const&, tensorflow::NameAttrList const&, std::vector<tensorflow::XlaArgument, std::allocator<tensorflow::XlaArgument> > const&, tensorflow::DeviceCompiler<xla::LocalExecutable, xla::LocalClient>::CompileScope, tensorflow::DeviceCompileMode, tensorflow::OpKernelContext*, tensorflow::DeviceCompilationProfiler*, tensorflow::XlaCompilationResult const**, xla::LocalExecutable**)
-	
-	tensorflow::XlaLocalLaunchBase::ComputeAsync(tensorflow::OpKernelContext*, std::function<void ()>)
-	tensorflow::BaseGPUDevice::ComputeAsync(tensorflow::AsyncOpKernel*, tensorflow::OpKernelContext*, std::function<void ()>)
-	
-	
-	Eigen::ThreadPoolTempl<tsl::thread::EigenEnvironment>::WorkerLoop(int)
-	std::_Function_handler<void (), tsl::thread::EigenEnvironment::CreateThread(std::function<void ()>)::{lambda()#1}>::_M_invoke(std::_Any_data const&)
-	
-	
-	clone
-*** End stack trace ***
-
-Traceback (most recent call last):
-  File "/home/s1949624/RL_matching/learning_rates.py", line 44, in <module>
-    main()
-  File "/home/s1949624/RL_matching/learning_rates.py", line 40, in main
-    dqn.train(SETTINGS, PARAMS)
-  File "/home/s1949624/RL_matching/dqn.py", line 236, in train
-    self.update_request()
-  File "/home/s1949624/RL_matching/dqn.py", line 134, in update_request
-    self.model.train_on_batch(np.concatenate(states, axis=0), np.concatenate(Q_matrices, axis=0))
-  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/engine/training.py", line 2510, in train_on_batch
-    logs = self.train_function(iterator)
-  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
-    raise e.with_traceback(filtered_tb) from None
-  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/tensorflow/python/eager/execute.py", line 52, in quick_execute
-    tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
-tensorflow.python.framework.errors_impl.InternalError: Graph execution error:
-
-Detected at node 'StatefulPartitionedCall_6' defined at (most recent call last):
-    File "/home/s1949624/RL_matching/learning_rates.py", line 44, in <module>
-      main()
-    File "/home/s1949624/RL_matching/learning_rates.py", line 40, in main
-      dqn.train(SETTINGS, PARAMS)
-    File "/home/s1949624/RL_matching/dqn.py", line 236, in train
-      self.update_request()
-    File "/home/s1949624/RL_matching/dqn.py", line 134, in update_request
-      self.model.train_on_batch(np.concatenate(states, axis=0), np.concatenate(Q_matrices, axis=0))
-    File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/engine/training.py", line 2510, in train_on_batch
-      logs = self.train_function(iterator)
-    File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/engine/training.py", line 1284, in train_function
-      return step_function(self, iterator)
-    File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/engine/training.py", line 1268, in step_function
-      outputs = model.distribute_strategy.run(run_step, args=(data,))
-    File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/engine/training.py", line 1249, in run_step
-      outputs = model.train_step(data)
-    File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/engine/training.py", line 1054, in train_step
-      self.optimizer.minimize(loss, self.trainable_variables, tape=tape)
-    File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/optimizers/optimizer.py", line 543, in minimize
-      self.apply_gradients(grads_and_vars)
-    File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/optimizers/optimizer.py", line 1174, in apply_gradients
-      return super().apply_gradients(grads_and_vars, name=name)
-    File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/optimizers/optimizer.py", line 650, in apply_gradients
-      iteration = self._internal_apply_gradients(grads_and_vars)
-    File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/optimizers/optimizer.py", line 1200, in _internal_apply_gradients
-      return tf.__internal__.distribute.interim.maybe_merge_call(
-    File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/optimizers/optimizer.py", line 1250, in _distributed_apply_gradients_fn
-      distribution.extended.update(
-    File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/keras/optimizers/optimizer.py", line 1245, in apply_grad_to_update_var
-      return self._update_step_xla(grad, var, id(self._var_key(var)))
-Node: 'StatefulPartitionedCall_6'
-RET_CHECK failure (tensorflow/compiler/xla/service/gpu/gpu_compiler.cc:618) dnn != nullptr 
-	 [[{{node StatefulPartitionedCall_6}}]] [Op:__inference_train_function_43085]
+Day 47, reward -1631.0
+Day 48, reward -2951.0
+Day 49, reward -2100.0
+Day 50, reward -1822.0
+Day 51, reward -2220.0
+Day 52, reward -1320.0
+Day 53, reward -1691.0
+Day 54, reward -1511.0
+Day 55, reward -1380.0
+Day 56, reward -3071.0
+Day 57, reward -1991.0
+Day 58, reward -1451.0
+Day 59, reward -1980.0
+Day 60, reward -2891.0
+Day 61, reward -1260.0
+Day 62, reward -2302.0
+Day 63, reward -1751.0
+Day 64, reward -2760.0
+Day 65, reward -2100.0
+Day 66, reward -3300.0
+Day 67, reward -1751.0
+Day 68, reward -2760.0
+Day 69, reward -1811.0
+Day 70, reward -1991.0
+Day 71, reward -2880.0
+Day 72, reward -2651.0
+Day 73, reward -1751.0
+Day 74, reward -1800.0
+Day 75, reward -1140.0
+Day 76, reward -2291.0
+Day 77, reward -960.0
+Day 78, reward -3060.0
+Day 79, reward -2831.0
+Day 80, reward -2525.0
+Day 81, reward -2580.0
+Day 82, reward -3160.0
+Day 83, reward -2662.0
+Day 84, reward -2040.0
+Day 85, reward -2531.0
+Day 86, reward -2024.0
+Day 87, reward -1991.0
+Day 88, reward -2411.0
+Day 89, reward -2940.0
+Day 90, reward -1391.0
+Day 91, reward -3360.0
+Day 92, reward -3071.0
+Day 93, reward -2460.0
+Day 94, reward -1860.0
+Day 95, reward -2231.0
+Day 96, reward -1380.0
+Day 97, reward -1522.0
+Day 98, reward -2793.0
+Day 99, reward -1784.0
+Day 100, reward -2351.0
+WARNING:absl:Found untraced functions such as _update_step_xla while saving (showing 1 of 1). These functions will not be directly callable after loading.
+Day 101, reward -2100.0
+Day 102, reward -2673.0
+Day 103, reward -1931.0
+Day 104, reward -1642.0
+Day 105, reward -1582.0
+Day 106, reward -1642.0
+Day 107, reward -1451.0
+Day 108, reward -2084.0
+Day 109, reward -1331.0
+Day 110, reward -2291.0
+Day 111, reward -1751.0
+Day 112, reward -1271.0
+Day 113, reward -1860.0
+Day 114, reward -982.0
+Day 115, reward -1855.0
+Day 116, reward -857.0
+Day 117, reward -797.0
+Day 118, reward -726.0
+Day 119, reward -862.0
+Day 120, reward -1779.0
+Day 121, reward -2564.0
+Day 122, reward -660.0
+Day 123, reward -2171.0
+Day 124, reward -1102.0
+Day 125, reward -1691.0
+Day 126, reward -1364.0
+Day 127, reward -726.0
+Day 128, reward -2640.0
+Day 129, reward -944.0
+Day 130, reward -960.0
+Day 131, reward -682.0
+Day 132, reward -1424.0
+Day 133, reward -1151.0
+Day 134, reward -2864.0
+Day 135, reward -802.0
+Day 136, reward -2771.0
+Day 137, reward -802.0
+Day 138, reward -2220.0
+Day 139, reward -300.0
+Day 140, reward -2624.0
+Day 141, reward -1631.0
+Day 142, reward -1653.0
+Day 143, reward -382.0
+Day 144, reward -3093.0
+Day 145, reward -1740.0
+Day 146, reward -2471.0
+Day 147, reward -1773.0
+Day 148, reward -2831.0
+Day 149, reward -1091.0
+Day 150, reward -2940.0
+Day 151, reward -2460.0
+Day 152, reward -802.0
+Day 153, reward -1479.0
+Day 154, reward -1004.0
+Day 155, reward -1533.0
+Day 156, reward -2171.0
+Day 157, reward -1500.0
+Day 158, reward -753.0
+Day 159, reward -1680.0
+Day 160, reward -993.0
+Day 161, reward -2433.0
+Day 162, reward -1206.0
+Day 163, reward -1091.0
+Day 164, reward -840.0
+Day 165, reward -742.0
+Day 166, reward -1751.0
+Day 167, reward -1080.0
+Day 168, reward -1102.0
+Day 169, reward -1042.0
+Day 170, reward -2782.0
+Day 171, reward -1980.0
+Day 172, reward -2280.0
+Day 173, reward -2455.0
+Day 174, reward -2160.0
+Day 175, reward -3780.0
+Day 176, reward -3060.0
+Day 177, reward -3251.0
+Day 178, reward -2520.0
+Day 179, reward -3382.0
+Day 180, reward -2100.0
+Day 181, reward -2891.0
+Day 182, reward -3180.0
+Day 183, reward -3120.0
+Day 184, reward -2591.0
+Day 185, reward -3791.0
+Day 186, reward -1800.0
+Day 187, reward -1931.0
+Day 188, reward -1620.0
+Day 189, reward -2760.0
+Day 190, reward -2362.0
+Day 191, reward -2280.0
+Day 192, reward -2171.0
+Day 193, reward -2400.0
+Day 194, reward -3540.0
+Day 195, reward -2651.0
+Day 196, reward -1931.0
+Day 197, reward -2591.0
+Day 198, reward -2891.0
+Day 199, reward -2820.0
+Day 200, reward -1200.0
+WARNING:absl:Found untraced functions such as _update_step_xla while saving (showing 1 of 1). These functions will not be directly callable after loading.
+Day 201, reward -2700.0
+Day 202, reward -1331.0
+Day 203, reward -2298.0
+Day 204, reward -2555.0
+Day 205, reward -2930.0
+Day 206, reward -2842.0
+Day 207, reward -2130.0
+Day 208, reward -2001.0
+Day 209, reward -1622.0
+Day 210, reward -1353.0
+Day 211, reward -2842.0
+Day 212, reward -2641.0
+Day 213, reward -2257.0
+Day 214, reward -1949.0
+Day 215, reward -2130.0
+Day 216, reward -2373.0
+Day 217, reward -2561.0
