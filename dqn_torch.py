@@ -1,5 +1,4 @@
 import os
-import tensorflow as tf
 import random
 import gc
 
@@ -22,14 +21,17 @@ class DQN():
         self.batch_size = SETTINGS.batch_size  # batch size for replay buffer
         self.method = SETTINGS.method
         self.experience_replay = deque(maxlen=self.batch_size)
-
+   
         self.n_actions = self.env.action_space.shape[0]
         self.q_net = self.build_nn()
+        self.q_net.to('cuda') 
 
+        self.optimizer = torch.optim.Adam(self.q_net.parameters(), lr=self.alpha)
+        self.loss_fn = torch.nn.MSELoss()
 
     def build_nn(self):
         input = len(np.ravel(self.env.state))
-
+        print('print', input)
         layer_sizes = [input, 64, self.n_actions]
 
         assert len(layer_sizes) > 1
@@ -49,20 +51,20 @@ class DQN():
         self.model = tf.keras.models.load_model(SETTINGS.generate_filename(SETTINGS, "models", e))
 
     def select_action(self, state):  # Method to select the action to take
-        with torch.no_grad():
-            Qp = self.q_net(torch.from_numpy(state).float().cuda())
-        Q, A = torch.max(Qp, dim=0)
-        A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, self.n_actions, (1,))
-        return A
+       with torch.no_grad():
+           Qp = self.q_net(torch.from_numpy(state).flatten().float().cuda())
+       Q, A = torch.max(Qp, dim=0)
+       A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, self.n_actions, (1,))
+       return A.item()
 
     def sample_from_experience(self, sample_size):
         if len(self.experience_replay) < self.batch_size:
             sample_size = len(self.experience_replay)
         sample = random.sample(self.experience_replay, sample_size)
-        s = torch.tensor([exp[0] for exp in sample]).float()
-        a = torch.tensor([exp[1] for exp in sample]).float()
-        rn = torch.tensor([exp[2] for exp in sample]).float()
-        sn = torch.tensor([exp[3] for exp in sample]).float()
+        s = torch.from_numpy(np.vstack([exp[0].flatten() for exp in sample])).float().cuda()
+        a = torch.tensor([exp[1] for exp in sample]).float().cuda()
+        rn = torch.tensor([exp[2] for exp in sample]).float().cuda()
+        sn = torch.from_numpy(np.vstack([exp[3].flatten() for exp in sample])).float().cuda()
         return s, a, rn, sn
 
     # REQUEST-BASED
@@ -78,9 +80,10 @@ class DQN():
         q_target = rn.cuda() + self.gamma * max_q
 
         # Predict q_values of current state
-        q_current = self.get_q_net(s.cuda())
+        q_current = self.q_net(s.cuda())
+        pred_return, _ = torch.max(qp, axis=1)
 
-        loss = self.loss_fn(q_current, q_target)
+        loss = self.loss_fn(pred_return, q_target)
         self.optimizer.zero_grad()
         loss.backward(retain_graph=True)
         self.optimizer.step()
@@ -104,7 +107,7 @@ class DQN():
                 self.load(SETTINGS, e - 1)
 
             # Start with an empty memory and initial epsilon.
-            self.memory = []
+            self.experience_replay = deque(maxlen=self.batch_size)
             self.epsilon = SETTINGS.epsilon
 
             # Reset the environment.
@@ -134,7 +137,7 @@ class DQN():
                     next_state, reward, df = self.env.step(SETTINGS, PARAMS, action, day,
                                                            df)  # Take the action and receive the next state, reward and next day
                     if day >= SETTINGS.init_days:
-                        self.memory.append(
+                        self.experience_replay.append(
                             [state, action, reward, next_state, day])  # Store the experience tuple in memory
                     state = next_state
 
@@ -148,15 +151,15 @@ class DQN():
                         reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
                         todays_reward += reward
                         # Get the next state and whether the episode is done.
-                        next_state, done = self.env.next_request(PARAMS)
+                        next_state, done = self.env.next_request(PARAMS)                       
                         # Store the experience tuple in memory.
                         if day >= SETTINGS.init_days:
-                            self.memory.append([state, action, reward, next_state, day])
+                            self.experience_replay.append([state, action, reward, next_state, day])
                         # Update the current state to the next state.
                         state = next_state
 
                 # If there are enough experiences in memory, update the model.
-                if len(self.memory) >= self.batch_size:
+                if len(self.experience_replay) >= self.batch_size:
                     if self.method == 'day':
                         self.update_day()
                     else:
