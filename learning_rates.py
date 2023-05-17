@@ -1,5 +1,5 @@
 from env import *
-from dqn import *
+from dqn_torch import *
 
 from settings import *
 from params import *
@@ -14,7 +14,7 @@ from demand import *
 argparser = argparse.ArgumentParser()
 argparser.add_argument("--method", type=str, default='request',choices=['day', 'request'])
 argparser.add_argument("--minor", type=int, default=0, help="select minor antigens")
-argparser.add_argument("--alpha", type=float, default=0.01, help="learning rate")
+argparser.add_argument("--alpha", type=float, default=0.05, help="learning rate")
 args = argparser.parse_args()
 
 def main():

@@ -6,8 +6,8 @@ class Settings():
     def __init__(self, method, minor, n_neurons=64, alpha=0.01):
 
         # Working directory.
-        # self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
-        self.home_dir = r"/home/s1949624/RL_matching/"
+        self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
+        # self.home_dir = r"/home/s1949624/RL_matching/"
 
         # Output files will be stored in directory results/[model_name].
         if method == 'day':

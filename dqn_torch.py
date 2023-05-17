@@ -14,7 +14,7 @@ from collections import deque
 
 
 # Define the Deep Q-Learning algorithm.
-class DQN(nn.Module):
+class DQN():
     def __init__(self, SETTINGS, env):
         self.env = env  # learning environment
         self.alpha = SETTINGS.alpha  # learning rate
@@ -43,8 +43,7 @@ class DQN(nn.Module):
     def save(self, SETTINGS, df, e):
 
         df.to_csv(SETTINGS.generate_filename(SETTINGS, "results", e) + ".csv", sep=',', index=True)
-
-        self.model.save(SETTINGS.generate_filename(SETTINGS, "models", e))
+        torch.save(self.q_net.state_dict(), SETTINGS.generate_filename(SETTINGS, "models", e))
 
     def load(self, SETTINGS, e):
         self.model = tf.keras.models.load_model(SETTINGS.generate_filename(SETTINGS, "models", e))
@@ -52,11 +51,11 @@ class DQN(nn.Module):
     def select_action(self, state):  # Method to select the action to take
         with torch.no_grad():
             Qp = self.q_net(torch.from_numpy(state).float().cuda())
-        Q, A = torch.max(Qp, axis=0)
+        Q, A = torch.max(Qp, dim=0)
         A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, self.n_actions, (1,))
         return A
 
-    def sample_from_experience(self):
+    def sample_from_experience(self, sample_size):
         if len(self.experience_replay) < self.batch_size:
             sample_size = len(self.experience_replay)
         sample = random.sample(self.experience_replay, sample_size)
@@ -70,35 +69,23 @@ class DQN(nn.Module):
     def update_request(self):
 
         # Sample a batch of experiences from the model's memory.
-        batch = random.sample(self.memory, self.batch_size)
+        s, a, rn, sn = self.sample_from_experience(sample_size=self.batch_size)
 
-        states = []
-        Q_matrices = []
+        # Predict Q-values of next state
+        qp = self.q_net(sn.cuda())
+        max_q, _ = torch.max(qp, dim=1)
 
-        for sample in batch:
-            # Unpack the experience tuple.
-            state, action, reward, next_state, _ = sample
+        q_target = rn.cuda() + self.gamma * max_q
 
-            # Predict the Q-values for the next state.
-            Q_next = self.model.predict(np.ravel(next_state).reshape(1, -1), verbose=0)
-            # Get the maximum Q-value for the next state.
-            max_Q_next = np.max(Q_next, axis=1)
-            # Compute the target Q-values using the Bellman equation.
-            Q_target = reward + (self.gamma * max_Q_next)
+        # Predict q_values of current state
+        q_current = self.get_q_net(s.cuda())
 
-            # Predict the Q-values for the current state.
-            Q_matrix = self.model.predict(np.ravel(state).reshape(1, -1), verbose=0)
-            # Update the target Q-values for the actions taken.
-            Q_matrix[:, action] = Q_target
+        loss = self.loss_fn(q_current, q_target)
+        self.optimizer.zero_grad()
+        loss.backward(retain_graph=True)
+        self.optimizer.step()
 
-            # Add the state and Q-matrix to the lists for training the model.
-            states.append(np.ravel(state).reshape(1, -1))
-            Q_matrices.append(np.ravel(Q_matrix).reshape(1, -1))
-
-        # Train the model on the batch using the target Q-values as the target output.
-        self.model.train_on_batch(np.concatenate(states, axis=0), np.concatenate(Q_matrices, axis=0))
-
-    def update_new(self):
+        return loss.item()
 
     def train(self, SETTINGS, PARAMS):
         # Calculate the total number of days for the simulation.
