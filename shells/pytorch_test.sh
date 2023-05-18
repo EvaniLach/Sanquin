@@ -1,1 +1,1 @@
-python3 -u learning_rates.py --alpha=0.055
+python3 -u experiments.py --alpha=0.055
