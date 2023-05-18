@@ -10,6 +10,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 from collections import deque
+torch.cuda.is_available()
 
 # Define the Deep Q-Learning algorithm.
 class DQN():
