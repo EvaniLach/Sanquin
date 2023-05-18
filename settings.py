@@ -3,7 +3,7 @@ import os
 
 class Settings():
 
-    def __init__(self, method, minor, n_neurons=64, alpha=0.01):
+    def __init__(self, method, minor, alpha, nn):
 
         # Working directory.
         # self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
@@ -85,7 +85,7 @@ class Settings():
         self.alpha = alpha         # learning rate
         self.gamma = 0.5           # discount factor
         self.batch_size = 50       # batch size for replay buffer
-        self.n_neurons = n_neurons
+        self.nn = nn
 
         ####################
         # GUROBI OPTIMIZER #

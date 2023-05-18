@@ -15,10 +15,12 @@ argparser = argparse.ArgumentParser()
 argparser.add_argument("--method", type=str, default='request',choices=['day', 'request'])
 argparser.add_argument("--minor", type=int, default=0, help="select minor antigens")
 argparser.add_argument("--dev", default=None, help="GPU ID to use")
+argparser.add_argument("--alpha", default=0.001, help="learning rate")
+argparser.add_argument("--nn", default=64, type=int, nargs='+', help="layer sizes")
 args = argparser.parse_args()
 
 def main(alpha):
-    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=alpha)
+    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, nn=args.nn)
     PARAMS = Params(SETTINGS)
 
     paths = [
@@ -41,8 +43,4 @@ def main(alpha):
     # test comment
 
 if __name__ == "__main__":
-   # n_neurons = [64, 32, 16]
-    alphas = [0.01]
-
-    for alpha in alphas:
-        main(alpha=alpha)
+    main()

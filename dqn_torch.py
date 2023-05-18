@@ -31,7 +31,7 @@ class DQN():
 
     def build_nn(self):
         input_size = len(np.ravel(self.env.state))
-        layer_sizes = [input_size, 64, self.n_actions]
+        layer_sizes = [input_size, 64, self.env.action_space.shape[0]]
 
         assert len(layer_sizes) > 1
         layers = []
