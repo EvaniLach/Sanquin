@@ -68,19 +68,20 @@ class DQN():
     def update_request(self):
 
         # Sample a batch of experiences from the model's memory.
-        s, a, rn, sn = self.sample_from_experience(sample_size=self.batch_size)
+        s, a, rn, ns = self.sample_from_experience(sample_size=self.batch_size)
 
         # Predict Q-values of next state
-        qp = self.q_net(sn.cuda())
-        max_q, action = torch.max(qp, dim=1)
+        q_ns = self.q_net(ns.cuda())
+        max_q, action = torch.max(q_ns, dim=1)
 
         q_target = rn.cuda() + self.gamma * max_q
 
         # Predict q_values of current state
         q_matrix = self.q_net(s.cuda())
-        q_matrix[:,action] = q_target
+        q_m_target = q_matrix.detach().clone()
+        q_m_target[:,action] = q_target
 
-        loss = self.loss_fn(s, q_matrix)
+        loss = self.loss_fn(q_matrix, q_m_target)
         self.optimizer.zero_grad()
         loss.backward(retain_graph=True)
         self.optimizer.step()
