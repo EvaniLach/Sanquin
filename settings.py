@@ -100,8 +100,8 @@ class Settings():
     def generate_filename(self, SETTINGS, output_type, e):
 
         path = self.home_dir + f"/{output_type}/{self.model_name}/"
-        path += f"learning_rates/"
-        path += f"a{SETTINGS.alpha}/"
+        path += f"architecture/"
+        path += f"a{SETTINGS.nn}/"
         path += f"{self.method}_{e}"
 
         return path

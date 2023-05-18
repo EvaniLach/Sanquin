@@ -14,8 +14,7 @@ from demand import *
 argparser = argparse.ArgumentParser()
 argparser.add_argument("--method", type=str, default='request',choices=['day', 'request'])
 argparser.add_argument("--minor", type=int, default=0, help="select minor antigens")
-argparser.add_argument("--dev", default=None, help="GPU ID to use")
-argparser.add_argument("--alpha", default=0.006, help="learning rate")
+argparser.add_argument("--alpha", default=0.001, help="learning rate")
 argparser.add_argument("--nn", default=64, type=int, nargs='+', help="layer sizes")
 args = argparser.parse_args()
 

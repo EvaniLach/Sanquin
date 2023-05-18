@@ -24,14 +24,17 @@ class DQN():
    
         self.n_actions = self.env.action_space.shape[0]
         self.q_net = self.build_nn()
-        self.q_net.to('cuda') 
+        self.q_net.to('cuda')
+
+        self.nn = SETTINGS.nn
 
         self.optimizer = torch.optim.Adam(self.q_net.parameters(), lr=self.alpha)
         self.loss_fn = torch.nn.MSELoss()
 
     def build_nn(self):
-        input_size = len(np.ravel(self.env.state))
-        layer_sizes = [input_size, 64, self.env.action_space.shape[0]]
+        input_size = [len(np.ravel(self.env.state))]
+        output = [self.env.action_space.shape[0]]
+        layer_sizes = input_size + self.nn + output
 
         assert len(layer_sizes) > 1
         layers = []
