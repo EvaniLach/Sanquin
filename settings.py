@@ -101,7 +101,7 @@ class Settings():
 
         path = self.home_dir + f"/{output_type}/{self.model_name}/"
         path += f"architecture/"
-        path += f"a{SETTINGS.nn}/"
+        path += f"{SETTINGS.nn}/"
         path += f"{self.method}_{e}"
 
         return path

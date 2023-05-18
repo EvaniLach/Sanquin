@@ -19,14 +19,15 @@ argparser.add_argument("--nn", default=64, type=int, nargs='+', help="layer size
 args = argparser.parse_args()
 
 def main():
+    print(args.nn)
     SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, nn=args.nn)
     PARAMS = Params(SETTINGS)
 
     paths = [
-        "results", f"results/{SETTINGS.model_name}", f"results/{SETTINGS.model_name}/learning_rates",
-        f"results/{SETTINGS.model_name}/learning_rates/a{SETTINGS.alpha}",
-        "models", f"models/{SETTINGS.model_name}", f"models/{SETTINGS.model_name}/learning_rates",
-        f"models/{SETTINGS.model_name}/learning_rates/a{SETTINGS.alpha}"]
+        "results", f"results/{SETTINGS.model_name}", f"results/{SETTINGS.model_name}/architectures",
+        f"results/{SETTINGS.model_name}/architectures/{SETTINGS.nn}",
+        "models", f"models/{SETTINGS.model_name}", f"models/{SETTINGS.model_name}/architectures",
+        f"models/{SETTINGS.model_name}/architectures/{SETTINGS.nn}"]
     for path in paths:
         SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
 
