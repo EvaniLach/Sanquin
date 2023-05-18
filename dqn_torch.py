@@ -11,7 +11,6 @@ import torch.nn.functional as F
 
 from collections import deque
 
-
 # Define the Deep Q-Learning algorithm.
 class DQN():
     def __init__(self, SETTINGS, env):
@@ -30,9 +29,8 @@ class DQN():
         self.loss_fn = torch.nn.MSELoss()
 
     def build_nn(self):
-        input = len(np.ravel(self.env.state))
-        print('print', input)
-        layer_sizes = [input, 64, self.n_actions]
+        input_size = len(np.ravel(self.env.state))
+        layer_sizes = [input_size, 64, self.n_actions]
 
         assert len(layer_sizes) > 1
         layers = []
@@ -43,12 +41,11 @@ class DQN():
         return nn.Sequential(*layers)
 
     def save(self, SETTINGS, df, e):
-
         df.to_csv(SETTINGS.generate_filename(SETTINGS, "results", e) + ".csv", sep=',', index=True)
         torch.save(self.q_net.state_dict(), SETTINGS.generate_filename(SETTINGS, "models", e))
 
     def load(self, SETTINGS, e):
-        self.model = tf.keras.models.load_model(SETTINGS.generate_filename(SETTINGS, "models", e))
+        self.q_net.load_state_dict(torch.load(SETTINGS.generate_filename(SETTINGS, "models", e)))
 
     def select_action(self, state):  # Method to select the action to take
        with torch.no_grad():
@@ -75,15 +72,15 @@ class DQN():
 
         # Predict Q-values of next state
         qp = self.q_net(sn.cuda())
-        max_q, _ = torch.max(qp, dim=1)
+        max_q, action = torch.max(qp, dim=1)
 
         q_target = rn.cuda() + self.gamma * max_q
 
         # Predict q_values of current state
-        q_current = self.q_net(s.cuda())
-        pred_return, _ = torch.max(qp, axis=1)
+        q_matrix = self.q_net(s.cuda())
+        q_matrix[:,action] = q_target
 
-        loss = self.loss_fn(pred_return, q_target)
+        loss = self.loss_fn(s, q_matrix)
         self.optimizer.zero_grad()
         loss.backward(retain_graph=True)
         self.optimizer.step()
@@ -101,9 +98,9 @@ class DQN():
             print(f"\nEpisode: {e}")
             # If this isn't the first episode, load the previous episode's saved model.
             if e > 0:
-                tf.keras.backend.clear_session()
-                del self.model
+                del self.q_net
                 gc.collect()
+                torch.cuda.empty_cache()
                 self.load(SETTINGS, e - 1)
 
             # Start with an empty memory and initial epsilon.

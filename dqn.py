@@ -123,6 +123,7 @@ class DQN:
 
             # Predict the Q-values for the current state.
             Q_matrix = self.model.predict(np.ravel(state).reshape(1,-1), verbose=0)
+
             # Update the target Q-values for the actions taken.
             Q_matrix[:,action] = Q_target
 
