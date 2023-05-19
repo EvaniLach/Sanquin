@@ -126,6 +126,7 @@ class MatchingEnv(gym.Env):
         
         # If the product issued is actually present in the inventory..
         if sum(I[action]) > 0:
+            reward += 100
 
             # Remove the issued products from the inventory, where the oldest product is removed first.
             I[action, np.where(I[action] > 0)[0][-1]] -= 1
