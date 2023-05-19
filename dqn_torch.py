@@ -102,8 +102,6 @@ class DQN():
             print(f"\nEpisode: {e}")
             # If this isn't the first episode, load the previous episode's saved model.
             if e > 0:
-                del self.q_net
-                gc.collect()
                 torch.cuda.empty_cache()
                 self.load(SETTINGS, e - 1)
 
