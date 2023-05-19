@@ -20,13 +20,12 @@ class DQN():
         self.gamma = SETTINGS.gamma  # discount factor
         self.batch_size = SETTINGS.batch_size  # batch size for replay buffer
         self.method = SETTINGS.method
+        self.nn = SETTINGS.nn
         self.experience_replay = deque(maxlen=self.batch_size)
    
         self.n_actions = self.env.action_space.shape[0]
         self.q_net = self.build_nn()
         self.q_net.to('cuda')
-
-        self.nn = SETTINGS.nn
 
         self.optimizer = torch.optim.Adam(self.q_net.parameters(), lr=self.alpha)
         self.loss_fn = torch.nn.MSELoss()
