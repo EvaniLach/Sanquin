@@ -22,10 +22,9 @@ from log import *
 class DQN:
     def __init__(self, SETTINGS, env):
         self.env = env                          # learning environment
-        self.alpha = SETTINGS.alpha                      # learning rate
+        self.alpha = SETTINGS.alpha             # learning rate
         self.gamma = SETTINGS.gamma             # discount factor
         self.batch_size = SETTINGS.batch_size   # batch size for replay buffer
-        self.n_neurons = SETTINGS.n_neurons
         self.method = SETTINGS.method
         self.activation = 'relu'
 
@@ -56,9 +55,10 @@ class DQN:
 
         # Get the size of the input state and output action spaces
         input_size = len(np.ravel(self.env.state))
+
         # output_size = self.env.action_space.shape[0]*self.env.action_space.shape[1]   # DAY-BASED
         output_size = self.env.action_space.shape[0]                                      # REQUEST-BASED
-
+        print('out', output_size)
         # Create the input layer and two hidden layers with relu activation and output layer with sigmoid activation
         inputs = tf.keras.layers.Input(shape=(input_size,))
         layer_0 = tf.keras.layers.Dense(self.env.num_bloodgroups, activation='relu')(inputs)

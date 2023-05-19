@@ -15,7 +15,7 @@ argparser = argparse.ArgumentParser()
 argparser.add_argument("--method", type=str, default='request',choices=['day', 'request'])
 argparser.add_argument("--minor", type=int, default=0, help="select minor antigens")
 argparser.add_argument("--alpha", default=0.001, help="learning rate")
-argparser.add_argument("--nn", default=64, type=int, nargs='+', help="layer sizes")
+argparser.add_argument("--nn", default=[64, 32], type=int, nargs='+', help="layer sizes")
 args = argparser.parse_args()
 
 def main():

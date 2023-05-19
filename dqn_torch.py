@@ -146,6 +146,7 @@ class DQN():
                     while not done:
                         # Select an action using the model's epsilon-greedy policy.
                         action = self.select_action(state)
+                        print('action: ', action)
                         # Calculate the reward and update the dataframe.
                         reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
                         todays_reward += reward
