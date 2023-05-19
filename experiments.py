@@ -6,6 +6,7 @@ from params import *
 import argparse
 from supply import *
 from demand import *
+from datetime import datetime
 
 # NOTES
 # We currently assume that each requested unit is a separate request.
@@ -20,7 +21,7 @@ argparser.add_argument("--ed", default=0.995, type=float, help="epsilon decay")
 args = argparser.parse_args()
 
 def main():
-    print(args.nn)
+    startTime = datetime.now()
     SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, nn=args.nn)
     PARAMS = Params(SETTINGS)
 
@@ -41,7 +42,7 @@ def main():
 
     # Train the agent
     dqn.train(SETTINGS, PARAMS)
-    # test comment
+    print(datetime.now() - startTime)
 
 if __name__ == "__main__":
     main()
