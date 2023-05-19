@@ -21,7 +21,7 @@ argparser.add_argument("--ed", default=0.98, type=float, help="epsilon decay")
 args = argparser.parse_args()
 
 def main():
-    startTime = datetime()
+    startTime = datetime.now()
     SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, nn=args.nn, ed=args.ed)
     PARAMS = Params(SETTINGS)
 
