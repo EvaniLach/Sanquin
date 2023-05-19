@@ -6,7 +6,6 @@ from params import *
 import argparse
 from supply import *
 from demand import *
-from datetime import datetime
 
 # NOTES
 # We currently assume that each requested unit is a separate request.
@@ -17,19 +16,19 @@ argparser.add_argument("--method", type=str, default='request',choices=['day', '
 argparser.add_argument("--minor", type=int, default=0, help="select minor antigens")
 argparser.add_argument("--alpha", default=0.001, help="learning rate")
 argparser.add_argument("--nn", default=[64, 32], type=int, nargs='+', help="layer sizes")
-argparser.add_argument("--ed", default=0.995, type=float, help="epsilon decay")
+argparser.add_argument("--ed", default=0.98, type=float, help="epsilon decay")
 args = argparser.parse_args()
 
 def main():
-    startTime = datetime.now()
-    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, nn=args.nn)
+    print(args.nn)
+    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, nn=args.nn, ed=args.ed)
     PARAMS = Params(SETTINGS)
 
     paths = [
-        "results", f"results/{SETTINGS.model_name}", f"results/{SETTINGS.model_name}/architectures",
-        f"results/{SETTINGS.model_name}/architectures/{SETTINGS.nn}",
-        "models", f"models/{SETTINGS.model_name}", f"models/{SETTINGS.model_name}/architectures",
-        f"models/{SETTINGS.model_name}/architectures/{SETTINGS.nn}"]
+        "results", f"results/{SETTINGS.model_name}", f"results/{SETTINGS.model_name}/epsilon_decay",
+        f"results/{SETTINGS.model_name}/epsilon_decay/{SETTINGS.epsilon_decay}",
+        "models", f"models/{SETTINGS.model_name}", f"models/{SETTINGS.model_name}/epsilon_decay",
+        f"models/{SETTINGS.model_name}/epsilon_decay/{SETTINGS.epsilon_decay}"]
     for path in paths:
         SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
 
@@ -42,7 +41,7 @@ def main():
 
     # Train the agent
     dqn.train(SETTINGS, PARAMS)
-    print(datetime.now() - startTime)
+    # test comment
 
 if __name__ == "__main__":
     main()

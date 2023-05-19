@@ -96,7 +96,8 @@ class DQN():
         n_days = SETTINGS.init_days + SETTINGS.test_days
         # Determine the days at which to save the model.
         model_saving_days = [day for day in range(n_days) if day % 100 == 0] + [n_days - 1]
-
+        # Set epsilon value
+        self.epsilon = SETTINGS.epsilon
         # Run the simulation for the given range of episodes.
         for e in range(SETTINGS.episodes[0], SETTINGS.episodes[1]):
             print(f"\nEpisode: {e}")
@@ -107,7 +108,7 @@ class DQN():
 
             # Start with an empty memory and initial epsilon.
             self.experience_replay = deque(maxlen=self.batch_size)
-            self.epsilon = SETTINGS.epsilon
+            # self.epsilon = SETTINGS.epsilon
 
             # Reset the environment.
             self.env.reset(SETTINGS, PARAMS, e, max(SETTINGS.n_hospitals, key=lambda i: SETTINGS.n_hospitals[i]))
@@ -174,7 +175,7 @@ class DQN():
 
                 # Update the model's epsilon value.
                 df.loc[day, "epsilon current"] = self.epsilon
-                self.epsilon = max(self.epsilon * SETTINGS.epsilon_decay, SETTINGS.epsilon_min)
+                #self.epsilon = max(self.epsilon * SETTINGS.epsilon_decay, SETTINGS.epsilon_min)
 
                 # Save model and log file on predefined days.
                 if day in model_saving_days:
@@ -183,3 +184,4 @@ class DQN():
                 # Set the current day to the environment's current day.
                 day = self.env.day
 
+            self.epsilon = self.epsilon * SETTINGS.epsilon_decay

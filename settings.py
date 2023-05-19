@@ -3,7 +3,7 @@ import os
 
 class Settings():
 
-    def __init__(self, method, minor, alpha, nn):
+    def __init__(self, method, minor, alpha, nn, ed):
 
         # Working directory.
         # self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
@@ -81,7 +81,7 @@ class Settings():
 
         self.epsilon = 1.0
         self.epsilon_min = 0.01
-        self.epsilon_decay = 0.995
+        self.epsilon_decay = ed
         self.alpha = alpha         # learning rate
         self.gamma = 0.5           # discount factor
         self.batch_size = 50       # batch size for replay buffer
@@ -100,8 +100,8 @@ class Settings():
     def generate_filename(self, SETTINGS, output_type, e):
 
         path = self.home_dir + f"/{output_type}/{self.model_name}/"
-        path += f"architectures/"
-        path += f"{SETTINGS.nn}/"
+        path += f"epsilon_decay/"
+        path += f"{SETTINGS.epsilon_decay}/"
         path += f"{self.method}_{e}"
 
         return path
