@@ -182,3 +182,8 @@ class DQN():
 
                 # Set the current day to the environment's current day.
                 day = self.env.day
+
+                if day % 20 == 0:
+                    I = self.state[:,:PARAMS.max_age]
+                    print(np.where(I.sum(axis=0)) == 0)
+

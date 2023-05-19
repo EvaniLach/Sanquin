@@ -235,8 +235,7 @@ class MatchingEnv(gym.Env):
         # The inventory is represented by the left part of the state -> matrix of size |bloodgroups| × max age
         I = self.state[:,:PARAMS.max_age]
         R = self.state[:,PARAMS.max_age:]
-        print('daaay')
-        
+
         # Create lists of blood groups in integer representation.
         inventory, issued_action, requests_today = [], [], []
         for bg in bloodgroups:

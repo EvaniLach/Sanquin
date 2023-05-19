@@ -16,6 +16,7 @@ argparser.add_argument("--method", type=str, default='request',choices=['day', '
 argparser.add_argument("--minor", type=int, default=0, help="select minor antigens")
 argparser.add_argument("--alpha", default=0.001, help="learning rate")
 argparser.add_argument("--nn", default=[64, 32], type=int, nargs='+', help="layer sizes")
+argparser.add_argument("--ed", default=0.995, type=float, help="epsilon decay")
 args = argparser.parse_args()
 
 def main():
