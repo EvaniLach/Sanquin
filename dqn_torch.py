@@ -6,8 +6,7 @@ from log import *
 
 import torch
 import torch.nn as nn
-import torch.optim as optim
-import torch.nn.functional as F
+
 
 from collections import deque
 torch.cuda.is_available()
@@ -39,7 +38,7 @@ class DQN():
         layers = []
         for index in range(len(layer_sizes) - 1):
             linear = nn.Linear(layer_sizes[index], layer_sizes[index + 1])
-            act = nn.ReLU()
+            act = nn.ReLU() if index < len(layer_sizes) - 2 else nn.Identity()
             layers += (linear, act)
         return nn.Sequential(*layers)
 

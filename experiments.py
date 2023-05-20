@@ -26,10 +26,10 @@ def main():
     PARAMS = Params(SETTINGS)
 
     paths = [
-        "results", f"results/{SETTINGS.model_name}", f"results/{SETTINGS.model_name}/epsilon_decay",
-        f"results/{SETTINGS.model_name}/epsilon_decay/{SETTINGS.epsilon_decay}",
-        "models", f"models/{SETTINGS.model_name}", f"models/{SETTINGS.model_name}/epsilon_decay",
-        f"models/{SETTINGS.model_name}/epsilon_decay/{SETTINGS.epsilon_decay}"]
+        "results", f"results/{SETTINGS.model_name}", f"results/{SETTINGS.model_name}/reward",
+        f"results/{SETTINGS.model_name}/reward/{SETTINGS.nn}",
+        "models", f"models/{SETTINGS.model_name}", f"models/{SETTINGS.model_name}/reward",
+        f"models/{SETTINGS.model_name}/reward/{SETTINGS.nn}"]
     for path in paths:
         SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
 

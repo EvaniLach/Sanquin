@@ -122,7 +122,7 @@ class MatchingEnv(gym.Env):
         ## CALCULATE REWARD ##
         ######################
 
-        reward = 0
+        reward = 50
         
         # If the product issued is actually present in the inventory..
         if sum(I[action]) > 0:
@@ -155,7 +155,7 @@ class MatchingEnv(gym.Env):
                 reward -= mismatch_penalties
 
         else:
-            reward -= 100     # The issued product is not present in the inventory.
+            reward -= 50     # The issued product is not present in the inventory.
             df.loc[day,"issued but nonexistent"] += 1
             df.loc[day,"num shortages"] += 1
 
