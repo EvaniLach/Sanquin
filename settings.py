@@ -100,7 +100,7 @@ class Settings():
     def generate_filename(self, SETTINGS, output_type, e):
 
         path = self.home_dir + f"/{output_type}/{self.model_name}/"
-        path += f"reward_50/"
+        path += f"limit_actions/"
         path += f"{SETTINGS.nn}/"
         path += f"{self.method}_{e}"
 
