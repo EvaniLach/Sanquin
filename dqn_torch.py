@@ -130,7 +130,7 @@ class DQN():
             day = self.env.day
 
             # Limit actions to available actions
-            limit = False
+            limit = True
 
             # Loop through each day in the simulation.
             while day < n_days:
