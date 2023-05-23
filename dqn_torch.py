@@ -55,7 +55,7 @@ class DQN():
         if limit:
             avail = self.available_actions(state, PARAMS)
             Q, A = torch.max(Qp[avail], dim=0)
-            A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, avail[0], (1,))
+            A = A if torch.rand(1, ).item() > self.epsilon else np.random.choice(avail)
         else:
             Q, A = torch.max(Qp, dim=0)
             A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, self.n_actions, (1,))
