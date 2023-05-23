@@ -49,12 +49,23 @@ class DQN():
     def load(self, SETTINGS, e):
         self.q_net.load_state_dict(torch.load(SETTINGS.generate_filename(SETTINGS, "models", e)))
 
-    def select_action(self, state):  # Method to select the action to take
-       with torch.no_grad():
-           Qp = self.q_net(torch.from_numpy(state).flatten().float().cuda())
-       Q, A = torch.max(Qp, dim=0)
-       A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, self.n_actions, (1,))
-       return A.item()
+    def select_action(self, state, limit, PARAMS):  # Method to select the action to take
+        with torch.no_grad():
+            Qp = self.q_net(torch.from_numpy(state).flatten().float().cuda())
+        if limit:
+            avail = self.available_actions(state, PARAMS)
+            Q, A = torch.max(Qp[avail], dim=0)
+            A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, avail[0], (1,))
+        else:
+            Q, A = torch.max(Qp, dim=0)
+            A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, self.n_actions, (1,))
+        return A.item()
+
+    def available_actions(self, state, PARAMS):
+        I = state[:,:PARAMS.max_age]
+        avail = np.where(np.any(I>0, axis=1))
+        return avail
+
 
     def sample_from_experience(self, sample_size):
         if len(self.experience_replay) < self.batch_size:
@@ -118,6 +129,9 @@ class DQN():
             state = self.env.state
             day = self.env.day
 
+            # Limit actions to available actions
+            limit = False
+
             # Loop through each day in the simulation.
             while day < n_days:
 
@@ -145,7 +159,7 @@ class DQN():
                     # If there are requests for today, loop through each request.
                     while not done:
                         # Select an action using the model's epsilon-greedy policy.
-                        action = self.select_action(state)
+                        action = self.select_action(state, limit, PARAMS)
                         
                         # Calculate the reward and update the dataframe.
                         reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)

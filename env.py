@@ -122,7 +122,7 @@ class MatchingEnv(gym.Env):
         ## CALCULATE REWARD ##
         ######################
 
-        reward = 50
+        reward = 0
         
         # If the product issued is actually present in the inventory..
         if sum(I[action]) > 0:
