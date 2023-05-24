@@ -53,9 +53,10 @@ class DQN():
         with torch.no_grad():
             Qp = self.q_net(torch.from_numpy(state).flatten().float().cuda())
         if limit:
-            avail = self.available_actions(state, PARAMS)
+            avail = self.available_actions(state, PARAMS)           
+            print(avail)
             Q, A = torch.max(Qp[avail], dim=0)
-            A = A if torch.rand(1, ).item() > self.epsilon else np.random.choice(avail)
+            A = A if torch.rand(1, ).item() > self.epsilon else np.random.choice(avail[0])
         else:
             Q, A = torch.max(Qp, dim=0)
             A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, self.n_actions, (1,))
