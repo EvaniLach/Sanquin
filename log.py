@@ -48,7 +48,7 @@ def initialize_output_dataframe(SETTINGS, PARAMS, hospital, episode):
     # header += [f"num allocated at dc {pg}" for pg in patgroups]
 
     # Matching performance.
-    header += ["reward", "issued but nonexistent", "issued but discarded"]
+    header += ["reward", "day loss", "issued but nonexistent", "issued but discarded"]
     header += ["num outdates", "num shortages"]
     # header += [f"num outdates {major}" for major in ABOD_names] + [f"num shortages {major}" for major in ABOD_names]
     header += [f"num mismatches {ag}" for ag in antigens]

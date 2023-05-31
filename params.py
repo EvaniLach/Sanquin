@@ -10,8 +10,8 @@ class Params():
         ####################
 
         # Shelf life of the blood products in inventory.
-        self.max_age = 35           # The age at which inventory products expire, so the maximum age to be issued = 34. 
-        self.max_lead_time = 8      # Days 0,1,...,7.
+        self.max_age = 5           # The age at which inventory products expire, so the maximum age to be issued = 34.
+        self.max_lead_time = 3      # Days 0,1,...,7.
 
         # Major blood groups, major antigens, and minor antigens.
         self.ABOD =  {0:"O-", 1:"O+", 2:"B-", 3:"B+", 4:"A-", 5:"A+", 6:"AB-", 7:"AB+"}

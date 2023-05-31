@@ -9,7 +9,6 @@ import torch.nn as nn
 
 
 from collections import deque
-torch.cuda.is_available()
 
 # Define the Deep Q-Learning algorithm.
 class DQN():
@@ -138,6 +137,7 @@ class DQN():
                 # REQUEST-BASED
                 done = False
                 todays_reward = 0
+                day_loss = 0
 
                 # If there are no requests for today, proceed to the next day.
                 if sum(self.env.state[:, -1]) == 0:
@@ -177,7 +177,7 @@ class DQN():
                     if self.method == 'day':
                         self.update_day()
                     else:
-                        self.update_request()
+                        day_loss += self.update_request()
 
                 # Update the dataframe with the current day's information.
                 df.loc[day, "logged"] = True
@@ -185,10 +185,11 @@ class DQN():
 
                 # Update log df
                 self.env.log_state(PARAMS, day, df)
+                df.loc[day, "day loss"] = day_loss
 
                 # Update the model's epsilon value.
                 df.loc[day, "epsilon current"] = self.epsilon
-                #self.epsilon = max(self.epsilon * SETTINGS.epsilon_decay, SETTINGS.epsilon_min)
+                # self.epsilon = max(self.epsilon * SETTINGS.epsilon_decay, SETTINGS.epsilon_min)
 
                 # Save model and log file on predefined days.
                 if day in model_saving_days:
@@ -197,4 +198,4 @@ class DQN():
                 # Set the current day to the environment's current day.
                 day = self.env.day
 
-            self.epsilon = self.epsilon * SETTINGS.epsilon_decay
+            # self.epsilon = self.epsilon * SETTINGS.epsilon_decay

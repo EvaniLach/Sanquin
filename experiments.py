@@ -17,7 +17,7 @@ argparser.add_argument("--method", type=str, default='request',choices=['day', '
 argparser.add_argument("--minor", type=int, default=0, help="select minor antigens")
 argparser.add_argument("--alpha", default=0.001, help="learning rate")
 argparser.add_argument("--nn", default=[64, 32], type=int, nargs='+', help="layer sizes")
-argparser.add_argument("--ed", default=0.98, type=float, help="epsilon decay")
+argparser.add_argument("--ed", default=1, type=float, help="epsilon decay")
 args = argparser.parse_args()
 
 def main():
@@ -26,10 +26,10 @@ def main():
     PARAMS = Params(SETTINGS)
 
     paths = [
-        "results", f"results/{SETTINGS.model_name}", f"results/{SETTINGS.model_name}/limit_actions",
-        f"results/{SETTINGS.model_name}/limit_actions/{SETTINGS.nn}",
-        "models", f"models/{SETTINGS.model_name}", f"models/{SETTINGS.model_name}/limit_actions",
-        f"models/{SETTINGS.model_name}/limit_actions/{SETTINGS.nn}"]
+        "results", f"results/{SETTINGS.model_name}", f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}",
+        f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}",
+        "models", f"models/{SETTINGS.model_name}", f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}",
+        f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}"]
     for path in paths:
         SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
 
