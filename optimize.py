@@ -6,13 +6,11 @@ from concurrent.futures import ProcessPoolExecutor
 from itertools import repeat
 
 from env import *
-from dqn import *
+from dqn_torch import *
 
 from settings import *
 from params import *
 import numpy as np
-from matplotlib import pyplot as plt
-import main
 
 
 def make_config_space():
