@@ -1,0 +1,157 @@
+CREATING ENVIRONMENT
+CREATING DQN
+alpha: 0.001, gamma: 0.5, batch size: 50.
+
+Episode: 0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+3
+Traceback (most recent call last):
+  File "/home/s1949624/RL_matching/experiments.py", line 48, in <module>
+    main()
+  File "/home/s1949624/RL_matching/experiments.py", line 44, in main
+    dqn.train(SETTINGS, PARAMS)
+  File "/home/s1949624/RL_matching/dqn_torch.py", line 123, in train
+    self.env.reset(SETTINGS, PARAMS, e, max(SETTINGS.n_hospitals, key=lambda i: SETTINGS.n_hospitals[i]))
+  File "/home/s1949624/RL_matching/env.py", line 65, in reset
+    R = self.hospital.sample_requests_single_day(PARAMS, [self.num_bloodgroups, PARAMS.max_lead_time], self.day)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s1949624/RL_matching/hospital.py", line 31, in sample_requests_single_day
+    requests[BitArray(data.loc[i, PARAMS.major + PARAMS.minor]).uint, lead_time] += data.loc[i, "Num Units"]
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+IndexError: index 3 is out of bounds for axis 1 with size 3

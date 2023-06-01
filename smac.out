@@ -1,0 +1,169 @@
+[INFO][abstract_initial_design.py:95] Reducing the number of initial configurations from 90 to 1 (max_ratio == 0.25).
+[INFO][abstract_initial_design.py:147] Using 1 initial design configurations and 0 additional configurations.
+Configuration(values={
+  'activation': 'relu',
+  'epsilon': 0.34672578649109115,
+  'n_layers': 3,
+  'n_neurons1': 224,
+  'n_neurons2': 32,
+  'n_neurons3': 128,
+  'optimizer': 'adam',
+  'optimizer_lr': 0.012480020972222375,
+})
+
+CREATING ENVIRONMENT
+CREATING DQN
+
+Episode: 0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+3
+4
+[WARNING][abstract_runner.py:132] Target function returned infinity or nothing at all. Result is treated as CRASHED and cost is set to inf.
+[WARNING][abstract_runner.py:138] Traceback: Traceback (most recent call last):
+  File "/local/s1949624/conda_envs/sanquin/lib/python3.11/site-packages/smac/runner/target_function_runner.py", line 173, in run
+    rval = self(config_copy, target_function, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/local/s1949624/conda_envs/sanquin/lib/python3.11/site-packages/smac/runner/target_function_runner.py", line 246, in __call__
+    return algorithm(config, **algorithm_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s1949624/RL_matching/optimize.py", line 55, in run_a
+    loss = dqn.train(SETTINGS, PARAMS)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s1949624/RL_matching/dqn_torch.py", line 131, in train
+    self.env.reset(SETTINGS, PARAMS, e, max(SETTINGS.n_hospitals, key=lambda i: SETTINGS.n_hospitals[i]))
+  File "/home/s1949624/RL_matching/env.py", line 65, in reset
+    R = self.hospital.sample_requests_single_day(PARAMS, [self.num_bloodgroups, PARAMS.max_lead_time], self.day)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s1949624/RL_matching/hospital.py", line 31, in sample_requests_single_day
+    requests[BitArray(data.loc[i, PARAMS.major + PARAMS.minor]).uint, lead_time] += data.loc[i, "Num Units"]
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+IndexError: index 3 is out of bounds for axis 1 with size 3
+
+
+[INFO][abstract_intensifier.py:515] Added config 436e86 as new incumbent because there are no incumbents yet.
+[INFO][smbo.py:327] Configuration budget is exhausted:
+[INFO][smbo.py:328] --- Remaining wallclock time: inf
+[INFO][smbo.py:329] --- Remaining cpu time: inf
+[INFO][smbo.py:330] --- Remaining trials: 0
+Configuration(values={
+  'activation': 'relu',
+  'epsilon': 0.34672578649109115,
+  'n_layers': 3,
+  'n_neurons1': 224,
+  'n_neurons2': 32,
+  'n_neurons3': 128,
+  'optimizer': 'adam',
+  'optimizer_lr': 0.012480020972222375,
+})
+

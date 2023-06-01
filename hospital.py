@@ -26,7 +26,8 @@ class Hospital():
         # Transform the new requests, as read from the data file, to a blood group index and a lead time.
         requests = np.zeros([R_shape[0], R_shape[1]])
         for i in data.index:
-            lead_time = data.loc[i,"Day Needed"] - day
+            lead_time = data.loc[i,"Day Needed"] - day - 1
+            print(lead_time+1)
             requests[BitArray(data.loc[i, PARAMS.major + PARAMS.minor]).uint, lead_time] += data.loc[i, "Num Units"]
 
         return requests
