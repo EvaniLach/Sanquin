@@ -51,13 +51,18 @@ class DQN():
     def select_action(self, state, limit, PARAMS):  # Method to select the action to take
         with torch.no_grad():
             Qp = self.q_net(torch.from_numpy(state).flatten().float().cuda())
-        avail = self.available_actions(state, PARAMS)
-        if limit and avail[0].size > 0:
-            Q, A = torch.max(Qp[avail], dim=0)
-            A = A if torch.rand(1, ).item() > self.epsilon else np.random.choice(avail[0])
-        else:
-            Q, A = torch.max(Qp, dim=0)
-            A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, self.n_actions, (1,))
+        Q, A = torch.max(Qp, dim=0)
+        A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, self.n_actions, (1,))
+
+        # Uncomment below for limited action selection
+
+        # avail = self.available_actions(state, PARAMS)
+        # if limit and avail[0].size > 0:
+        #     Q, A = torch.max(Qp[avail], dim=0)
+        #     A = A if torch.rand(1, ).item() > self.epsilon else np.random.choice(avail[0])
+        # else:
+        #     Q, A = torch.max(Qp, dim=0)
+        #     A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, self.n_actions, (1,))
         return A.item()
 
     def available_actions(self, state, PARAMS):
@@ -107,6 +112,9 @@ class DQN():
         model_saving_days = [day for day in range(n_days) if day % 100 == 0] + [n_days - 1]
         # Set epsilon value
         self.epsilon = SETTINGS.epsilon
+
+        # Keep track of episode losses
+        e_losses = []
         # Run the simulation for the given range of episodes.
         for e in range(SETTINGS.episodes[0], SETTINGS.episodes[1]):
             print(f"\nEpisode: {e}")
@@ -129,7 +137,7 @@ class DQN():
             day = self.env.day
 
             # Limit actions to available actions
-            limit = True
+            limit = False
 
             # Loop through each day in the simulation.
             while day < n_days:
@@ -197,5 +205,6 @@ class DQN():
 
                 # Set the current day to the environment's current day.
                 day = self.env.day
-
+            e_losses.append(df["day loss"].sum())
             # self.epsilon = self.epsilon * SETTINGS.epsilon_decay
+        return e_losses

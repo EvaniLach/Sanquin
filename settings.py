@@ -3,7 +3,7 @@ import os
 
 class Settings():
 
-    def __init__(self, method, minor, alpha, nn, ed):
+    def __init__(self, method, minor, alpha, nn, epsilon, ed):
 
         # Working directory.
         # self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
@@ -23,12 +23,12 @@ class Settings():
         #########################
 
         # Only the results of test days will be logged.
-        self.test_days = 2 * 365
+        self.test_days = round(2.5 * 365)
         self.init_days = 2 * 35
 
         # (x,y): Episode numbers range(x,y) will be optimized.
         # The total number of simulations executed will thus be y - x.
-        self.episodes = (0,50)
+        self.episodes = (0,25)
 
         # Number of hospitals considered. If more than 1 (regional and university combined), a distribution center is included.
         # "regional": Use the patient group distribution of the OLVG, a regional hospital, with average daily demand of 50 products.
@@ -79,7 +79,7 @@ class Settings():
         # "test" for running simulations with saved model
         self.RL_mode = "train"
 
-        self.epsilon = 0.1
+        self.epsilon = epsilon
         self.epsilon_min = 0.01
         self.epsilon_decay = ed
         self.alpha = alpha         # learning rate

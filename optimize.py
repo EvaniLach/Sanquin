@@ -31,6 +31,7 @@ def make_config_space():
         UniformFloatHyperparameter('optimizer_lr', lower=1e-5, upper=1e-1, log=True))
 
     cs.add_hyperparameter(CategoricalHyperparameter('activation', ['relu', 'tanh', 'elu', 'gelu']))
+    cs.add_hyperparameter(UniformFloatHyperparameter('epsilon', lower=0.1, upper=1, log=True))
     return cs
 
 
@@ -45,16 +46,15 @@ def run_a(config, seed=20):
     if config['n_layers'] > 3:
         n_neurons.append(config['n_neurons4'])
 
-    SETTINGS = Settings(0)
+    SETTINGS = Settings('request', minor=0, alpha=config['optimizer_lr'], nn=n_neurons, epsilon=config['epsilon'], ed=1)
     PARAMS = Params(SETTINGS)
     print("CREATING ENVIRONMENT")
     env = MatchingEnv(SETTINGS, PARAMS)
     print("CREATING DQN")
-    dqn = DQN(SETTINGS, env, n_neurons=n_neurons,
-              activation=config['activation'], alpha=config['optimizer_lr'])
-    reward = dqn.train(SETTINGS, PARAMS)
-    print(reward)
-    return np.mean(reward)
+    dqn = DQN(SETTINGS, env)
+    loss = dqn.train(SETTINGS, PARAMS)
+    print(loss)
+    return np.mean(loss)
 
 
 
