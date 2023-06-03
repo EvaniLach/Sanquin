@@ -48,6 +48,15 @@ def run_a(config, seed=20):
 
     SETTINGS = Settings('request', minor=0, alpha=config['optimizer_lr'], nn=n_neurons, epsilon=config['epsilon'], ed=1)
     PARAMS = Params(SETTINGS)
+
+    paths = [
+        "results", f"results/{SETTINGS.model_name}", f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}",
+        f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}",
+        "models", f"models/{SETTINGS.model_name}", f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}",
+        f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}"]
+    for path in paths:
+        SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
+
     print("CREATING ENVIRONMENT")
     env = MatchingEnv(SETTINGS, PARAMS)
     print("CREATING DQN")
