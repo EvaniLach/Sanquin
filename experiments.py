@@ -22,7 +22,7 @@ args = argparser.parse_args()
 
 def main():
     startTime = datetime.now()
-    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, nn=args.nn, ed=args.ed)
+    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, nn=args.nn, epsilon=0.1, ed=args.ed)
     PARAMS = Params(SETTINGS)
 
     paths = [
