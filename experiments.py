@@ -15,7 +15,7 @@ from datetime import datetime
 argparser = argparse.ArgumentParser()
 argparser.add_argument("--method", type=str, default='request',choices=['day', 'request'])
 argparser.add_argument("--minor", type=int, default=0, help="select minor antigens")
-argparser.add_argument("--alpha", default=0.001, help="learning rate")
+argparser.add_argument("--alpha", default=0.001, type=float, help="learning rate")
 argparser.add_argument("--nn", default=[64, 64], type=int, nargs='+', help="layer sizes")
 argparser.add_argument("--epsilon", default=0.1, type=float, help="exploration rate")
 argparser.add_argument("--decay", default=1, type=float, help="epsilon decay")
