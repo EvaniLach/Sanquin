@@ -6,6 +6,7 @@ from log import *
 
 import torch
 import torch.nn as nn
+import copy
 
 
 from collections import deque
@@ -134,7 +135,7 @@ class DQN():
             df = initialize_output_dataframe(SETTINGS, PARAMS, self.env.hospital, e)
 
             # Set the current state and day to the environment's initial state and day.
-            state = self.env.state
+            state = copy.deepcopy(self.env.state)
             day = self.env.day
 
             # Limit actions to available actions
@@ -173,10 +174,8 @@ class DQN():
                         reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
                         todays_reward += reward
                         print('day', day)
-
                         # Get the next state and whether the episode is done.
                         next_state, done = self.env.next_request(PARAMS)
-                        print('current state', state)
                         # Store the experience tuple in memory.
                         if day >= SETTINGS.init_days:
                             self.experience_replay.append([state, action, reward, next_state, day])
@@ -187,7 +186,6 @@ class DQN():
                            print('done', done)
                            print('next state', next_state)
                            quit()
-                        state = next_state
 
                 # If there are enough experiences in memory, update the model.
                 if len(self.experience_replay) >= self.batch_size:
