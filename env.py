@@ -138,7 +138,8 @@ class MatchingEnv(gym.Env):
             if sum(comp[:3]) > 0:
                 reward -= 10 + 1    
                 df.loc[day,"num shortages"] += 1
-                df.loc[day,"issued but discarded"] += 1                
+                df.loc[day,"issued but discarded"] += 1
+                print('disc', reward)
 
             else:
                 A = {antigens[k] : k for k in range(len(antigens))}
@@ -156,6 +157,7 @@ class MatchingEnv(gym.Env):
                     mismatch_penalties += comp[A["Fyb"]] * int(bin(r)[A["Fya"]+2]) * w[A["Fyb"]]
                     df.loc[day, f"num mismatches Fyb"] += comp[A["Fyb"]] * int(bin(r)[A["Fya"]+2])
                 reward -= mismatch_penalties
+                print('mismatch_penalties', reward)
 
         else:
             reward -= 50     # The issued product is not present in the inventory.
