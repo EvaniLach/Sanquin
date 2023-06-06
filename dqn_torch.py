@@ -98,6 +98,8 @@ class DQN():
         q_m_target = q_matrix.detach().clone()
         q_m_target[:,action] = q_target
 
+        print('q_matrix', q_matrix)
+        print('q_target', q_m_target)
         loss = self.loss_fn(q_matrix, q_m_target)
         self.optimizer.zero_grad()
         loss.backward(retain_graph=True)
