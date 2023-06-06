@@ -11,7 +11,7 @@ import numpy as np
 
 def make_config_space():
     cs = ConfigurationSpace(seed=0)
-    n_layers = cs.add_hyperparameter(Categorical('n_layers', [1, 2, 3, 4]), ordered=True)
+    n_layers = cs.add_hyperparameter(Categorical('n_layers', [1, 2, 3, 4], ordered=True))
     n_neurons1 = cs.add_hyperparameter(UniformIntegerHyperparameter('n_neurons1', lower=16, upper=256, q=16))
     n_neurons2 = cs.add_hyperparameter(UniformIntegerHyperparameter('n_neurons2', lower=16, upper=256, q=16))
     n_neurons3 = cs.add_hyperparameter(UniformIntegerHyperparameter('n_neurons3', lower=16, upper=256, q=16))
