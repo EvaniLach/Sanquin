@@ -155,6 +155,7 @@ class MatchingEnv(gym.Env):
                     mismatch_penalties += comp[A["Fyb"]] * int(bin(r)[A["Fya"]+2]) * w[A["Fyb"]]
                     df.loc[day, f"num mismatches Fyb"] += comp[A["Fyb"]] * int(bin(r)[A["Fya"]+2])
                 reward -= mismatch_penalties
+                good = True
 
         else:
             reward -= 50     # The issued product is not present in the inventory.
@@ -167,11 +168,10 @@ class MatchingEnv(gym.Env):
 
         df.loc[day,"reward"] += reward
         
-        return reward, df
+        return reward, df, good
 
     # REQUEST-BASED
     def next_request(self, PARAMS, action):
-        current_state = copy.deepcopy(self.state)
         # Remove the already matched request.
         self.state[:,-2] -= self.state[:,-1]
         # Check if there are still requests for today to match.

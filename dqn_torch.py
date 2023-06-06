@@ -172,13 +172,17 @@ class DQN():
                         # Create copy of current state
                         current_state = copy.deepcopy(state)
                         # Calculate the reward and update the dataframe.
-                        reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
+                        reward, df, good = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
                         todays_reward += reward
                         # Get the next state and whether the episode is done.
                         next_state, done = self.env.next_request(PARAMS, action)
                         # Store the experience tuple in memory.
                         if day >= SETTINGS.init_days:
-                            print(current_state)
+                            if good:
+                                print('current state', current_state)
+                                print('action', action)
+                                print('reward', reward)
+                                print('next', next_state)
                             self.experience_replay.append([current_state, action, reward, next_state, day])
 
 
