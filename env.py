@@ -1,3 +1,5 @@
+import copy
+
 import gym
 import numpy as np
 import collections
@@ -168,8 +170,8 @@ class MatchingEnv(gym.Env):
         return reward, df
 
     # REQUEST-BASED
-    def next_request(self, PARAMS):
-
+    def next_request(self, PARAMS, action):
+        current_state = copy.deepcopy(self.state)
         # Remove the already matched request.
         self.state[:,-2] -= self.state[:,-1]
         # Check if there are still requests for today to match.
@@ -180,8 +182,7 @@ class MatchingEnv(gym.Env):
             current_r[np.where(self.state[:,-2]>0)[0][0]] = 1
 
             self.state[:,-1] = current_r
-            print('next_state from next_request', self.state)
-            return self.state, False
+            return self.state, current_state, False
 
         else:
 

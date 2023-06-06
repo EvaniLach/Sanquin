@@ -135,7 +135,7 @@ class DQN():
             df = initialize_output_dataframe(SETTINGS, PARAMS, self.env.hospital, e)
 
             # Set the current state and day to the environment's initial state and day.
-            state = copy.deepcopy(self.env.state)
+            state = self.env.state
             day = self.env.day
 
             # Limit actions to available actions
@@ -173,15 +173,13 @@ class DQN():
                         # Calculate the reward and update the dataframe.
                         reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
                         todays_reward += reward
-                        print('day', day)
                         # Get the next state and whether the episode is done.
-                        next_state, done = self.env.next_request(PARAMS)
+                        next_state, current_state, done = self.env.next_request(PARAMS, action)
                         # Store the experience tuple in memory.
                         if day >= SETTINGS.init_days:
-                            self.experience_replay.append([state, action, reward, next_state, day])
-                        # Update the current state to the next state.
+                            self.experience_replay.append([current_state, action, reward, next_state, day])
                         if reward == 0:
-                           print('state', state)
+                           print('state', current_state)
                            print('reward', reward)
                            print('done', done)
                            print('next state', next_state)
