@@ -181,7 +181,7 @@ class DQN():
                         # Store the experience tuple in memory.
                         if day >= SETTINGS.init_days:
                             self.experience_replay.append([current_state, action, reward, next_state, day])
-                        if reward == 0:
+                        if reward > -50:
                            print('state', current_state)
                            print('reward', reward)
                            print('done', done)

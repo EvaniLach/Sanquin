@@ -130,7 +130,7 @@ class MatchingEnv(gym.Env):
         if sum(I[action]) > 0:
 
             # Remove the issued products from the inventory, where the oldest product is removed first.
-            print('reward', action)
+            print('action', action)
             I[action, np.where(I[action] > 0)[0][-1]] -= 1
             comp = binarray(not_compatible(r, action), len(antigens))
             
