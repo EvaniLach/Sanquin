@@ -28,6 +28,8 @@ class DQN():
 
         self.optimizer = torch.optim.Adam(self.q_net.parameters(), lr=self.alpha)
         self.loss_fn = torch.nn.MSELoss()
+        torch.manual_seed(0)
+        random.seed(0)
 
     def build_nn(self):
         input_size = [len(np.ravel(self.env.state))]

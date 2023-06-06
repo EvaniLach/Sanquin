@@ -16,13 +16,15 @@ argparser = argparse.ArgumentParser()
 argparser.add_argument("--method", type=str, default='request',choices=['day', 'request'])
 argparser.add_argument("--minor", type=int, default=0, help="select minor antigens")
 argparser.add_argument("--alpha", default=0.001, help="learning rate")
-argparser.add_argument("--nn", default=[64, 32], type=int, nargs='+', help="layer sizes")
-argparser.add_argument("--ed", default=1, type=float, help="epsilon decay")
+argparser.add_argument("--nn", default=[64, 64], type=int, nargs='+', help="layer sizes")
+argparser.add_argument("--epsilon", default=0.1, type=float, help="exploration rate")
+argparser.add_argument("--decay", default=1, type=float, help="epsilon decay")
+argparser.add_argument("--episodes", default=25, type=int, help="number of episodes")
 args = argparser.parse_args()
 
 def main():
     startTime = datetime.now()
-    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, nn=args.nn, epsilon=0.1, ed=args.ed)
+    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, n_neurons=args.nn, epsilon=0.1, decay=args.decay, episodes=args.episodes)
     PARAMS = Params(SETTINGS)
 
     paths = [

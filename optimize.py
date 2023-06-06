@@ -61,6 +61,7 @@ def run(config, seed=20):
     return np.mean(loss)
 
 if __name__ == '__main__':
+    torch.manual_seed(0)
     cs = make_config_space()
     scenario = Scenario(cs, output_directory=r"/home/s1949624/Sanquin/SMAC",
                         n_trials=20,
