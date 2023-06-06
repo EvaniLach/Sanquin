@@ -170,7 +170,7 @@ class DQN():
                         # Select an action using the model's epsilon-greedy policy.
                         action = self.select_action(state, limit, PARAMS)
                         # Create copy of current state
-                        #current_state = copy.deepcopy(self.env.state)
+                        current_state = copy.deepcopy(self.env.state)
                         # Calculate the reward and update the dataframe.
                         reward, df, good = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
                         todays_reward += reward
@@ -179,12 +179,11 @@ class DQN():
                         # Store the experience tuple in memory.
                         if day >= SETTINGS.init_days:
                             if good:
-                                print('current state', state)
+                                print('current state', current_state)
                                 print('action', action)
                                 print('reward', reward)
                                 print('next', next_state)
-                            self.experience_replay.append([state, action, reward, next_state, day])
-                        state = next_state
+                            self.experience_replay.append([current_state, action, reward, next_state, day])
 
                 # If there are enough experiences in memory, update the model.
                 if len(self.experience_replay) >= self.batch_size:
