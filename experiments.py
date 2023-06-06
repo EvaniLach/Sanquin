@@ -17,7 +17,7 @@ argparser.add_argument("--method", type=str, default='request',choices=['day', '
 argparser.add_argument("--minor", type=int, default=0, help="select minor antigens")
 argparser.add_argument("--alpha", default=0.001, type=float, help="learning rate")
 argparser.add_argument("--nn", default=[64, 64], type=int, nargs='+', help="layer sizes")
-argparser.add_argument("--epsilon", default=0.1, type=float, help="exploration rate")
+argparser.add_argument("--epsilon", default=0.15, type=float, help="exploration rate")
 argparser.add_argument("--decay", default=1, type=float, help="epsilon decay")
 argparser.add_argument("--episodes", default=25, type=int, help="number of episodes")
 argparser.add_argument("--target", default=True, help="use a target network")
@@ -33,8 +33,13 @@ def main():
     paths = [
         "results", f"results/{SETTINGS.model_name}", f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}",
         f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}",
+        f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}",
+        f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}/target_{SETTINGS.target}/",
+        f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}/target_{SETTINGS.target}/target_{SETTINGS.target_frequency}/",
         "models", f"models/{SETTINGS.model_name}", f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}",
-        f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}"]
+        f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}",
+        f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}/target_{SETTINGS.target}/",
+        f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}/target_{SETTINGS.target}/target_{SETTINGS.target_frequency}/"]
     for path in paths:
         SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
 
