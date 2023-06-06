@@ -37,9 +37,9 @@ def main():
         f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}/target_{SETTINGS.target}/",
         f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}/target_{SETTINGS.target}/target_{SETTINGS.target_frequency}/",
         "models", f"models/{SETTINGS.model_name}", f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}",
-        f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}",
-        f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}/target_{SETTINGS.target}/",
-        f"results/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}/target_{SETTINGS.target}/target_{SETTINGS.target_frequency}/"]
+        f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}",
+        f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}/target_{SETTINGS.target}/",
+        f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.nn}/e{SETTINGS.epsilon}/target_{SETTINGS.target}/target_{SETTINGS.target_frequency}/"]
     for path in paths:
         SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
 
