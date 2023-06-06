@@ -125,6 +125,7 @@ class MatchingEnv(gym.Env):
         ######################
 
         reward = 0
+        good = False
         
         # If the product issued is actually present in the inventory..
         if sum(I[action]) > 0:
