@@ -119,9 +119,8 @@ class DQN():
         for e in range(SETTINGS.episodes[0], SETTINGS.episodes[1]):
             print(f"\nEpisode: {e}")
             # If this isn't the first episode, load the previous episode's saved model.
-            if e > 0:
-                torch.cuda.empty_cache()
-                self.load(SETTINGS, e - 1)
+            # if e > 0:
+            #     self.load(SETTINGS, e - 1)
 
             # Start with an empty memory and initial epsilon.
             self.experience_replay = deque(maxlen=self.batch_size)

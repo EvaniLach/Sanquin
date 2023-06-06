@@ -77,7 +77,7 @@ def run(config, budget):
 
 if __name__ == '__main__':
     cs = make_config_space()
-    scenario = Scenario(cs, output_directory=r"/home/s1949624/Sanquin/",
+    scenario = Scenario(cs, output_directory=r"/home/s1949624/Sanquin/SMAC",
                         n_trials=1,
                         seed=10)
     # load/import classes
@@ -92,6 +92,6 @@ if __name__ == '__main__':
     # intensifier = Hyperband
 
 
-    smac = HPO(scenario, run_a, overwrite=True)
+    smac = HPO(scenario, run, overwrite=True)
     incumbent = smac.optimize()
     print(incumbent)
