@@ -74,9 +74,10 @@ class DQN():
     def sample_from_experience(self, sample_size):
         if len(self.experience_replay) < self.batch_size:
             sample_size = len(self.experience_replay)
+        np.set_printoptions(threshold=500)
         sample = random.sample(self.experience_replay, sample_size)
-        print(sample)
         s = torch.from_numpy(np.vstack([exp[0].flatten() for exp in sample])).float().cuda()
+        torch.set_printoptions(threshold=10_000)       
         a = torch.tensor([exp[1] for exp in sample]).float().cuda()
         rn = torch.tensor([exp[2] for exp in sample]).float().cuda()
         sn = torch.from_numpy(np.vstack([exp[3].flatten() for exp in sample])).float().cuda()
@@ -168,7 +169,6 @@ class DQN():
                     while not done:
                         # Select an action using the model's epsilon-greedy policy.
                         action = self.select_action(state, limit, PARAMS)
-                        
                         # Calculate the reward and update the dataframe.
                         reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
                         todays_reward += reward
@@ -178,6 +178,11 @@ class DQN():
                         if day >= SETTINGS.init_days:
                             self.experience_replay.append([state, action, reward, next_state, day])
                         # Update the current state to the next state.
+                        if reward == 0:
+                           print('state', state)
+                           print('reward', reward)
+                           print('done', done)
+                           print('next state', next_state)
                         state = next_state
 
                 # If there are enough experiences in memory, update the model.

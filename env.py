@@ -172,7 +172,6 @@ class MatchingEnv(gym.Env):
 
         # Remove the already matched request.
         self.state[:,-2] -= self.state[:,-1]
-
         # Check if there are still requests for today to match.
         if sum(self.state[:,-2]) > 0:
 
