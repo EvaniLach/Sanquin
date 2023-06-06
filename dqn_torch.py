@@ -26,6 +26,14 @@ class DQN():
         self.q_net = self.build_nn()
         self.q_net.to('cuda')
 
+        self.target = SETTINGS.target
+
+        if self.target:
+            self.target_net = copy.deepcopy(self.q_net)
+            self.target_net.cuda()
+            self.update_counts = 0
+            self.target_frequency = SETTINGS.target_frequency
+
         self.optimizer = torch.optim.Adam(self.q_net.parameters(), lr=self.alpha)
         self.loss_fn = torch.nn.MSELoss()
         torch.manual_seed(0)
@@ -105,6 +113,36 @@ class DQN():
         loss.backward(retain_graph=True)
         self.optimizer.step()
 
+        return loss.item()
+
+    def get_q_next(self, state):
+        with torch.no_grad():
+            qp = self.target_net(state)
+        q, _ = torch.max(qp, axis=1)
+        return q
+
+    def update_target(self):
+        # Sample a batch of experiences from the model's memory.
+        s, a, rn, ns = self.sample_from_experience(sample_size=self.batch_size)
+        # Update target network
+        if self.update_counts == self.target_frequency:
+            self.target_net.load_state_dict(self.q_net.state_dict())
+            self.update_counts = 0
+
+        # Predict expected return of current state using main network
+        q_matrix = self.q_net(s.cuda())
+        pred_return, _ = torch.max(q_matrix, axis=1)
+
+        # Get target return using target network
+        q_next = self.get_q_next(ns.cuda())
+        target_return = rn.cuda() + self.gamma * q_next
+
+        loss = self.loss_fn(pred_return, target_return)
+        self.optimizer.zero_grad()
+        loss.backward(retain_graph=True)
+        self.optimizer.step()
+
+        self.update_counts += 1
         return loss.item()
 
     def train(self, SETTINGS, PARAMS):
@@ -190,6 +228,8 @@ class DQN():
                 if len(self.experience_replay) >= self.batch_size:
                     if self.method == 'day':
                         self.update_day()
+                    elif self.target:
+                        day_loss += self.update_target()
                     else:
                         day_loss += self.update_request()
 

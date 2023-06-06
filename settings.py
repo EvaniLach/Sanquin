@@ -3,7 +3,7 @@ import os
 
 class Settings():
 
-    def __init__(self, method, minor, alpha, n_neurons, epsilon, decay, episodes):
+    def __init__(self, method, minor, alpha, n_neurons, epsilon, decay, episodes, target, frequency):
 
         # Working directory.
         # self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
@@ -86,6 +86,9 @@ class Settings():
         self.gamma = 0.99          # discount factor
         self.batch_size = 50       # batch size for replay buffer
         self.nn = n_neurons
+
+        self.target = target
+        self.target_frequency = frequency
 
         ####################
         # GUROBI OPTIMIZER #
