@@ -27,7 +27,7 @@ args = argparser.parse_args()
 def main():
     startTime = datetime.now()
     SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, n_neurons=args.nn, epsilon=0.1,
-                        decay=args.decay, episodes=args.episodes, target=args.target, )
+                        decay=args.decay, episodes=args.episodes, target=args.target, frequency=args.frequency)
     PARAMS = Params(SETTINGS)
 
     paths = [
