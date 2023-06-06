@@ -172,6 +172,7 @@ class DQN():
                         # Calculate the reward and update the dataframe.
                         reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
                         todays_reward += reward
+                        print('current state', state)
                         # Get the next state and whether the episode is done.
                         next_state, done = self.env.next_request(PARAMS)                       
                         # Store the experience tuple in memory.
