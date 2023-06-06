@@ -173,9 +173,10 @@ class DQN():
                         reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
                         todays_reward += reward
                         print('day', day)
-                        print('current state', state)
+
                         # Get the next state and whether the episode is done.
-                        next_state, done = self.env.next_request(PARAMS)                       
+                        next_state, done = self.env.next_request(PARAMS)
+                        print('current state', state)
                         # Store the experience tuple in memory.
                         if day >= SETTINGS.init_days:
                             self.experience_replay.append([state, action, reward, next_state, day])
