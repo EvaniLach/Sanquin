@@ -113,8 +113,8 @@ class DQN():
         # Set epsilon value
         self.epsilon = SETTINGS.epsilon
 
-        # Keep track of episode losses
-        e_losses = []
+        # Keep track of episode rewards
+        e_rewards = []
         # Run the simulation for the given range of episodes.
         for e in range(SETTINGS.episodes[0], SETTINGS.episodes[1]):
             print(f"\nEpisode: {e}")
@@ -138,6 +138,9 @@ class DQN():
             # Limit actions to available actions
             limit = False
 
+            # Episode total reward
+            e_reward = 0
+
             # Loop through each day in the simulation.
             while day < n_days:
 
@@ -145,6 +148,9 @@ class DQN():
                 done = False
                 todays_reward = 0
                 day_loss = 0
+
+                # Update log df with: requests, supplied, inventory
+                self.env.log_state(PARAMS, day, df)
 
                 # If there are no requests for today, proceed to the next day.
                 if sum(self.env.state[:, -1]) == 0:
@@ -176,11 +182,6 @@ class DQN():
                         next_state, done = self.env.next_request(PARAMS, action)
                         # Store the experience tuple in memory.
                         if day >= SETTINGS.init_days:
-                            # if good:
-                            #     print('current state', current_state)
-                            #     print('action', action)
-                            #     print('reward', reward)
-                            #     print('next', next_state)
                             self.experience_replay.append([current_state, action, reward, next_state, day])
 
                 # If there are enough experiences in memory, update the model.
@@ -194,8 +195,9 @@ class DQN():
                 df.loc[day, "logged"] = True
                 print(f"Day {day}, reward {todays_reward}")
 
-                # Update log df
-                self.env.log_state(PARAMS, day, df)
+                # Sum total episode reward
+                e_reward += todays_reward
+                # Log daily total loss
                 df.loc[day, "day loss"] = day_loss
 
                 # Update the model's epsilon value.
@@ -208,6 +210,6 @@ class DQN():
 
                 # Set the current day to the environment's current day.
                 day = self.env.day
-            e_losses.append(df["day loss"].sum())
+            e_rewards.append(e_reward)
             # self.epsilon = self.epsilon * SETTINGS.epsilon_decay
-        return e_losses
+        return e_rewards

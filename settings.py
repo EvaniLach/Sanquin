@@ -83,7 +83,7 @@ class Settings():
         self.epsilon_min = 0.01
         self.epsilon_decay = decay
         self.alpha = alpha         # learning rate
-        self.gamma = 0.5           # discount factor
+        self.gamma = 0.99          # discount factor
         self.batch_size = 50       # batch size for replay buffer
         self.nn = n_neurons
 
