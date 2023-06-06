@@ -76,8 +76,6 @@ class DQN():
         if len(self.experience_replay) < self.batch_size:
             sample_size = len(self.experience_replay)
         np.set_printoptions(threshold=500)
-        for item in self.experience_replay:
-            print(item[0])
         sample = random.sample(self.experience_replay, sample_size)
         s = torch.from_numpy(np.vstack([exp[0].flatten() for exp in sample])).float().cuda()
         torch.set_printoptions(threshold=10_000)
@@ -180,6 +178,7 @@ class DQN():
                         next_state, done = self.env.next_request(PARAMS, action)
                         # Store the experience tuple in memory.
                         if day >= SETTINGS.init_days:
+                            print(current_state)
                             self.experience_replay.append([current_state, action, reward, next_state, day])
 
 
