@@ -180,7 +180,7 @@ class MatchingEnv(gym.Env):
             current_r[np.where(self.state[:,-2]>0)[0][0]] = 1
 
             self.state[:,-1] = current_r
-
+            print('next_state from next_request', self.state)
             return self.state, False
 
         else:
