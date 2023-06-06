@@ -75,11 +75,8 @@ class DQN():
     def sample_from_experience(self, sample_size):
         if len(self.experience_replay) < self.batch_size:
             sample_size = len(self.experience_replay)
-        np.set_printoptions(threshold=500)
         sample = random.sample(self.experience_replay, sample_size)
         s = torch.from_numpy(np.vstack([exp[0].flatten() for exp in sample])).float().cuda()
-        print(s)
-        torch.set_printoptions(threshold=10_000)
         a = torch.tensor([exp[1] for exp in sample]).float().cuda()
         rn = torch.tensor([exp[2] for exp in sample]).float().cuda()
         sn = torch.from_numpy(np.vstack([exp[3].flatten() for exp in sample])).float().cuda()
@@ -126,7 +123,7 @@ class DQN():
             #     self.load(SETTINGS, e - 1)
 
             # Start with an empty memory and initial epsilon.
-            self.experience_replay = deque(maxlen=self.batch_size)
+            self.experience_replay = []
             # self.epsilon = SETTINGS.epsilon
 
             # Reset the environment.
