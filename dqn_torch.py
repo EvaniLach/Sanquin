@@ -170,11 +170,13 @@ class DQN():
                     while not done:
                         # Select an action using the model's epsilon-greedy policy.
                         action = self.select_action(state, limit, PARAMS)
+                        # Create copy of current state
+                        current_state = copy.deepcopy(state)
                         # Calculate the reward and update the dataframe.
                         reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
                         todays_reward += reward
                         # Get the next state and whether the episode is done.
-                        next_state, current_state, done = self.env.next_request(PARAMS, action)
+                        next_state, done = self.env.next_request(PARAMS, action)
                         # Store the experience tuple in memory.
                         if day >= SETTINGS.init_days:
                             self.experience_replay.append([current_state, action, reward, next_state, day])

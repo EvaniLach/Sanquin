@@ -183,7 +183,7 @@ class MatchingEnv(gym.Env):
             current_r[np.where(self.state[:,-2]>0)[0][0]] = 1
 
             self.state[:,-1] = current_r
-            return self.state, current_state, False
+            return self.state, False
 
         else:
 
