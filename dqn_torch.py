@@ -167,8 +167,8 @@ class DQN():
                 else:
                     # REQUEST-BASED
                     # If there are requests for today, loop through each request.
+                    i = 0
                     while not done:
-                        i = 0
                         # Select an action using the model's epsilon-greedy policy.
                         action = self.select_action(state, limit, PARAMS)
                         # Create copy of current state
@@ -186,9 +186,10 @@ class DQN():
                            print('reward', reward)
                            print('done', done)
                            print('next state', next_state)
+                           i += 1
                            if i == 3:
                              quit()
-                        i =+ 1
+
 
                 # If there are enough experiences in memory, update the model.
                 if len(self.experience_replay) >= self.batch_size:
