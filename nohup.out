@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/home/s1949624/RL_matching/experiments.py", line 58, in <module>
+    main()
+  File "/home/s1949624/RL_matching/experiments.py", line 29, in main
+    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, n_neurons=args.nn, epsilon=0.1,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Settings.__init__() missing 1 required positional argument: 'frequency'
+Traceback (most recent call last):
+  File "/home/s1949624/RL_matching/experiments.py", line 58, in <module>
+    main()
+  File "/home/s1949624/RL_matching/experiments.py", line 29, in main
+    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, n_neurons=args.nn, epsilon=0.1,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Settings.__init__() missing 1 required positional argument: 'frequency'
+Traceback (most recent call last):
+  File "/home/s1949624/RL_matching/experiments.py", line 58, in <module>
+    main()
+  File "/home/s1949624/RL_matching/experiments.py", line 29, in main
+    SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, n_neurons=args.nn, epsilon=0.1,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Settings.__init__() missing 1 required positional argument: 'frequency'
