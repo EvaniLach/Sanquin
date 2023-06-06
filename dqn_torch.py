@@ -167,7 +167,6 @@ class DQN():
                 else:
                     # REQUEST-BASED
                     # If there are requests for today, loop through each request.
-                    i = 0
                     while not done:
                         # Select an action using the model's epsilon-greedy policy.
                         action = self.select_action(state, limit, PARAMS)
@@ -181,14 +180,6 @@ class DQN():
                         # Store the experience tuple in memory.
                         if day >= SETTINGS.init_days:
                             self.experience_replay.append([current_state, action, reward, next_state, day])
-                        if reward > -50:
-                           print('state', current_state)
-                           print('reward', reward)
-                           print('done', done)
-                           print('next state', next_state)
-                           i += 1
-                           if i == 3:
-                             quit()
 
 
                 # If there are enough experiences in memory, update the model.

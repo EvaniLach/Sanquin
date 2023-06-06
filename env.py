@@ -130,7 +130,6 @@ class MatchingEnv(gym.Env):
         if sum(I[action]) > 0:
 
             # Remove the issued products from the inventory, where the oldest product is removed first.
-            print('action', action)
             I[action, np.where(I[action] > 0)[0][-1]] -= 1
             comp = binarray(not_compatible(r, action), len(antigens))
             
@@ -139,7 +138,6 @@ class MatchingEnv(gym.Env):
                 reward -= 10 + 1    
                 df.loc[day,"num shortages"] += 1
                 df.loc[day,"issued but discarded"] += 1
-                print('disc', reward)
 
             else:
                 A = {antigens[k] : k for k in range(len(antigens))}
@@ -157,7 +155,6 @@ class MatchingEnv(gym.Env):
                     mismatch_penalties += comp[A["Fyb"]] * int(bin(r)[A["Fya"]+2]) * w[A["Fyb"]]
                     df.loc[day, f"num mismatches Fyb"] += comp[A["Fyb"]] * int(bin(r)[A["Fya"]+2])
                 reward -= mismatch_penalties
-                print('mismatch_penalties', reward)
 
         else:
             reward -= 50     # The issued product is not present in the inventory.
