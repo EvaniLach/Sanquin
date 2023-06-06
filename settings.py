@@ -3,7 +3,7 @@ import os
 
 class Settings():
 
-    def __init__(self, method, minor, alpha, nn, epsilon, ed):
+    def __init__(self, method, minor, alpha, n_neurons, epsilon, decay, episodes):
 
         # Working directory.
         # self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
@@ -28,7 +28,7 @@ class Settings():
 
         # (x,y): Episode numbers range(x,y) will be optimized.
         # The total number of simulations executed will thus be y - x.
-        self.episodes = (0,25)
+        self.episodes = (0,episodes)
 
         # Number of hospitals considered. If more than 1 (regional and university combined), a distribution center is included.
         # "regional": Use the patient group distribution of the OLVG, a regional hospital, with average daily demand of 50 products.
@@ -81,11 +81,11 @@ class Settings():
 
         self.epsilon = epsilon
         self.epsilon_min = 0.01
-        self.epsilon_decay = ed
+        self.epsilon_decay = decay
         self.alpha = alpha         # learning rate
         self.gamma = 0.5           # discount factor
         self.batch_size = 50       # batch size for replay buffer
-        self.nn = nn
+        self.nn = n_neurons
 
         ####################
         # GUROBI OPTIMIZER #

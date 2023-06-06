@@ -1,9 +1,5 @@
 from smac import HyperparameterOptimizationFacade as HPO, Scenario, RunHistory
-from ConfigSpace import ConfigurationSpace, Configuration, UniformFloatHyperparameter, OrdinalHyperparameter, \
-    UniformIntegerHyperparameter, GreaterThanCondition, CategoricalHyperparameter, EqualsCondition
-
-from concurrent.futures import ProcessPoolExecutor
-from itertools import repeat
+from ConfigSpace import *
 
 from env import *
 from dqn_torch import *
@@ -15,7 +11,7 @@ import numpy as np
 
 def make_config_space():
     cs = ConfigurationSpace(seed=0)
-    n_layers = cs.add_hyperparameter(OrdinalHyperparameter('n_layers', [1, 2, 3, 4]))
+    n_layers = cs.add_hyperparameter(Categorical('n_layers', [1, 2, 3, 4]), ordered=True)
     n_neurons1 = cs.add_hyperparameter(UniformIntegerHyperparameter('n_neurons1', lower=16, upper=256, q=16))
     n_neurons2 = cs.add_hyperparameter(UniformIntegerHyperparameter('n_neurons2', lower=16, upper=256, q=16))
     n_neurons3 = cs.add_hyperparameter(UniformIntegerHyperparameter('n_neurons3', lower=16, upper=256, q=16))
@@ -30,12 +26,11 @@ def make_config_space():
     cs.add_hyperparameter(
         UniformFloatHyperparameter('optimizer_lr', lower=1e-5, upper=1e-1, log=True))
 
-    cs.add_hyperparameter(CategoricalHyperparameter('activation', ['relu', 'tanh', 'elu', 'gelu']))
     cs.add_hyperparameter(UniformFloatHyperparameter('epsilon', lower=0.1, upper=1, log=True))
     return cs
 
 
-def run_a(config, seed=20):
+def run(config, seed=20):
     print(config)
     n_neurons = [config['n_neurons1']]
 
@@ -46,7 +41,7 @@ def run_a(config, seed=20):
     if config['n_layers'] > 3:
         n_neurons.append(config['n_neurons4'])
 
-    SETTINGS = Settings('request', minor=0, alpha=config['optimizer_lr'], nn=n_neurons, epsilon=config['epsilon'], ed=1)
+    SETTINGS = Settings(method='request', minor=0, alpha=config['optimizer_lr'], n_neurons=n_neurons, epsilon=config['epsilon'], decay=1, episodes=10)
     PARAMS = Params(SETTINGS)
 
     paths = [
@@ -65,33 +60,11 @@ def run_a(config, seed=20):
     print(loss)
     return np.mean(loss)
 
-
-
-def run(config, budget):
-    sum = 0
-    with ProcessPoolExecutor() as executor:
-        for res in executor.map(run_a, repeat(config, 10)):
-            sum += res
-        return 200 - sum / 10.0
-
-
 if __name__ == '__main__':
     cs = make_config_space()
     scenario = Scenario(cs, output_directory=r"/home/s1949624/Sanquin/SMAC",
-                        n_trials=1,
+                        n_trials=20,
                         seed=10)
-    # load/import classes
-    from dask.distributed import Client
-    import logging
-
-    # set up cluster and workers
-    # client = Client(n_workers=15,
-    #                 threads_per_worker=1,
-    #                 memory_limit='512GB',
-    #                 silence_logs=logging.ERROR)
-    # intensifier = Hyperband
-
-
     smac = HPO(scenario, run, overwrite=True)
     incumbent = smac.optimize()
     print(incumbent)
