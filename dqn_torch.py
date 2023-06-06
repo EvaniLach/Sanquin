@@ -75,6 +75,7 @@ class DQN():
         if len(self.experience_replay) < self.batch_size:
             sample_size = len(self.experience_replay)
         sample = random.sample(self.experience_replay, sample_size)
+        print(sample)
         s = torch.from_numpy(np.vstack([exp[0].flatten() for exp in sample])).float().cuda()
         a = torch.tensor([exp[1] for exp in sample]).float().cuda()
         rn = torch.tensor([exp[2] for exp in sample]).float().cuda()
@@ -97,8 +98,6 @@ class DQN():
         q_matrix = self.q_net(s.cuda())
         q_m_target = q_matrix.detach().clone()
         q_m_target[:,action] = q_target
-
-        print('states', s)
 
         loss = self.loss_fn(q_matrix, q_m_target)
         self.optimizer.zero_grad()
