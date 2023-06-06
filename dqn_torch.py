@@ -184,7 +184,7 @@ class DQN():
                                 print('reward', reward)
                                 print('next', next_state)
                             self.experience_replay.append([state, action, reward, next_state, day])
-
+                        state = next_state
 
                 # If there are enough experiences in memory, update the model.
                 if len(self.experience_replay) >= self.batch_size:
