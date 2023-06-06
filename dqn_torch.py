@@ -78,7 +78,7 @@ class DQN():
         np.set_printoptions(threshold=500)
         sample = random.sample(self.experience_replay, sample_size)
         s = torch.from_numpy(np.vstack([exp[0].flatten() for exp in sample])).float().cuda()
-        torch.set_printoptions(threshold=10_000)       
+        torch.set_printoptions(threshold=10_000)
         a = torch.tensor([exp[1] for exp in sample]).float().cuda()
         rn = torch.tensor([exp[2] for exp in sample]).float().cuda()
         sn = torch.from_numpy(np.vstack([exp[3].flatten() for exp in sample])).float().cuda()
@@ -89,7 +89,7 @@ class DQN():
 
         # Sample a batch of experiences from the model's memory.
         s, a, rn, ns = self.sample_from_experience(sample_size=self.batch_size)
-
+        print(s)
         # Predict Q-values of next state
         q_ns = self.q_net(ns.cuda())
         max_q, action = torch.max(q_ns, dim=1)
