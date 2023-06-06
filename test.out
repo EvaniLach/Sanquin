@@ -3,63 +3,311 @@ CREATING DQN
 alpha: 0.001, gamma: 0.5, batch size: 50.
 
 Episode: 0
-action 5
-mismatch_penalties 0
-state [[17.  0.  0.  0.  0.  1.  0.  4.  1.]
- [68.  0.  0.  0.  0. 16. 10. 41.  0.]
- [ 1.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 6.  0.  0.  0.  0.  0.  1.  8.  0.]
- [15.  0.  0.  0.  0.  1.  2.  5.  0.]
- [40.  0.  0.  0.  0. 10.  3. 48.  0.]
- [ 0.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 3.  0.  0.  0.  0.  4.  0.  0.  0.]]
-reward 0.0
-done False
-next state [[17.  0.  0.  0.  0.  1.  0.  3.  1.]
- [68.  0.  0.  0.  0. 16. 10. 41.  0.]
- [ 1.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 6.  0.  0.  0.  0.  0.  1.  8.  0.]
- [15.  0.  0.  0.  0.  1.  2.  5.  0.]
- [39.  0.  0.  0.  0. 10.  3. 48.  0.]
- [ 0.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 3.  0.  0.  0.  0.  4.  0.  0.  0.]]
-action 5
-mismatch_penalties 0
-state [[17.  0.  0.  0.  0.  1.  0.  3.  1.]
- [68.  0.  0.  0.  0. 16. 10. 41.  0.]
- [ 1.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 6.  0.  0.  0.  0.  0.  1.  8.  0.]
- [15.  0.  0.  0.  0.  1.  2.  5.  0.]
- [39.  0.  0.  0.  0. 10.  3. 48.  0.]
- [ 0.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 3.  0.  0.  0.  0.  4.  0.  0.  0.]]
-reward 0.0
-done False
-next state [[17.  0.  0.  0.  0.  1.  0.  2.  1.]
- [68.  0.  0.  0.  0. 16. 10. 41.  0.]
- [ 1.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 6.  0.  0.  0.  0.  0.  1.  8.  0.]
- [15.  0.  0.  0.  0.  1.  2.  5.  0.]
- [38.  0.  0.  0.  0. 10.  3. 48.  0.]
- [ 0.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 3.  0.  0.  0.  0.  4.  0.  0.  0.]]
-action 5
-mismatch_penalties 0
-state [[17.  0.  0.  0.  0.  1.  0.  2.  1.]
- [68.  0.  0.  0.  0. 16. 10. 41.  0.]
- [ 1.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 6.  0.  0.  0.  0.  0.  1.  8.  0.]
- [15.  0.  0.  0.  0.  1.  2.  5.  0.]
- [38.  0.  0.  0.  0. 10.  3. 48.  0.]
- [ 0.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 3.  0.  0.  0.  0.  4.  0.  0.  0.]]
-reward 0.0
-done False
-next state [[17.  0.  0.  0.  0.  1.  0.  1.  1.]
- [68.  0.  0.  0.  0. 16. 10. 41.  0.]
- [ 1.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 6.  0.  0.  0.  0.  0.  1.  8.  0.]
- [15.  0.  0.  0.  0.  1.  2.  5.  0.]
- [37.  0.  0.  0.  0. 10.  3. 48.  0.]
- [ 0.  0.  0.  0.  0.  0.  0.  0.  0.]
- [ 3.  0.  0.  0.  0.  4.  0.  0.  0.]]
+Day 0, reward -4500.0
+Day 1, reward -1800.0
+Day 2, reward -3000.0
+Day 3, reward -2850.0
+Day 4, reward -9771.0
+Day 5, reward -1050.0
+Day 6, reward -1475.0
+Day 7, reward -1822.0
+Day 8, reward -2937.0
+Day 9, reward -5777.0
+Day 10, reward -1911.0
+Day 11, reward -2070.0
+Day 12, reward -2011.0
+Day 13, reward -2027.0
+Day 14, reward -6989.0
+Day 15, reward -3400.0
+Day 16, reward -4672.0
+Day 17, reward -3900.0
+Day 18, reward -2470.0
+Day 19, reward -2737.0
+Day 20, reward -400.0
+Day 21, reward -6621.0
+Day 22, reward -2650.0
+Day 23, reward -4025.0
+Day 24, reward -4791.0
+Day 25, reward -1711.0
+Day 26, reward -4275.0
+Day 27, reward -2000.0
+Day 28, reward -5739.0
+Day 29, reward -8644.0
+Day 30, reward -4700.0
+Day 31, reward -8452.0
+Day 32, reward -2761.0
+Day 33, reward -1712.0
+Day 34, reward -1327.0
+Day 35, reward -3673.0
+Day 36, reward -8027.0
+Day 37, reward -2111.0
+Day 38, reward -3675.0
+Day 39, reward -1400.0
+Day 40, reward -1998.0
+Day 41, reward -2220.0
+Day 42, reward -3211.0
+Day 43, reward -7687.0
+Day 44, reward -2561.0
+Day 45, reward -4424.0
+Day 46, reward -4204.0
+Day 47, reward -1600.0
+Day 48, reward -5505.0
+Day 49, reward -2700.0
+Day 50, reward -5424.0
+Day 51, reward -2500.0
+Day 52, reward -5544.0
+Day 53, reward -4577.0
+Day 54, reward -1550.0
+Day 55, reward -4542.0
+Day 56, reward -1300.0
+Day 57, reward -3612.0
+Day 58, reward -4175.0
+Day 59, reward -3829.0
+Day 60, reward -8763.0
+Day 61, reward -1200.0
+Day 62, reward -2185.0
+Day 63, reward -2972.0
+Day 64, reward -5118.0
+Day 65, reward -7210.0
+Day 66, reward -4600.0
+Day 67, reward -7803.0
+Day 68, reward -2000.0
+Day 69, reward -2121.0
+Day 70, reward -2000.0
+Day 71, reward -3185.0
+Day 72, reward -3638.0
+Day 73, reward -3007.0
+Day 74, reward -3903.0
+Day 75, reward -1561.0
+Day 76, reward -1721.0
+Day 77, reward -3033.0
+Day 78, reward -5792.0
+Day 79, reward -4121.0
+Day 80, reward -6485.0
+Day 81, reward -4415.0
+Day 82, reward -2167.0
+Day 83, reward -2453.0
+Day 84, reward -2261.0
+Day 85, reward -8452.0
+Day 86, reward -2311.0
+Day 87, reward -5258.0
+Day 88, reward -1870.0
+Day 89, reward -1509.0
+Day 90, reward -2544.0
+Day 91, reward -3986.0
+Day 92, reward -7689.0
+Day 93, reward -3061.0
+Day 94, reward -4761.0
+Day 95, reward -2000.0
+Day 96, reward -2624.0
+Day 97, reward -1525.0
+Day 98, reward -4161.0
+Day 99, reward -5065.0
+Day 100, reward -3222.0
+Day 101, reward -6091.0
+Day 102, reward -2200.0
+Day 103, reward -2207.0
+Day 104, reward -650.0
+Day 105, reward -2790.0
+Day 106, reward -5475.0
+Day 107, reward -3106.0
+Day 108, reward -7044.0
+Day 109, reward -1250.0
+Day 110, reward -3396.0
+Day 111, reward -1500.0
+Day 112, reward -2855.0
+Day 113, reward -2800.0
+Day 114, reward -8790.0
+Day 115, reward -4760.0
+Day 116, reward -5036.0
+Day 117, reward -1087.0
+Day 118, reward -2062.0
+Day 119, reward -5316.0
+Day 120, reward -3150.0
+Day 121, reward -6408.0
+Day 122, reward -3050.0
+Day 123, reward -4494.0
+Day 124, reward -1863.0
+Day 125, reward -3204.0
+Day 126, reward -6257.0
+Day 127, reward -3311.0
+Day 128, reward -8234.0
+Day 129, reward -2372.0
+Day 130, reward -3418.0
+Day 131, reward -450.0
+Day 132, reward -2314.0
+Day 133, reward -1890.0
+Day 134, reward -3482.0
+Day 135, reward -4739.0
+Day 136, reward -3411.0
+Day 137, reward -4791.0
+Day 138, reward -1200.0
+Day 139, reward -3006.0
+Day 140, reward -2261.0
+Day 141, reward -4881.0
+Day 142, reward -2461.0
+Day 143, reward -8002.0
+Day 144, reward -4611.0
+Day 145, reward -5006.0
+Day 146, reward -690.0
+Day 147, reward -3263.0
+Day 148, reward -3471.0
+Day 149, reward -1772.0
+Day 150, reward -4749.0
+Day 151, reward -1561.0
+Day 152, reward -820.0
+Day 153, reward -850.0
+Day 154, reward -2486.0
+Day 155, reward -2936.0
+Day 156, reward -5235.0
+Day 157, reward -2780.0
+Day 158, reward -1585.0
+Day 159, reward -2068.0
+Day 160, reward -1000.0
+Day 161, reward -3820.0
+Day 162, reward -2300.0
+Day 163, reward -2454.0
+Day 164, reward -3706.0
+Day 165, reward -2087.0
+Day 166, reward -2973.0
+Day 167, reward -900.0
+Day 168, reward -6145.0
+Day 169, reward -3772.0
+Day 170, reward -6422.0
+Day 171, reward -2615.0
+Day 172, reward -2870.0
+Day 173, reward -1959.0
+Day 174, reward -602.0
+Day 175, reward -3062.0
+Day 176, reward -5411.0
+Day 177, reward -4782.0
+Day 178, reward -4108.0
+Day 179, reward -1874.0
+Day 180, reward -1118.0
+Day 181, reward -1688.0
+Day 182, reward -3053.0
+Day 183, reward -3904.0
+Day 184, reward -6333.0
+Day 185, reward -6515.0
+Day 186, reward -6413.0
+Day 187, reward -3116.0
+Day 188, reward -2960.0
+Day 189, reward -1867.0
+Day 190, reward -4437.0
+Day 191, reward -4882.0
+Day 192, reward -3106.0
+Day 193, reward -2918.0
+Day 194, reward -1650.0
+Day 195, reward -1629.0
+Day 196, reward -361.0
+Day 197, reward -2646.0
+Day 198, reward -3492.0
+Day 199, reward -3720.0
+Day 200, reward -3428.0
+Day 201, reward -450.0
+Day 202, reward -4373.0
+Day 203, reward -2800.0
+Day 204, reward -9938.0
+Day 205, reward -4361.0
+Day 206, reward -5978.0
+Day 207, reward -3824.0
+Day 208, reward -1100.0
+Day 209, reward -2208.0
+Day 210, reward -2100.0
+Day 211, reward -4475.0
+Day 212, reward -2483.0
+Day 213, reward -7362.0
+Day 214, reward -7597.0
+Day 215, reward -1960.0
+Day 216, reward -3319.0
+Day 217, reward -2011.0
+Day 218, reward -5211.0
+Day 219, reward -1500.0
+Day 220, reward -3445.0
+Day 221, reward -1361.0
+Day 222, reward -568.0
+Day 223, reward -3529.0
+Day 224, reward -2872.0
+Day 225, reward -7337.0
+Day 226, reward -4822.0
+Day 227, reward -8063.0
+Day 228, reward -4008.0
+Day 229, reward -3776.0
+Day 230, reward -582.0
+Day 231, reward -2856.0
+Day 232, reward -2897.0
+Day 233, reward -4278.0
+Day 234, reward -5911.0
+Day 235, reward -1961.0
+Day 236, reward -2283.0
+Day 237, reward -1550.0
+Day 238, reward -4329.0
+Day 239, reward -3723.0
+Day 240, reward -8494.0
+Day 241, reward -4824.0
+Day 242, reward -3278.0
+Day 243, reward -2280.0
+Day 244, reward -1232.0
+Day 245, reward -1786.0
+Day 246, reward -8092.0
+Day 247, reward -7190.0
+Day 248, reward -3793.0
+Day 249, reward -6445.0
+Day 250, reward -1400.0
+Day 251, reward -3880.0
+Day 252, reward -2300.0
+Day 253, reward -6540.0
+Day 254, reward -4852.0
+Day 255, reward -9528.0
+Day 256, reward -5324.0
+Day 257, reward -1573.0
+Day 258, reward -3399.0
+Day 259, reward -1911.0
+Day 260, reward -3734.0
+Day 261, reward -3222.0
+Day 262, reward -3593.0
+Day 263, reward -2050.0
+Day 264, reward -2102.0
+Day 265, reward -2037.0
+Day 266, reward -1911.0
+Day 267, reward -3818.0
+Day 268, reward -1961.0
+Day 269, reward -3518.0
+Day 270, reward -919.0
+Day 271, reward -1313.0
+Day 272, reward -1860.0
+Day 273, reward -1450.0
+Day 274, reward -5554.0
+Day 275, reward -2461.0
+Day 276, reward -5070.0
+Day 277, reward -2034.0
+Day 278, reward -1863.0
+Day 279, reward -1033.0
+Day 280, reward -4463.0
+Day 281, reward -6428.0
+Day 282, reward -2561.0
+Day 283, reward -4844.0
+Day 284, reward -2261.0
+Day 285, reward -2646.0
+Day 286, reward -961.0
+Day 287, reward -2873.0
+Day 288, reward -4053.0
+Day 289, reward -3621.0
+Day 290, reward -6328.0
+Day 291, reward -2350.0
+Day 292, reward -4995.0
+Day 293, reward -2411.0
+Day 294, reward -4651.0
+Day 295, reward -4537.0
+Day 296, reward -6956.0
+Day 297, reward -6262.0
+Day 298, reward -2907.0
+Day 299, reward -885.0
+Day 300, reward -450.0
+Day 301, reward -7369.0
+Day 302, reward -4800.0
+Day 303, reward -7959.0
+Day 304, reward -3961.0
+Day 305, reward -4620.0
+Day 306, reward -2968.0
+Day 307, reward -2089.0
