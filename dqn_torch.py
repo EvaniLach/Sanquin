@@ -20,7 +20,7 @@ class DQN():
         self.batch_size = SETTINGS.batch_size  # batch size for replay buffer
         self.method = SETTINGS.method
         self.nn = SETTINGS.nn
-        self.experience_replay = deque(maxlen=500)
+        self.experience_replay = []
         self.epsilon = SETTINGS.epsilon
    
         self.n_actions = self.env.action_space.shape[0]
@@ -176,7 +176,7 @@ class DQN():
             #     self.load(SETTINGS, e - 1)
 
             # Start with an empty memory and initial epsilon.
-            self.experience_replay = deque(maxlen=500)
+            self.experience_replay = []
 
             # Reset the environment.
             self.env.reset(SETTINGS, PARAMS, e, max(SETTINGS.n_hospitals, key=lambda i: SETTINGS.n_hospitals[i]))
