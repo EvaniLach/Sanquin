@@ -53,8 +53,8 @@ class DQN():
             layers += (linear, act)
         return nn.Sequential(*layers)
 
-    def save(self, SETTINGS, df, e):
-        df.to_csv(SETTINGS.generate_filename(SETTINGS, "results", e) + ".csv", sep=',', index=True)
+    def save(self, SETTINGS, df, e, k, type):
+        df.to_csv(SETTINGS.generate_filename(SETTINGS, "results", e, type, k) + ".csv", sep=',', index=True)
         torch.save(self.q_net.state_dict(), SETTINGS.generate_filename(SETTINGS, "models", e))
 
     def load(self, SETTINGS, e):
@@ -159,11 +159,11 @@ class DQN():
         else:
             return final + (start - final) * (final_from_T - t) / final_from_T
 
-    def train(self, SETTINGS, PARAMS, train_episodes):
+    def train(self, SETTINGS, PARAMS, train_episodes, k):
         # Calculate the total number of days for the simulation.
         n_days = SETTINGS.init_days + SETTINGS.test_days
         # Determine the days at which to save the model.
-        # model_saving_days = [day for day in range(n_days) if day % 100 == 0] + [n_days - 1]
+        model_saving_days = [day for day in range(n_days) if day % 100 == 0] + [n_days - 1]
 
         # Keep track of episode rewards
         # e_rewards = []
@@ -178,7 +178,7 @@ class DQN():
             # Reset the environment.
             self.env.reset(SETTINGS, PARAMS, e, max(SETTINGS.n_hospitals, key=lambda i: SETTINGS.n_hospitals[i]))
             # Initialize a dataframe to store the output of the simulation.
-            # df = initialize_output_dataframe(SETTINGS, PARAMS, self.env.hospital, e)
+            df = initialize_output_dataframe(SETTINGS, PARAMS, self.env.hospital, e)
 
             # Set the current state and day to the environment's initial state and day.
             state = self.env.state
@@ -199,7 +199,7 @@ class DQN():
                 day_loss = 0
 
                 # Update log df with: requests, supplied, inventory
-                # self.env.log_state(PARAMS, day, df)
+                self.env.log_state(PARAMS, day, df)
 
                 # If there are no requests for today, proceed to the next day.
                 if sum(self.env.state[:, -1]) == 0:
@@ -233,20 +233,20 @@ class DQN():
                         day_loss += self.update_request()
 
                 # # Update the dataframe with the current day's information.
-                # df.loc[day, "logged"] = True
+                df.loc[day, "logged"] = True
                 print(f"Episode {e}, Day {day}, reward {todays_reward}")
-                #
+
                 # # Sum total episode reward
                 # e_reward += todays_reward
                 # # Log daily total loss
-                # df.loc[day, "day loss"] = day_loss
-                #
+                df.loc[day, "day loss"] = day_loss
+
                 # # Update the model's epsilon value.
-                # df.loc[day, "epsilon current"] = self.epsilon
+                df.loc[day, "epsilon current"] = self.epsilon
 
                 # Save model and log file on predefined days.
-                # if day in model_saving_days:
-                #    self.save(SETTINGS, df, e)
+                if day in model_saving_days:
+                    self.save(SETTINGS, df, e, k, 'train')
 
                 # Set the current day to the environment's current day.
                 day = self.env.day
@@ -254,7 +254,7 @@ class DQN():
 
         return
 
-    def test(self, test_episodes, SETTINGS, PARAMS):
+    def test(self, SETTINGS, PARAMS, test_episodes, k):
 
         # Calculate the total number of days for the simulation.
         n_days = SETTINGS.init_days + SETTINGS.test_days
@@ -310,7 +310,7 @@ class DQN():
 
                 # Save model and log file on predefined days.
                 if day in model_saving_days:
-                    self.save(SETTINGS, df, e)
+                    self.save(SETTINGS, df, e, k, 'test')
 
                 # Set the current day to the environment's current day.
                 day = self.env.day

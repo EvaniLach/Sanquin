@@ -105,12 +105,14 @@ class Settings():
         self.gurobi_timeout = None  # Number of minutes allowed for optimization, None in case of no limit
 
     # Generate a file name for exporting log or result files.
-    def generate_filename(self, SETTINGS, output_type, e):
+    def generate_filename(self, SETTINGS, output_type, e, type, k):
 
         path = self.home_dir + f"/{output_type}/{self.model_name}/"
         path += f"a{self.alpha}_g{self.gamma}_b{self.batch_size}/"
         path += f"{self.architecture}/"
         path += f"e{self.epsilon}_target_{self.target}_freq_{self.target_frequency}_exp_{self.buffer_size}/"
+        path += f"{type}_k{k}/"
+        self.check_dir_existence(path)
         path += f"{self.method}_{e}"
 
         return path

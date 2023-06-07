@@ -64,8 +64,8 @@ def main():
 
         print(f"alpha: {SETTINGS.alpha}, gamma: {SETTINGS.gamma}, batch size: {SETTINGS.batch_size}.")
 
-        dqn.train(SETTINGS, PARAMS, train_episodes)
-        dqn.test(SETTINGS, PARAMS, test_episodes)
+        dqn.train(SETTINGS, PARAMS, train_episodes, index)
+        dqn.test(SETTINGS, PARAMS, test_episodes, index)
 
     print(datetime.now() - startTime)
 
