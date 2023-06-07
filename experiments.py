@@ -23,7 +23,6 @@ argparser.add_argument("--episodes", default=20, type=int, help="number of episo
 argparser.add_argument("--target", default=True, help="use a target network")
 argparser.add_argument("--frequency", default=100, help="update frequency of target network")
 argparser.add_argument("--buffer", default=500, help="experience replay buffer size")
-argparser.add_argument("--folds", default=3, help="k-fold cross validation")
 args = argparser.parse_args()
 
 
@@ -47,12 +46,14 @@ def main():
     for path in paths:
         SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
 
+    episodes = [*range(0, SETTINGS.episodes[1], 1)]
+    random.shuffle(episodes)
+    splits = [episodes[i:i + 5] for i in range(0, len(episodes), 5)]
+
     # Use k-fold cross validation to train and evaluate the agent
-    for fold in range(0, args.folds):
-        episodes = [*range(0, SETTINGS.episodes[1], 1)]
-        # Randomly sample episodes for testing
-        test_episodes = random.sample(episodes, 5)
-        train_episodes = set(episodes) - set(test_episodes)
+    for index in range(0, len(splits)):
+        train_episodes = splits[:index] + splits[index + 1:]
+        test_episodes = splits[index]
 
         print("CREATING ENVIRONMENT")
         env = MatchingEnv(SETTINGS, PARAMS)
@@ -62,7 +63,7 @@ def main():
         print(f"alpha: {SETTINGS.alpha}, gamma: {SETTINGS.gamma}, batch size: {SETTINGS.batch_size}.")
 
         dqn.train(SETTINGS, PARAMS, train_episodes)
-        dqn.test(SETTINGS, PARAMS, train_episodes, fold)
+        dqn.test(SETTINGS, PARAMS, test_episodes)
 
     print(datetime.now() - startTime)
 

@@ -53,8 +53,8 @@ class DQN():
             layers += (linear, act)
         return nn.Sequential(*layers)
 
-    def save(self, SETTINGS, df, e, fold):
-        df.to_csv(SETTINGS.generate_filename(SETTINGS, "results", e) + f"_k{fold}_" + ".csv", sep=',', index=True)
+    def save(self, SETTINGS, df, e):
+        df.to_csv(SETTINGS.generate_filename(SETTINGS, "results", e) + ".csv", sep=',', index=True)
         torch.save(self.q_net.state_dict(), SETTINGS.generate_filename(SETTINGS, "models", e))
 
     def load(self, SETTINGS, e):
@@ -216,7 +216,7 @@ class DQN():
                         # Create copy of current state
                         current_state = copy.deepcopy(self.env.state)
                         # Calculate the reward and update the dataframe.
-                        reward, df, good = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
+                        reward, df, good = self.env.calculate_reward(SETTINGS, PARAMS, action, day, None)
                         todays_reward += reward
                         # Get the next state and whether the episode is done.
                         next_state, done = self.env.next_request(PARAMS, action)
@@ -256,7 +256,7 @@ class DQN():
 
         return
 
-    def test(self, test_episodes, SETTINGS, PARAMS, fold):
+    def test(self, test_episodes, SETTINGS, PARAMS):
 
         # Calculate the total number of days for the simulation.
         n_days = SETTINGS.init_days + SETTINGS.test_days
@@ -312,7 +312,7 @@ class DQN():
 
                 # Save model and log file on predefined days.
                 if day in model_saving_days:
-                    self.save(SETTINGS, df, e, fold)
+                    self.save(SETTINGS, df, e)
 
                 # Set the current day to the environment's current day.
                 day = self.env.day
