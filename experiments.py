@@ -19,10 +19,11 @@ argparser.add_argument("--alpha", default=0.001, type=float, help="learning rate
 argparser.add_argument("--nn", default=[128, 128, 128], type=int, nargs='+', help="layer sizes")
 argparser.add_argument("--epsilon", default=1, type=float, help="exploration rate")
 argparser.add_argument("--decay", default=1, type=float, help="epsilon decay")
-argparser.add_argument("--episodes", default=25, type=int, help="number of episodes")
+argparser.add_argument("--episodes", default=20, type=int, help="number of episodes")
 argparser.add_argument("--target", default=True, help="use a target network")
 argparser.add_argument("--frequency", default=100, help="update frequency of target network")
 argparser.add_argument("--buffer", default=500, help="experience replay buffer size")
+argparser.add_argument("--folds", default=3, help="k-fold cross validation")
 args = argparser.parse_args()
 
 
@@ -46,15 +47,23 @@ def main():
     for path in paths:
         SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
 
-    print("CREATING ENVIRONMENT")
-    env = MatchingEnv(SETTINGS, PARAMS)
-    print("CREATING DQN")
-    dqn = DQN(SETTINGS, env)
+    # Use k-fold cross validation to train and evaluate the agent
+    for fold in range(0, args.fold):
+        episodes = [*range(0, SETTINGS.episodes[1], 1)]
+        # Randomly sample episodes for testing
+        test_episodes = random.sample(episodes, 5)
+        train_episodes = set(episodes) - set(test_episodes)
 
-    print(f"alpha: {SETTINGS.alpha}, gamma: {SETTINGS.gamma}, batch size: {SETTINGS.batch_size}.")
+        print("CREATING ENVIRONMENT")
+        env = MatchingEnv(SETTINGS, PARAMS)
+        print("CREATING DQN")
+        dqn = DQN(SETTINGS, env)
 
-    # Train the agent
-    dqn.train(SETTINGS, PARAMS)
+        print(f"alpha: {SETTINGS.alpha}, gamma: {SETTINGS.gamma}, batch size: {SETTINGS.batch_size}.")
+
+        dqn.train(SETTINGS, PARAMS, train_episodes)
+        dqn.test(SETTINGS, PARAMS, train_episodes, fold)
+
     print(datetime.now() - startTime)
 
 

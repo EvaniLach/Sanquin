@@ -110,7 +110,7 @@ class Settings():
         path = self.home_dir + f"/{output_type}/{self.model_name}/"
         path += f"a{self.alpha}_g{self.gamma}_b{self.batch_size}/"
         path += f"{self.architecture}/"
-        path += f"e{self.epsilon}_target_{self.target}_freq_{self.target_frequency}_exp_{self.buffer_size}"
+        path += f"e{self.epsilon}_target_{self.target}_freq_{self.target_frequency}_exp_{self.buffer_size}/"
         path += f"{self.method}_{e}"
 
         return path
