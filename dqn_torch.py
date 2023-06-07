@@ -21,6 +21,7 @@ class DQN():
         self.method = SETTINGS.method
         self.nn = SETTINGS.nn
         self.experience_replay = deque(maxlen=self.batch_size)
+        self.epsilon = SETTINGS.epsilon
    
         self.n_actions = self.env.action_space.shape[0]
         self.q_net = self.build_nn()
@@ -145,13 +146,27 @@ class DQN():
         self.update_counts += 1
         return loss.item()
 
+    def linear_anneal(self, t, T, start, final, percentage):
+        ''' Linear annealing scheduler
+        t: current timestep
+        T: total timesteps
+        start: initial value
+        final: value after percentage*T steps
+        percentage: percentage of T after which annealing finishes
+        '''
+        final_from_T = int(percentage * T)
+        if t > final_from_T:
+            return final
+        else:
+            return final + (start - final) * (final_from_T - t) / final_from_T
+
     def train(self, SETTINGS, PARAMS):
         # Calculate the total number of days for the simulation.
         n_days = SETTINGS.init_days + SETTINGS.test_days
         # Determine the days at which to save the model.
         model_saving_days = [day for day in range(n_days) if day % 100 == 0] + [n_days - 1]
         # Set epsilon value
-        self.epsilon = SETTINGS.epsilon
+
 
         # Keep track of episode rewards
         e_rewards = []
@@ -253,5 +268,6 @@ class DQN():
                 # Set the current day to the environment's current day.
                 day = self.env.day
             e_rewards.append(e_reward)
-            # self.epsilon = self.epsilon * SETTINGS.epsilon_decay
+            self.epsilon = self.linear_anneal(e, int(SETTINGS.episodes[1]), 1, 0.1, 0.8)
+
         return e_rewards

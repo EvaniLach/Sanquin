@@ -1,0 +1,1 @@
+python3 -u experiments.py --frequency 100 --epsilon 1 --target True --nn 128 128 128
