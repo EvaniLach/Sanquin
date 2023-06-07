@@ -55,6 +55,8 @@ def main():
         train_episodes = splits[:index] + splits[index + 1:]
         test_episodes = splits[index]
 
+        train_episodes = [item for sublist in train_episodes for item in sublist]
+
         print("CREATING ENVIRONMENT")
         env = MatchingEnv(SETTINGS, PARAMS)
         print("CREATING DQN")

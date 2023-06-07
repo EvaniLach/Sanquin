@@ -160,7 +160,6 @@ class DQN():
             return final + (start - final) * (final_from_T - t) / final_from_T
 
     def train(self, SETTINGS, PARAMS, train_episodes):
-
         # Calculate the total number of days for the simulation.
         n_days = SETTINGS.init_days + SETTINGS.test_days
         # Determine the days at which to save the model.
