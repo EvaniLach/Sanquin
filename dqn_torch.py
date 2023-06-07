@@ -20,7 +20,7 @@ class DQN():
         self.batch_size = SETTINGS.batch_size  # batch size for replay buffer
         self.method = SETTINGS.method
         self.nn = SETTINGS.nn
-        self.experience_replay = deque(maxlen=self.batch_size)
+        self.experience_replay = deque(maxlen=500)
         self.epsilon = SETTINGS.epsilon
    
         self.n_actions = self.env.action_space.shape[0]
@@ -165,8 +165,6 @@ class DQN():
         n_days = SETTINGS.init_days + SETTINGS.test_days
         # Determine the days at which to save the model.
         model_saving_days = [day for day in range(n_days) if day % 100 == 0] + [n_days - 1]
-        # Set epsilon value
-
 
         # Keep track of episode rewards
         e_rewards = []
@@ -178,8 +176,7 @@ class DQN():
             #     self.load(SETTINGS, e - 1)
 
             # Start with an empty memory and initial epsilon.
-            self.experience_replay = []
-            # self.epsilon = SETTINGS.epsilon
+            self.experience_replay = deque(maxlen=500)
 
             # Reset the environment.
             self.env.reset(SETTINGS, PARAMS, e, max(SETTINGS.n_hospitals, key=lambda i: SETTINGS.n_hospitals[i]))
