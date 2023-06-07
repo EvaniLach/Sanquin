@@ -125,7 +125,8 @@ class MatchingEnv(gym.Env):
         ######################
 
         reward = 0
-        good = False
+
+        log = False
 
         if df is not None:
             log = True
@@ -176,7 +177,7 @@ class MatchingEnv(gym.Env):
             df.loc[day, "num outdates"] += num_outdates
             df.loc[day, "reward"] += reward
 
-        return reward, df, good
+        return reward, df
 
     # REQUEST-BASED
     def next_request(self, PARAMS, action):

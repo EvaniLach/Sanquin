@@ -215,7 +215,7 @@ class DQN():
                         # Create copy of current state
                         current_state = copy.deepcopy(self.env.state)
                         # Calculate the reward and update the dataframe.
-                        reward, df, good = self.env.calculate_reward(SETTINGS, PARAMS, action, day, None)
+                        reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, None)
                         todays_reward += reward
                         # Get the next state and whether the episode is done.
                         next_state, done = self.env.next_request(PARAMS, action)
@@ -297,7 +297,7 @@ class DQN():
                     # Select an action using the model's epsilon-greedy policy.
                     action = self.select_action(state, limit, PARAMS)
                     # Calculate the reward and update the dataframe.
-                    reward, df, good = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
+                    reward, df = self.env.calculate_reward(SETTINGS, PARAMS, action, day, df)
                     todays_reward += reward
                     # Get the next state and whether the episode is done.
                     next_state, done = self.env.next_request(PARAMS, action)
