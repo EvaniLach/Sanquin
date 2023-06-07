@@ -8,8 +8,8 @@ import torch
 import torch.nn as nn
 import copy
 
-
 from collections import deque
+
 
 # Define the Deep Q-Learning algorithm.
 class DQN():
@@ -22,7 +22,7 @@ class DQN():
         self.nn = SETTINGS.nn
         self.experience_replay = []
         self.epsilon = SETTINGS.epsilon
-   
+
         self.n_actions = self.env.action_space.shape[0]
         self.q_net = self.build_nn()
         self.q_net.to('cuda')
@@ -78,10 +78,9 @@ class DQN():
         return A.item()
 
     def available_actions(self, state, PARAMS):
-        I = state[:,:PARAMS.max_age]
-        avail = np.where(np.any(I>0, axis=1))
+        I = state[:, :PARAMS.max_age]
+        avail = np.where(np.any(I > 0, axis=1))
         return avail
-
 
     def sample_from_experience(self, sample_size):
         if len(self.experience_replay) < self.batch_size:
@@ -107,7 +106,7 @@ class DQN():
         # Predict q_values of current state
         q_matrix = self.q_net(s.cuda())
         q_m_target = q_matrix.detach().clone()
-        q_m_target[:,action] = q_target
+        q_m_target[:, action] = q_target
 
         loss = self.loss_fn(q_matrix, q_m_target)
         self.optimizer.zero_grad()
@@ -265,6 +264,6 @@ class DQN():
                 # Set the current day to the environment's current day.
                 day = self.env.day
             e_rewards.append(e_reward)
-            self.epsilon = self.linear_anneal(e, int(SETTINGS.episodes[1]), 1, 0.1, 0.8)
+            self.epsilon = self.linear_anneal(e, int(SETTINGS.episodes[1]), 1, 0.01, 0.8)
 
         return e_rewards
