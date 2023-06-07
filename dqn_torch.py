@@ -234,7 +234,7 @@ class DQN():
 
                 # # Update the dataframe with the current day's information.
                 # df.loc[day, "logged"] = True
-                # print(f"Day {day}, reward {todays_reward}")
+                print(f"Episode {e}, Day {day}, reward {todays_reward}")
                 #
                 # # Sum total episode reward
                 # e_reward += todays_reward
@@ -243,7 +243,6 @@ class DQN():
                 #
                 # # Update the model's epsilon value.
                 # df.loc[day, "epsilon current"] = self.epsilon
-                # self.epsilon = max(self.epsilon * SETTINGS.epsilon_decay, SETTINGS.epsilon_min)
 
                 # Save model and log file on predefined days.
                 # if day in model_saving_days:
