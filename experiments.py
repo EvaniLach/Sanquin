@@ -41,7 +41,7 @@ def main():
         "models", f"models/{SETTINGS.model_name}",
         f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}",
         f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.architecture}",
-        f"mdoels/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.architecture}/e{SETTINGS.epsilon}_target_{SETTINGS.target}_freq_{SETTINGS.target_frequency}_exp_{SETTINGS.buffer_size}/"]
+        f"models/{SETTINGS.model_name}/a{SETTINGS.alpha}_g{SETTINGS.gamma}_b{SETTINGS.batch_size}/{SETTINGS.architecture}/e{SETTINGS.epsilon}_target_{SETTINGS.target}_freq_{SETTINGS.target_frequency}_exp_{SETTINGS.buffer_size}/"]
 
     for path in paths:
         SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
