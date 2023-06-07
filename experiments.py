@@ -48,7 +48,7 @@ def main():
         SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
 
     # Use k-fold cross validation to train and evaluate the agent
-    for fold in range(0, args.fold):
+    for fold in range(0, args.folds):
         episodes = [*range(0, SETTINGS.episodes[1], 1)]
         # Randomly sample episodes for testing
         test_episodes = random.sample(episodes, 5)
