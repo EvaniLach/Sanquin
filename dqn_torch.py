@@ -55,7 +55,7 @@ class DQN():
 
     def save(self, SETTINGS, df, e, k, type):
         df.to_csv(SETTINGS.generate_filename(SETTINGS, "results", e, type, k) + ".csv", sep=',', index=True)
-        torch.save(self.q_net.state_dict(), SETTINGS.generate_filename(SETTINGS, "models", e))
+        torch.save(self.q_net.state_dict(), SETTINGS.generate_filename(SETTINGS, "models", e, type, k))
 
     def load(self, SETTINGS, e):
         self.q_net.load_state_dict(torch.load(SETTINGS.generate_filename(SETTINGS, "models", e)))
