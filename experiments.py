@@ -18,8 +18,8 @@ argparser.add_argument("--minor", type=int, default=0, help="select minor antige
 argparser.add_argument("--alpha", default=0.001, type=float, help="learning rate")
 argparser.add_argument("--nn", default=[128, 128, 128], type=int, nargs='+', help="layer sizes")
 argparser.add_argument("--epsilon", default=1, type=float, help="exploration rate")
-argparser.add_argument("--decay", default=1, type=float, help="epsilon decay")
-argparser.add_argument("--episodes", default=20, type=int, help="number of episodes")
+argparser.add_argument("--end_epsilon", default=1, type=float, help="end anneal")
+argparser.add_argument("--episodes", default=15, type=int, help="number of episodes")
 argparser.add_argument("--target", default=True, help="use a target network")
 argparser.add_argument("--frequency", default=100, help="update frequency of target network")
 argparser.add_argument("--buffer", default=500, help="experience replay buffer size")
@@ -29,7 +29,8 @@ args = argparser.parse_args()
 def main():
     startTime = datetime.now()
     SETTINGS = Settings(method=args.method, minor=args.minor, alpha=args.alpha, n_neurons=args.nn, epsilon=args.epsilon,
-                        decay=args.decay, episodes=args.episodes, target=args.target, frequency=args.frequency,
+                        end_anneal=args.end_epsilon, episodes=args.episodes, target=args.target,
+                        frequency=args.frequency,
                         buffer=args.buffer)
     PARAMS = Params(SETTINGS)
 

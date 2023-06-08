@@ -4,7 +4,7 @@ import os
 
 class Settings():
 
-    def __init__(self, method, minor, alpha, n_neurons, epsilon, decay, episodes, target, frequency, buffer):
+    def __init__(self, method, minor, alpha, n_neurons, epsilon, end_anneal, episodes, target, frequency, buffer):
 
         # Working directory.
         # self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
@@ -83,7 +83,7 @@ class Settings():
 
         self.epsilon = epsilon
         self.epsilon_min = 0.01
-        self.epsilon_decay = decay
+        self.end_anneal = end_anneal
         self.alpha = alpha  # learning rate
         self.gamma = 0.98  # discount factor
         self.batch_size = 50  # batch size for replay buffer

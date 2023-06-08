@@ -250,7 +250,8 @@ class DQN():
 
                 # Set the current day to the environment's current day.
                 day = self.env.day
-            self.epsilon = self.linear_anneal(e, int(SETTINGS.episodes[1]), 1, 0.01, 0.8)
+            if SETTINGS.end_anneal < 1:
+                self.epsilon = self.linear_anneal(e, int(SETTINGS.episodes[1]), 1, 0.01, SETTINGS.end_anneal)
 
         return
 
