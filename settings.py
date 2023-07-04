@@ -7,8 +7,8 @@ class Settings():
     def __init__(self, method, minor, alpha, n_neurons, epsilon, end_anneal, episodes, target, frequency, buffer):
 
         # Working directory.
-        # self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
-        self.home_dir = r"/home/s1949624/RL_matching/"
+        self.home_dir = r"C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/"
+        # self.home_dir = r"/home/s1949624/RL_matching/"
 
         # Output files will be stored in directory results/[model_name].
         if method == 'day':
@@ -105,14 +105,12 @@ class Settings():
         self.gurobi_timeout = None  # Number of minutes allowed for optimization, None in case of no limit
 
     # Generate a file name for exporting log or result files.
-    def generate_filename(self, SETTINGS, output_type, e, type, k):
+    def generate_filename(self, SETTINGS, output_type, e):
 
         path = self.home_dir + f"/{output_type}/{self.model_name}/"
         path += f"a{self.alpha}_g{self.gamma}_b{self.batch_size}/"
         path += f"{self.architecture}/"
         path += f"e{self.epsilon}_target_{self.target}_freq_{self.target_frequency}_exp_{self.buffer_size}/"
-        path += f"{type}_k{k}/"
-        self.check_dir_existence(path)
         path += f"{self.method}_{e}"
 
         return path

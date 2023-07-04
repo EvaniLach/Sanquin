@@ -25,15 +25,17 @@ class DQN():
 
         self.k = 3
 
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
         self.n_actions = self.env.action_space.shape[0]
         self.q_net = self.build_nn()
-        self.q_net.to('cuda')
+        self.q_net.to(self.device)
 
         self.target = SETTINGS.target
 
         if self.target:
             self.target_net = copy.deepcopy(self.q_net)
-            self.target_net.cuda()
+            self.target_net.to(self.device)
             self.update_counts = 0
             self.target_frequency = SETTINGS.target_frequency
 
@@ -53,16 +55,16 @@ class DQN():
             layers += (linear, act)
         return nn.Sequential(*layers)
 
-    def save(self, SETTINGS, df, e, k, type):
-        df.to_csv(SETTINGS.generate_filename(SETTINGS, "results", e, type, k) + ".csv", sep=',', index=True)
-        torch.save(self.q_net.state_dict(), SETTINGS.generate_filename(SETTINGS, "models", e, type, k))
+    def save(self, SETTINGS, df, e):
+        df.to_csv(SETTINGS.generate_filename(SETTINGS, "results", e) + ".csv", sep=',', index=True)
+        torch.save(self.q_net.state_dict(), SETTINGS.generate_filename(SETTINGS, "models", e))
 
     def load(self, SETTINGS, e):
         self.q_net.load_state_dict(torch.load(SETTINGS.generate_filename(SETTINGS, "models", e)))
 
     def select_action(self, state, limit, PARAMS):  # Method to select the action to take
         with torch.no_grad():
-            Qp = self.q_net(torch.from_numpy(state).flatten().float().cuda())
+            Qp = self.q_net(torch.from_numpy(state).flatten().float().to(self.device))
         Q, A = torch.max(Qp, dim=0)
         A = A if torch.rand(1, ).item() > self.epsilon else torch.randint(0, self.n_actions, (1,))
 
@@ -86,10 +88,10 @@ class DQN():
         if len(self.experience_replay) < self.batch_size:
             sample_size = len(self.experience_replay)
         sample = random.sample(self.experience_replay, sample_size)
-        s = torch.from_numpy(np.vstack([exp[0].flatten() for exp in sample])).float().cuda()
-        a = torch.tensor([exp[1] for exp in sample]).float().cuda()
-        rn = torch.tensor([exp[2] for exp in sample]).float().cuda()
-        sn = torch.from_numpy(np.vstack([exp[3].flatten() for exp in sample])).float().cuda()
+        s = torch.from_numpy(np.vstack([exp[0].flatten() for exp in sample])).float().to(self.device)
+        a = torch.tensor([exp[1] for exp in sample]).float().to(self.device)
+        rn = torch.tensor([exp[2] for exp in sample]).float().to(self.device)
+        sn = torch.from_numpy(np.vstack([exp[3].flatten() for exp in sample])).float().to(self.device)
         return s, a, rn, sn
 
     # REQUEST-BASED
@@ -98,13 +100,13 @@ class DQN():
         # Sample a batch of experiences from the model's memory.
         s, a, rn, ns = self.sample_from_experience(sample_size=self.batch_size)
         # Predict Q-values of next state
-        q_ns = self.q_net(ns.cuda())
+        q_ns = self.q_net(ns.to(self.device))
         max_q, action = torch.max(q_ns, dim=1)
 
-        q_target = rn.cuda() + self.gamma * max_q
+        q_target = rn.to(self.device) + self.gamma * max_q
 
         # Predict q_values of current state
-        q_matrix = self.q_net(s.cuda())
+        q_matrix = self.q_net(s.to(self.device))
         q_m_target = q_matrix.detach().clone()
         q_m_target[:, action] = q_target
 
@@ -130,12 +132,12 @@ class DQN():
             self.update_counts = 0
 
         # Predict expected return of current state using main network
-        q_matrix = self.q_net(s.cuda())
+        q_matrix = self.q_net(s.to(self.device))
         pred_return, _ = torch.max(q_matrix, axis=1)
 
         # Get target return using target network
-        q_next = self.get_q_next(ns.cuda())
-        target_return = rn.cuda() + self.gamma * q_next
+        q_next = self.get_q_next(ns.to(self.device))
+        target_return = rn.to(self.device) + self.gamma * q_next
 
         loss = self.loss_fn(pred_return, target_return)
         self.optimizer.zero_grad()
@@ -159,7 +161,7 @@ class DQN():
         else:
             return final + (start - final) * (final_from_T - t) / final_from_T
 
-    def train(self, SETTINGS, PARAMS, train_episodes, k):
+    def train(self, SETTINGS, PARAMS):
         # Calculate the total number of days for the simulation.
         n_days = SETTINGS.init_days + SETTINGS.test_days
         # Determine the days at which to save the model.
@@ -169,7 +171,7 @@ class DQN():
         # e_rewards = []
 
         # Run the simulation for the given range of episodes.
-        for e in train_episodes:
+        for e in range(SETTINGS.episodes[0], SETTINGS.episodes[1]):
             print(f"\nEpisode: {e}")
 
             # Start with an empty memory and initial epsilon.
@@ -246,7 +248,7 @@ class DQN():
 
                 # Save model and log file on predefined days.
                 if day in model_saving_days:
-                    self.save(SETTINGS, df, e, k, 'train')
+                    self.save(SETTINGS, df, e)
 
                 # Set the current day to the environment's current day.
                 day = self.env.day
@@ -255,6 +257,7 @@ class DQN():
 
         return
 
+    # Below function for k-fold cross validation
     def test(self, SETTINGS, PARAMS, test_episodes, k):
 
         # Calculate the total number of days for the simulation.

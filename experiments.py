@@ -47,26 +47,32 @@ def main():
     for path in paths:
         SETTINGS.check_dir_existence(SETTINGS.home_dir + path)
 
-    episodes = [*range(0, SETTINGS.episodes[1], 1)]
-    random.shuffle(episodes)
-    splits = [episodes[i:i + 5] for i in range(0, len(episodes), 5)]
+    print("CREATING ENVIRONMENT")
+    env = MatchingEnv(SETTINGS, PARAMS)
+    print("CREATING DQN")
+    dqn = DQN(SETTINGS, env)
+    dqn.train(SETTINGS, PARAMS)
+
+    # episodes = [*range(0, SETTINGS.episodes[1], 1)]
+    # random.shuffle(episodes)
+    # splits = [episodes[i:i + 5] for i in range(0, len(episodes), 5)]
 
     # Use k-fold cross validation to train and evaluate the agent
-    for index in range(0, len(splits)):
-        train_episodes = splits[:index] + splits[index + 1:]
-        test_episodes = splits[index]
-
-        train_episodes = [item for sublist in train_episodes for item in sublist]
-
-        print("CREATING ENVIRONMENT")
-        env = MatchingEnv(SETTINGS, PARAMS)
-        print("CREATING DQN")
-        dqn = DQN(SETTINGS, env)
-
-        print(f"alpha: {SETTINGS.alpha}, gamma: {SETTINGS.gamma}, batch size: {SETTINGS.batch_size}.")
-
-        dqn.train(SETTINGS, PARAMS, train_episodes, index)
-        dqn.test(SETTINGS, PARAMS, test_episodes, index)
+    # for index in range(0, len(splits)):
+    #     train_episodes = splits[:index] + splits[index + 1:]
+    #     test_episodes = splits[index]
+    #
+    #     train_episodes = [item for sublist in train_episodes for item in sublist]
+    #
+    #     print("CREATING ENVIRONMENT")
+    #     env = MatchingEnv(SETTINGS, PARAMS)
+    #     print("CREATING DQN")
+    #     dqn = DQN(SETTINGS, env)
+    #
+    #     print(f"alpha: {SETTINGS.alpha}, gamma: {SETTINGS.gamma}, batch size: {SETTINGS.batch_size}.")
+    #
+    #     dqn.train(SETTINGS, PARAMS, train_episodes, index)
+    #     dqn.test(SETTINGS, PARAMS, test_episodes, index)
 
     print(datetime.now() - startTime)
 

@@ -1,19 +1,20 @@
-from gurobipy import *
+# from gurobipy import *
 import numpy as np
 
 from blood import *
+
+
 # from log import *
 
 # Single-hospital setup: MINRAR model for matching within a single hospital.
 # I and R are both lists of blood groups (int format), where I = issued products, R = today's requests
 def action_to_matches(PARAMS, I, R, day, df):
-
     ################
     ## PARAMETERS ##
     ################
 
     antigens = PARAMS.major + PARAMS.minor
-    A = {antigens[k] : k for k in range(len(antigens))}
+    A = {antigens[k]: k for k in range(len(antigens))}
     A_no_Fyb = [A[ag] for ag in A.keys() if ag != "Fyb"]
 
     # Retrieve the antigen (and patient group) weights.
@@ -46,31 +47,32 @@ def action_to_matches(PARAMS, I, R, day, df):
     for i in _I:
         for r in _R:
             # if (comp_antigens(C[i,r], 3) != 0):
-            if sum(C[i,r][:3]) != 0:
-                model.remove(x[i,r])
+            if sum(C[i, r][:3]) != 0:
+                model.remove(x[i, r])
 
     #################
     ## CONSTRAINTS ##
     #################
 
     # For each inventory product i∈I, ensure that i can not be issued more than once, and each request r can receive a maximum of one product.
-    model.addConstrs(quicksum(x[i,r] for r in _R) <= 1 for i in _I)
-    model.addConstrs(quicksum(x[i,r] for i in _I) <= 1 for r in _R)
+    model.addConstrs(quicksum(x[i, r] for r in _R) <= 1 for i in _I)
+    model.addConstrs(quicksum(x[i, r] for i in _I) <= 1 for r in _R)
 
     ################
     ## OBJECTIVES ##
     ################
 
-    model.setObjectiveN(expr =  quicksum(1 - quicksum(x[i,r] for i in _I) for r in _R), index=0, priority=1, name="shortages")
+    model.setObjectiveN(expr=quicksum(1 - quicksum(x[i, r] for i in _I) for r in _R), index=0, priority=1,
+                        name="shortages")
     if "Fyb" in antigens:
-        model.setObjectiveN(expr =  quicksum(
-                                        quicksum(x[i,r] * C[i,r,k] * w[k] for k in A_no_Fyb)
-                                        + x[i,r] * C[i,r,A["Fyb"]] * int(bin(r)[A["Fya"]+2]) * w[A["Fyb"]]
-                                    for i in _I for r in _R), index=1, priority=0, name="mismatches")
+        model.setObjectiveN(expr=quicksum(
+            quicksum(x[i, r] * C[i, r, k] * w[k] for k in A_no_Fyb)
+            + x[i, r] * C[i, r, A["Fyb"]] * int(bin(r)[A["Fya"] + 2]) * w[A["Fyb"]]
+            for i in _I for r in _R), index=1, priority=0, name="mismatches")
     else:
-        model.setObjectiveN(expr =  quicksum(
-                                        quicksum(x[i,r] * C[i,r,k] * w[k] for k in A_no_Fyb)
-                                    for i in _I for r in _R), index=1, priority=0, name="mismatches")
+        model.setObjectiveN(expr=quicksum(
+            quicksum(x[i, r] * C[i, r, k] * w[k] for k in A_no_Fyb)
+            for i in _I for r in _R), index=1, priority=0, name="mismatches")
 
     model.optimize()
 
@@ -92,8 +94,8 @@ def action_to_matches(PARAMS, I, R, day, df):
 
     for i in assigned:
         for r in _R:
-            for ag in [ag for ag in A.keys() if C[i,r,A[ag]] == 0]:
-                if (ag != "Fyb") or (bin(r)[A["Fya"]+2] == 1):
-                    df.loc[day,[f"num mismatches {ag}"]] += 1
+            for ag in [ag for ag in A.keys() if C[i, r, A[ag]] == 0]:
+                if (ag != "Fyb") or (bin(r)[A["Fya"] + 2] == 1):
+                    df.loc[day, [f"num mismatches {ag}"]] += 1
 
     return shortages, mismatches, [I[i] for i in assigned], discarded, df
