@@ -28,7 +28,7 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer):
 
 
 def train(rank, args, model, device, train_dataset, dataloader_kwargs):
-    torch.manual_seed(args.seed + rank)
+    torch.manual_seed(args.seed)
 
     train_loader = torch.utils.data.DataLoader(train_dataset, **dataloader_kwargs)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
@@ -65,3 +65,9 @@ def test_epoch(model, device, data_loader):
     print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         test_loss, correct, len(data_loader.dataset),
         100. * correct / len(data_loader.dataset)))
+
+    df = pd.DataFrame(test_loss, columns=["test loss"])
+    df.to_csv('results/kickstart/test_loss_1.csv', index=False)
+
+    df = pd.DataFrame(correct, columns=["correct"])
+    df.to_csv('results/kickstart/correct_1.csv', index=False)
