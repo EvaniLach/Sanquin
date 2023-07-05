@@ -116,8 +116,8 @@ if __name__ == '__main__':
 
     processes = []
 
-    data_path = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/states/'
-    target_path = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/RL_matching-main/NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/q_matrices/'
+    data_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/states/'
+    target_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/q_matrices/'
 
     dataset = MyData(data_path, target_path)
 
