@@ -24,6 +24,7 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer):
                        100. * batch_idx / len(train_loader), loss.item()))
             if args.dry_run:
                 break
+    torch.save(model.state_dict(), 'models/kickstart/model_{}'.format(epoch))
     return running_loss
 
 
