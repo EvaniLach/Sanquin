@@ -15,15 +15,15 @@ import os
 from train_network import train, test
 
 # Training settings
-parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
+parser = argparse.ArgumentParser(description='NN settings')
 parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
 parser.add_argument('--epochs', type=int, default=10, metavar='N',
                     help='number of epochs to train (default: 10)')
-parser.add_argument('--lr', type=float, default=0.01, metavar='LR',
-                    help='learning rate (default: 0.01)')
+parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
+                    help='learning rate (default: 0.001)')
 parser.add_argument('--momentum', type=float, default=0.5, metavar='M',
                     help='SGD momentum (default: 0.5)')
 parser.add_argument('--seed', type=int, default=1, metavar='S',
@@ -44,11 +44,11 @@ class Q_net(nn.Module):
 
     def __init__(self):
         super().__init__()
-        self.input = nn.Linear(72, 144)
-        self.hidden1 = nn.Linear(144, 144)
-        self.hidden2 = nn.Linear(144, 144)
+        self.input = nn.Linear(72, 128)
+        self.hidden1 = nn.Linear(128, 128)
+        self.hidden2 = nn.Linear(128, 128)
         self.relu = nn.ReLU()
-        self.output = nn.Linear(144, 8)
+        self.output = nn.Linear(128, 8)
 
     def forward(self, x):
         x = self.relu(self.input(x))
@@ -89,6 +89,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     use_cuda = args.cuda and torch.cuda.is_available()
+    print(torch.cuda.is_available())
     if use_cuda:
         device = torch.device("cuda")
     else:
