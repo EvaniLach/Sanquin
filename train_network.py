@@ -54,21 +54,15 @@ def test(args, model, device, test_dataset, dataloader_kwargs):
 def test_epoch(model, device, data_loader):
     model.eval()
     test_loss = 0
-    correct = 0
+
     with torch.no_grad():
         for data, target in data_loader:
             output = model(data.to(device))
             test_loss += F.mse_loss(output, target.to(device), reduction='sum').item()  # sum up batch loss
-            pred = output.max(1)[1]  # get the index of the max log-probability
-            correct += pred.eq(target.to(device)).sum().item()
 
     test_loss /= len(data_loader.dataset)
-    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-        test_loss, correct, len(data_loader.dataset),
-        100. * correct / len(data_loader.dataset)))
+    print('\nTest set: Average loss: {:.4f}\n'.format(
+        test_loss))
 
     df = pd.DataFrame(test_loss, columns=["test loss"])
     df.to_csv('results/kickstart/test_loss_1.csv', index=False)
-
-    df = pd.DataFrame(correct, columns=["correct"])
-    df.to_csv('results/kickstart/correct_1.csv', index=False)

@@ -42,20 +42,25 @@ parser.add_argument('--dry-run', action='store_true', default=False,
 
 class Q_net(nn.Module):
 
-    def __init__(self):
+    def __init__(self, input, output, nn):
         super().__init__()
-        self.input = nn.Linear(72, 128)
-        self.hidden1 = nn.Linear(128, 128)
-        self.hidden2 = nn.Linear(128, 128)
-        self.relu = nn.ReLU()
-        self.output = nn.Linear(128, 8)
+        self.input = [input]
+        self.output = [output]
+        self.nn = nn
+        self.model = self.build_nn()
 
-    def forward(self, x):
-        x = self.relu(self.input(x))
-        x = self.relu(self.hidden1(x))
-        x = self.relu(self.hidden2(x))
-        x = self.output(x)
-        return x
+    def build_nn(self):
+        input_size = self.input
+        output = self.output
+        layer_sizes = input_size + self.nn + output
+
+        assert len(layer_sizes) > 1
+        layers = []
+        for index in range(len(layer_sizes) - 1):
+            linear = nn.Linear(layer_sizes[index], layer_sizes[index + 1])
+            act = nn.ReLU() if index < len(layer_sizes) - 2 else nn.Identity()
+            layers += (linear, act)
+        return nn.Sequential(*layers)
 
 
 class MyData(Dataset):
@@ -89,7 +94,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     use_cuda = args.cuda and torch.cuda.is_available()
-    print(torch.cuda.is_available())
     if use_cuda:
         device = torch.device("cuda")
     else:
@@ -110,7 +114,7 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
 
-    model = Q_net()
+    model = Q_net(72, 8, [128, 128]).model
     model.to(device)
     model.share_memory()  # gradients are allocated lazily, so they are not shared here
 
@@ -121,9 +125,13 @@ if __name__ == '__main__':
 
     dataset = MyData(data_path, target_path)
 
-    train_size = int(0.8 * len(dataset))
-    test_size = len(dataset) - train_size
+    train_size = int(0.75 * len(dataset))
+    test_size = (len(dataset) - train_size)
+
     train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
+
+    train_size = (len(train_dataset) - len(test_dataset))
+    train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [train_size, test_size])
 
     args = parser.parse_args()
 
