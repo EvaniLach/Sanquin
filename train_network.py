@@ -24,7 +24,7 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer):
                        100. * batch_idx / len(train_loader), loss.item()))
             if args.dry_run:
                 break
-    torch.save(model.state_dict(), 'models/kickstart/model_{}'.format(epoch))
+    torch.save(model.state_dict(), 'models/kickstart/{}/model_{}'.format(args.seed, epoch))
     return running_loss
 
 
@@ -40,7 +40,7 @@ def train(rank, args, model, device, train_dataset, dataloader_kwargs):
         loss_values.append(train_epoch(epoch, model, args, device, train_loader, optimizer))
 
     df = pd.DataFrame(loss_values, columns=["loss"])
-    df.to_csv('results/kickstart/loss_1.csv', index=False)
+    df.to_csv('results/kickstart/{}/loss_1.csv'.format(args.seed), index=False)
 
 
 def test(args, model, device, test_dataset, dataloader_kwargs):
