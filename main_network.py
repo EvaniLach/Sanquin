@@ -146,9 +146,6 @@ if __name__ == '__main__':
 
     train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
 
-    train_size = (len(train_dataset) - len(test_dataset))
-    train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [train_size, test_size])
-
     args = parser.parse_args()
 
     train(0, args, model, device, train_dataset, kwargs)
