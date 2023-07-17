@@ -20,8 +20,8 @@ parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=10, metavar='N',
-                    help='number of epochs to train (default: 10)')
+parser.add_argument('--epochs', type=int, default=25, metavar='N',
+                    help='number of epochs to train (default: 125)')
 parser.add_argument('--lr', type=float, default=0.000145, metavar='LR',
                     help='learning rate (default: 0.001)')
 parser.add_argument('--momentum', type=float, default=0.5, metavar='M',
@@ -44,11 +44,11 @@ class Q_net(nn.Module):
 
     def __init__(self, input, output, nn, p):
         super().__init__()
-        self.input = [input]
-        self.output = [output]
+        self.input = input
+        self.output = output
         self.nn = nn
         self.p = p
-        self.model = self.build_nn()
+        self.model = self.define_model()
 
     def build_nn(self):
         layer_sizes = self.input + self.nn + self.output
@@ -69,10 +69,10 @@ class Q_net(nn.Module):
         in_features = self.input
         for i in range(len(self.nn) - 1):
             out_features = self.nn[i]
-            act = nn.ReLU() if i < len(self.nn) - 2 else nn.Identity()
+            act = nn.ReLU()
             linear = nn.Linear(in_features, out_features)
             layers += (linear, act)
-            layers.append(self.p[i])
+            layers.append(nn.Dropout(self.p[i]))
             in_features = out_features
         layers.append(nn.Linear(in_features, self.output))
 

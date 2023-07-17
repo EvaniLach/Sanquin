@@ -63,6 +63,3 @@ def test_epoch(model, device, data_loader):
     test_loss /= len(data_loader.dataset)
     print('\nTest set: Average loss: {:.4f}\n'.format(
         test_loss))
-
-    df = pd.DataFrame(test_loss, columns=["test loss"])
-    df.to_csv('results/kickstart/test_loss_1.csv', index=False)
