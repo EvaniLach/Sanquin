@@ -22,7 +22,7 @@ parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
 parser.add_argument('--epochs', type=int, default=10, metavar='N',
                     help='number of epochs to train (default: 10)')
-parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
+parser.add_argument('--lr', type=float, default=0.000145, metavar='LR',
                     help='learning rate (default: 0.001)')
 parser.add_argument('--momentum', type=float, default=0.5, metavar='M',
                     help='SGD momentum (default: 0.5)')
@@ -42,17 +42,16 @@ parser.add_argument('--dry-run', action='store_true', default=False,
 
 class Q_net(nn.Module):
 
-    def __init__(self, input, output, nn):
+    def __init__(self, input, output, nn, p):
         super().__init__()
         self.input = [input]
         self.output = [output]
         self.nn = nn
+        self.p = p
         self.model = self.build_nn()
 
     def build_nn(self):
-        input_size = self.input
-        output = self.output
-        layer_sizes = input_size + self.nn + output
+        layer_sizes = self.input + self.nn + self.output
 
         assert len(layer_sizes) > 1
         layers = []
@@ -60,6 +59,23 @@ class Q_net(nn.Module):
             linear = nn.Linear(layer_sizes[index], layer_sizes[index + 1])
             act = nn.ReLU() if index < len(layer_sizes) - 2 else nn.Identity()
             layers += (linear, act)
+            print(index)
+            layers.append(nn.Dropout(self.p[index]))
+        return nn.Sequential(*layers)
+
+    def define_model(self):
+        layers = []
+
+        in_features = self.input
+        for i in range(len(self.nn) - 1):
+            out_features = self.nn[i]
+            act = nn.ReLU() if i < len(self.nn) - 2 else nn.Identity()
+            linear = nn.Linear(in_features, out_features)
+            layers += (linear, act)
+            layers.append(self.p[i])
+            in_features = out_features
+        layers.append(nn.Linear(in_features, self.output))
+
         return nn.Sequential(*layers)
 
 
@@ -114,7 +130,7 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
 
-    model = Q_net(72, 8, [128, 128]).model
+    model = Q_net(72, 8, [21, 39, 102], [0.44, 0.36, 0.26]).model
     model.to(device)
     model.share_memory()  # gradients are allocated lazily, so they are not shared here
 
