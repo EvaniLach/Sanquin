@@ -1,0 +1,116 @@
+[I 2023-07-12 14:18:06,275] A new study created in memory with name: no-name-706ed372-9a86-4238-a77a-fe440d66111a
+[I 2023-07-12 14:20:37,001] Trial 0 finished with value: 45.81962585449219 and parameters: {'n_layers': 1, 'n_units_l0': 43, 'dropout_l0': 0.31119460173354463, 'lr': 0.0003653063314685422}. Best is trial 0 with value: 45.81962585449219.
+[I 2023-07-12 14:24:27,883] Trial 1 finished with value: 45.690589904785156 and parameters: {'n_layers': 3, 'n_units_l0': 22, 'dropout_l0': 0.4304934247679506, 'n_units_l1': 57, 'dropout_l1': 0.32019095210505294, 'n_units_l2': 23, 'dropout_l2': 0.21385582487585308, 'lr': 0.0023622115723836456}. Best is trial 1 with value: 45.690589904785156.
+[I 2023-07-12 14:27:42,002] Trial 2 finished with value: 45.69472122192383 and parameters: {'n_layers': 2, 'n_units_l0': 103, 'dropout_l0': 0.34294744897756557, 'n_units_l1': 110, 'dropout_l1': 0.33851276785780415, 'lr': 4.873083077564434e-05}. Best is trial 1 with value: 45.690589904785156.
+[I 2023-07-12 14:30:10,982] Trial 3 finished with value: 45.67475891113281 and parameters: {'n_layers': 1, 'n_units_l0': 93, 'dropout_l0': 0.4613226956116529, 'lr': 2.988461210518897e-05}. Best is trial 3 with value: 45.67475891113281.
+[I 2023-07-12 14:33:23,682] Trial 4 finished with value: 45.770938873291016 and parameters: {'n_layers': 2, 'n_units_l0': 10, 'dropout_l0': 0.24707252813636998, 'n_units_l1': 63, 'dropout_l1': 0.49569338788305095, 'lr': 0.0005059378157859478}. Best is trial 3 with value: 45.67475891113281.
+[I 2023-07-12 14:37:14,125] Trial 5 finished with value: 45.6424674987793 and parameters: {'n_layers': 3, 'n_units_l0': 103, 'dropout_l0': 0.459283153347164, 'n_units_l1': 96, 'dropout_l1': 0.3157482918636415, 'n_units_l2': 24, 'dropout_l2': 0.30474201627758785, 'lr': 0.0006944825707923302}. Best is trial 5 with value: 45.6424674987793.
+[I 2023-07-12 14:37:49,761] Trial 6 pruned. 
+[I 2023-07-12 14:38:13,204] Trial 7 pruned. 
+[I 2023-07-12 14:38:43,194] Trial 8 pruned. 
+[I 2023-07-12 14:39:03,297] Trial 9 pruned. 
+[I 2023-07-12 14:39:27,643] Trial 10 pruned. 
+[I 2023-07-12 14:39:36,328] Trial 11 pruned. 
+[I 2023-07-12 14:39:48,999] Trial 12 pruned. 
+[I 2023-07-12 14:39:57,713] Trial 13 pruned. 
+[I 2023-07-12 14:40:27,942] Trial 14 pruned. 
+[I 2023-07-12 14:40:36,849] Trial 15 pruned. 
+[I 2023-07-12 14:40:49,526] Trial 16 pruned. 
+[I 2023-07-12 14:41:00,508] Trial 17 pruned. 
+[I 2023-07-12 14:41:11,566] Trial 18 pruned. 
+[I 2023-07-12 14:41:24,300] Trial 19 pruned. 
+[I 2023-07-12 14:41:32,904] Trial 20 pruned. 
+[I 2023-07-12 14:45:24,306] Trial 21 finished with value: 45.705265045166016 and parameters: {'n_layers': 3, 'n_units_l0': 20, 'dropout_l0': 0.4353537217699928, 'n_units_l1': 57, 'dropout_l1': 0.3295745096941214, 'n_units_l2': 9, 'dropout_l2': 0.24491095580800604, 'lr': 0.0019297737816880004}. Best is trial 5 with value: 45.6424674987793.
+[I 2023-07-12 14:45:37,218] Trial 22 pruned. 
+[I 2023-07-12 14:45:50,042] Trial 23 pruned. 
+[I 2023-07-12 14:46:02,921] Trial 24 pruned. 
+[I 2023-07-12 14:46:16,040] Trial 25 pruned. 
+[I 2023-07-12 14:49:26,702] Trial 26 finished with value: 45.69839859008789 and parameters: {'n_layers': 2, 'n_units_l0': 6, 'dropout_l0': 0.4797434557689965, 'n_units_l1': 104, 'dropout_l1': 0.36000954915344713, 'lr': 0.00024019015295125305}. Best is trial 5 with value: 45.6424674987793.
+[I 2023-07-12 14:49:39,559] Trial 27 pruned. 
+[I 2023-07-12 14:49:48,209] Trial 28 pruned. 
+[I 2023-07-12 14:49:58,998] Trial 29 pruned. 
+[I 2023-07-12 14:50:07,754] Trial 30 pruned. 
+[I 2023-07-12 14:50:18,677] Trial 31 pruned. 
+[I 2023-07-12 14:50:29,524] Trial 32 pruned. 
+[I 2023-07-12 14:50:42,470] Trial 33 pruned. 
+[I 2023-07-12 14:50:52,963] Trial 34 pruned. 
+[I 2023-07-12 14:51:00,963] Trial 35 pruned. 
+[I 2023-07-12 14:51:12,960] Trial 36 pruned. 
+[I 2023-07-12 14:51:24,523] Trial 37 pruned. 
+[I 2023-07-12 14:51:37,400] Trial 38 pruned. 
+[I 2023-07-12 14:51:48,411] Trial 39 pruned. 
+[I 2023-07-12 14:51:57,039] Trial 40 pruned. 
+[I 2023-07-12 14:52:07,679] Trial 41 pruned. 
+[I 2023-07-12 14:52:17,945] Trial 42 pruned. 
+[I 2023-07-12 14:55:24,168] Trial 43 finished with value: 45.721614837646484 and parameters: {'n_layers': 2, 'n_units_l0': 5, 'dropout_l0': 0.44160373517065776, 'n_units_l1': 62, 'dropout_l1': 0.3632303219923823, 'lr': 0.0001770743833780958}. Best is trial 5 with value: 45.6424674987793.
+[I 2023-07-12 14:58:40,129] Trial 44 finished with value: 45.6924934387207 and parameters: {'n_layers': 2, 'n_units_l0': 11, 'dropout_l0': 0.4686868631911241, 'n_units_l1': 114, 'dropout_l1': 0.3112261623794814, 'lr': 0.0007926978929951163}. Best is trial 5 with value: 45.6424674987793.
+[I 2023-07-12 14:58:51,224] Trial 45 pruned. 
+[I 2023-07-12 14:59:02,143] Trial 46 pruned. 
+[I 2023-07-12 14:59:10,720] Trial 47 pruned. 
+[I 2023-07-12 14:59:23,454] Trial 48 pruned. 
+[I 2023-07-12 14:59:36,236] Trial 49 pruned. 
+[I 2023-07-12 14:59:44,964] Trial 50 pruned. 
+[I 2023-07-12 14:59:55,916] Trial 51 pruned. 
+[I 2023-07-12 15:03:01,373] Trial 52 finished with value: 45.761390686035156 and parameters: {'n_layers': 2, 'n_units_l0': 22, 'dropout_l0': 0.48831141789470534, 'n_units_l1': 97, 'dropout_l1': 0.31292401601401415, 'lr': 0.000544496549368506}. Best is trial 5 with value: 45.6424674987793.
+[I 2023-07-12 15:03:11,934] Trial 53 pruned. 
+[I 2023-07-12 15:03:22,097] Trial 54 pruned. 
+[I 2023-07-12 15:03:34,792] Trial 55 pruned. 
+[I 2023-07-12 15:06:39,118] Trial 56 finished with value: 45.68870162963867 and parameters: {'n_layers': 2, 'n_units_l0': 4, 'dropout_l0': 0.49101972794740145, 'n_units_l1': 128, 'dropout_l1': 0.31932839951362885, 'lr': 0.00023627466923313882}. Best is trial 5 with value: 45.6424674987793.
+[I 2023-07-12 15:06:49,503] Trial 57 pruned. 
+[I 2023-07-12 15:07:02,211] Trial 58 pruned. 
+[I 2023-07-12 15:07:12,437] Trial 59 pruned. 
+[I 2023-07-12 15:07:21,020] Trial 60 pruned. 
+[I 2023-07-12 15:10:26,091] Trial 61 finished with value: 45.66455078125 and parameters: {'n_layers': 2, 'n_units_l0': 14, 'dropout_l0': 0.48015457351877444, 'n_units_l1': 109, 'dropout_l1': 0.3265499201194217, 'lr': 0.00025645168797867846}. Best is trial 5 with value: 45.6424674987793.
+[I 2023-07-12 15:13:29,671] Trial 62 finished with value: 45.7617301940918 and parameters: {'n_layers': 2, 'n_units_l0': 16, 'dropout_l0': 0.45761821420135657, 'n_units_l1': 112, 'dropout_l1': 0.3071178279566596, 'lr': 0.0001559757341791073}. Best is trial 5 with value: 45.6424674987793.
+[I 2023-07-12 15:16:34,168] Trial 63 finished with value: 45.79302215576172 and parameters: {'n_layers': 2, 'n_units_l0': 36, 'dropout_l0': 0.47779525716206384, 'n_units_l1': 55, 'dropout_l1': 0.3266954049014249, 'lr': 0.00027449638675517134}. Best is trial 5 with value: 45.6424674987793.
+[I 2023-07-12 15:16:44,974] Trial 64 pruned. 
+[I 2023-07-12 15:16:55,147] Trial 65 pruned. 
+[I 2023-07-12 15:17:07,635] Trial 66 pruned. 
+[I 2023-07-12 15:17:18,385] Trial 67 pruned. 
+[I 2023-07-12 15:17:26,798] Trial 68 pruned. 
+[I 2023-07-12 15:17:39,302] Trial 69 pruned. 
+[I 2023-07-12 15:17:49,433] Trial 70 pruned. 
+[I 2023-07-12 15:20:56,219] Trial 71 finished with value: 45.62076950073242 and parameters: {'n_layers': 2, 'n_units_l0': 13, 'dropout_l0': 0.4916242695962842, 'n_units_l1': 100, 'dropout_l1': 0.3196948669648361, 'lr': 0.00024230485751920304}. Best is trial 71 with value: 45.62076950073242.
+[I 2023-07-12 15:21:06,572] Trial 72 pruned. 
+[I 2023-07-12 15:21:17,068] Trial 73 pruned. 
+[I 2023-07-12 15:21:27,335] Trial 74 pruned. 
+[I 2023-07-12 15:21:37,425] Trial 75 pruned. 
+[I 2023-07-12 15:21:47,525] Trial 76 pruned. 
+[I 2023-07-12 15:21:58,055] Trial 77 pruned. 
+[I 2023-07-12 15:22:10,624] Trial 78 pruned. 
+[I 2023-07-12 15:22:21,336] Trial 79 pruned. 
+[I 2023-07-12 15:22:33,853] Trial 80 pruned. 
+[I 2023-07-12 15:22:44,298] Trial 81 pruned. 
+[I 2023-07-12 15:22:54,676] Trial 82 pruned. 
+[I 2023-07-12 15:23:05,176] Trial 83 pruned. 
+[I 2023-07-12 15:26:10,732] Trial 84 finished with value: 45.69276428222656 and parameters: {'n_layers': 2, 'n_units_l0': 4, 'dropout_l0': 0.4670392704921556, 'n_units_l1': 111, 'dropout_l1': 0.3706250674757225, 'lr': 0.0002309544017532131}. Best is trial 71 with value: 45.62076950073242.
+[I 2023-07-12 15:26:21,445] Trial 85 pruned. 
+[I 2023-07-12 15:26:31,843] Trial 86 pruned. 
+[I 2023-07-12 15:26:42,376] Trial 87 pruned. 
+[I 2023-07-12 15:26:52,821] Trial 88 pruned. 
+[I 2023-07-12 15:27:05,359] Trial 89 pruned. 
+[I 2023-07-12 15:27:13,833] Trial 90 pruned. 
+[I 2023-07-12 15:27:24,496] Trial 91 pruned. 
+[I 2023-07-12 15:30:30,833] Trial 92 finished with value: 45.713768005371094 and parameters: {'n_layers': 2, 'n_units_l0': 11, 'dropout_l0': 0.4755410952949929, 'n_units_l1': 123, 'dropout_l1': 0.3256926926399868, 'lr': 0.00023828953465452506}. Best is trial 71 with value: 45.62076950073242.
+[I 2023-07-12 15:30:41,310] Trial 93 pruned. 
+[I 2023-07-12 15:30:51,602] Trial 94 pruned. 
+[I 2023-07-12 15:31:01,774] Trial 95 pruned. 
+[I 2023-07-12 15:31:12,196] Trial 96 pruned. 
+[I 2023-07-12 15:31:22,591] Trial 97 pruned. 
+[I 2023-07-12 15:31:33,152] Trial 98 pruned. 
+[I 2023-07-12 15:35:17,405] Trial 99 finished with value: 45.5571174621582 and parameters: {'n_layers': 3, 'n_units_l0': 21, 'dropout_l0': 0.4403627323748858, 'n_units_l1': 39, 'dropout_l1': 0.36380151239581693, 'n_units_l2': 102, 'dropout_l2': 0.26181741205885783, 'lr': 0.00014494432632533797}. Best is trial 99 with value: 45.5571174621582.
+Study statistics: 
+  Number of finished trials:  100
+  Number of pruned trials:  81
+  Number of complete trials:  19
+Best trial:
+  Value:  45.5571174621582
+  Params: 
+    n_layers: 3
+    n_units_l0: 21
+    dropout_l0: 0.4403627323748858
+    n_units_l1: 39
+    dropout_l1: 0.36380151239581693
+    n_units_l2: 102
+    dropout_l2: 0.26181741205885783
+    lr: 0.00014494432632533797
