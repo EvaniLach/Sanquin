@@ -36,7 +36,7 @@ def define_model(trial):
     in_features = INPUT
     for i in range(n_layers):
         out_features = trial.suggest_int("n_units_l{}".format(i), 4, 128)
-        act = nn.ReLU() if i < (n_layers) - 2 else nn.Identity()
+        act = nn.ReLU()
         linear = nn.Linear(in_features, out_features)
         layers += (linear, act)
         p = trial.suggest_float("dropout_l{}".format(i), 0.2, 0.5)
