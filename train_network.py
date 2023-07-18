@@ -15,7 +15,7 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer):
         optimizer.zero_grad()
         output = model(data)
         loss = F.mse_loss(output, target)
-        running_loss = + loss.item()
+        running_loss += loss.item()
         loss.backward()
         optimizer.step()
         if batch_idx % args.log_interval == 0:

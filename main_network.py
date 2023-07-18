@@ -50,19 +50,6 @@ class Q_net(nn.Module):
         self.p = p
         self.model = self.define_model()
 
-    def build_nn(self):
-        layer_sizes = self.input + self.nn + self.output
-
-        assert len(layer_sizes) > 1
-        layers = []
-        for index in range(len(layer_sizes) - 1):
-            linear = nn.Linear(layer_sizes[index], layer_sizes[index + 1])
-            act = nn.ReLU() if index < len(layer_sizes) - 2 else nn.Identity()
-            layers += (linear, act)
-            print(index)
-            layers.append(nn.Dropout(self.p[index]))
-        return nn.Sequential(*layers)
-
     def define_model(self):
         layers = []
 
