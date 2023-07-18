@@ -20,9 +20,9 @@ parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=25, metavar='N',
-                    help='number of epochs to train (default: 125)')
-parser.add_argument('--lr', type=float, default=0.000145, metavar='LR',
+parser.add_argument('--epochs', type=int, default=100, metavar='N',
+                    help='number of epochs to train (default: 100)')
+parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
                     help='learning rate (default: 0.001)')
 parser.add_argument('--momentum', type=float, default=0.5, metavar='M',
                     help='SGD momentum (default: 0.5)')
@@ -59,7 +59,7 @@ class Q_net(nn.Module):
             act = nn.ReLU()
             linear = nn.Linear(in_features, out_features)
             layers += (linear, act)
-            layers.append(nn.Dropout(self.p[i]))
+            # layers.append(nn.Dropout(self.p[i]))
             in_features = out_features
         layers.append(nn.Linear(in_features, self.output))
 
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
 
-    model = Q_net(72, 8, [21, 39, 102], [0.44, 0.36, 0.26]).model
+    model = Q_net(72, 8, [64, 64], [0.44, 0.36, 0.26]).model
     model.to(device)
     model.share_memory()  # gradients are allocated lazily, so they are not shared here
 

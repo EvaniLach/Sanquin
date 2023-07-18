@@ -13,8 +13,8 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer):
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()
-        output = model(data)
-        loss = F.mse_loss(output, target)
+        output = model(data.to(device))
+        loss = F.mse_loss(output, target.to(device))
         running_loss += loss.item()
         loss.backward()
         optimizer.step()
@@ -54,12 +54,17 @@ def test(args, model, device, test_dataset, dataloader_kwargs):
 def test_epoch(model, device, data_loader):
     model.eval()
     test_loss = 0
+    accuracy = 0
 
     with torch.no_grad():
         for data, target in data_loader:
             output = model(data.to(device))
             test_loss += F.mse_loss(output, target.to(device), reduction='sum').item()  # sum up batch loss
+            if torch.argmax(output) == torch.argmax(target):
+                accuracy += 1
 
     test_loss /= len(data_loader.dataset)
     print('\nTest set: Average loss: {:.4f}\n'.format(
         test_loss))
+    print('\nTest set: Accuracy: {:.4f}.\n'
+          '\n[{}/{}]\n'.format(accuracy / len(data_loader.dataset), accuracy, len(data_loader.dataset)))
