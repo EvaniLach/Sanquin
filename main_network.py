@@ -20,7 +20,7 @@ parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=100, metavar='N',
+parser.add_argument('--epochs', type=int, default=1, metavar='N',
                     help='number of epochs to train (default: 100)')
 parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
                     help='learning rate (default: 0.001)')
@@ -135,7 +135,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    train(0, args, model, device, train_dataset, kwargs)
+    # train(0, args, model, device, train_dataset, kwargs)
 
     # for rank in range(args.num_processes):
     #     p = mp.Process(target=train, args=(rank, args, model, device,
