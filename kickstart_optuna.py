@@ -61,7 +61,6 @@ def get_data():
 
     train_size = (len(train_dataset) - len(test_dataset))
     train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [train_size, test_size])
-    print(train_size)
 
     return train_dataset, val_dataset
 
