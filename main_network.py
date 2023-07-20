@@ -20,24 +20,16 @@ parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=1, metavar='N',
+parser.add_argument('--epochs', type=int, default=500, metavar='N',
                     help='number of epochs to train (default: 100)')
-parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
+parser.add_argument('--lr', type=float, default=0.00015, metavar='LR',
                     help='learning rate (default: 0.001)')
-parser.add_argument('--momentum', type=float, default=0.5, metavar='M',
-                    help='SGD momentum (default: 0.5)')
-parser.add_argument('--seed', type=int, default=1, metavar='S',
+parser.add_argument('--seed', type=int, default=10, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=1000, metavar='N',
                     help='how many batches to wait before logging training status')
-parser.add_argument('--num-processes', type=int, default=2, metavar='N',
-                    help='how many training processes to use (default: 2)')
 parser.add_argument('--cuda', action='store_true', default=False,
                     help='enables CUDA training')
-parser.add_argument('--mps', action='store_true', default=False,
-                    help='enables macOS GPU training')
-parser.add_argument('--dry-run', action='store_true', default=False,
-                    help='quickly check a single pass')
 
 
 class Q_net(nn.Module):
@@ -102,11 +94,6 @@ if __name__ == '__main__':
     else:
         device = torch.device("cpu")
 
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.1307,), (0.3081,))
-    ])
-
     kwargs = {'batch_size': args.batch_size,
               'shuffle': True}
     if use_cuda:
@@ -117,9 +104,9 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
 
-    model = Q_net(72, 8, [64, 64], [0.44, 0.36, 0.26]).model
+    model = Q_net(72, 8, [21, 39, 103], [0.44, 0.36, 0.26]).model
     model.to(device)
-    model.share_memory()  # gradients are allocated lazily, so they are not shared here
+    model.share_memory()
 
     processes = []
 
@@ -146,5 +133,4 @@ if __name__ == '__main__':
     # for p in processes:
     #     p.join()
 
-    # Once training is complete, we can test the model
     test(args, model, device, test_dataset, kwargs)

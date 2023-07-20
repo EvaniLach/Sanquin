@@ -59,9 +59,10 @@ def test_epoch(model, device, data_loader):
     with torch.no_grad():
         for data, target in data_loader:
             output = model(data.to(device))
-            test_loss += F.mse_loss(output, target.to(device), reduction='sum').item()  # sum up batch loss
-            if torch.argmax(output) == torch.argmax(target):
-                accuracy += 1
+            test_loss += F.mse_loss(output, target.to(device), reduction='sum').item()
+            for i in range(len(output)):
+                if torch.argmax(output[i]) == torch.argmax(target[i]):
+                    accuracy += 1
 
     test_loss /= len(data_loader.dataset)
     print('\nTest set: Average loss: {:.4f}\n'.format(
