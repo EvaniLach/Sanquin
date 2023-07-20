@@ -17,11 +17,11 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 INPUT = 1 * 72
 OUTPUT = 8
 DIR = os.getcwd()
-EPOCHS = 20
+EPOCHS = 100
 BATCHSIZE = 64
 
-N_TRAIN_EXAMPLES = BATCHSIZE * 2000
-N_VALID_EXAMPLES = BATCHSIZE * 500
+N_TRAIN_EXAMPLES = BATCHSIZE * 3000
+N_VALID_EXAMPLES = BATCHSIZE * 750
 
 parser = argparse.ArgumentParser(description='NN settings')
 parser.add_argument('--batch-size', type=int, default=64, metavar='N',
@@ -39,8 +39,8 @@ def define_model(trial):
         act = nn.ReLU()
         linear = nn.Linear(in_features, out_features)
         layers += (linear, act)
-        p = trial.suggest_float("dropout_l{}".format(i), 0.2, 0.5)
-        layers.append(nn.Dropout(p))
+        # p = trial.suggest_float("dropout_l{}".format(i), 0.2, 0.5)
+        # layers.append(nn.Dropout(p))
 
         in_features = out_features
     layers.append(nn.Linear(in_features, OUTPUT))
@@ -61,6 +61,7 @@ def get_data():
 
     train_size = (len(train_dataset) - len(test_dataset))
     train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [train_size, test_size])
+    print(train_size)
 
     return train_dataset, val_dataset
 
