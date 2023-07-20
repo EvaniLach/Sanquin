@@ -122,15 +122,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    # train(0, args, model, device, train_dataset, kwargs)
-
-    # for rank in range(args.num_processes):
-    #     p = mp.Process(target=train, args=(rank, args, model, device,
-    #                                        train_dataset, kwargs))
-    #     # We first train the model across `num_processes` processes
-    #     p.start()
-    #     processes.append(p)
-    # for p in processes:
-    #     p.join()
+    train(0, args, model, device, train_dataset, kwargs)
 
     test(args, model, device, test_dataset, kwargs)
