@@ -37,12 +37,12 @@ parser.add_argument('--cuda', action='store_true', default=False,
 
 class Q_net(nn.Module):
 
-    def __init__(self, input, output, nn, p):
+    def __init__(self, input, output, nn):
         super().__init__()
         self.input = input
         self.output = output
         self.nn = nn
-        self.p = p
+        # self.p = p
         self.model = self.define_model()
 
     def define_model(self):
