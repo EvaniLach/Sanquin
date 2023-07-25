@@ -18,13 +18,10 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer):
         running_loss += loss.item()
         loss.backward()
         optimizer.step()
-        if batch_idx % args.log_interval == 0:
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, batch_idx * len(data), len(train_loader.dataset),
-                       100. * batch_idx / len(train_loader), loss.item()))
-            if args.dry_run:
-                break
-    torch.save(model.state_dict(), 'models/kickstart/{}/model_{}'.format(args.seed, epoch))
+
+    print('Train Epoch: {} \tLoss: {:.6f}'.format(
+        epoch, running_loss))
+
     return running_loss
 
 
@@ -38,6 +35,8 @@ def train(rank, args, model, device, train_dataset, dataloader_kwargs):
 
     for epoch in range(1, args.epochs + 1):
         loss_values.append(train_epoch(epoch, model, args, device, train_loader, optimizer))
+        if epoch % args.model_interval == 0:
+            torch.save(model.state_dict(), 'models/kickstart/{}/model_{}'.format(args.seed, epoch))
 
     df = pd.DataFrame(loss_values, columns=["loss"])
     df.to_csv('results/kickstart/{}/loss_1.csv'.format(args.seed), index=False)
