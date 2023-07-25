@@ -8,6 +8,7 @@ import torch.multiprocessing as mp
 from torch.utils.data.sampler import Sampler
 from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets, transforms
+from datetime import datetime
 
 import numpy as np
 import os
@@ -124,6 +125,11 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    print("Start training")
+    startTime = datetime.now()
+
     train(0, args, model, device, train_dataset, kwargs)
+
+    print(datetime.now() - startTime)
 
     test(args, model, device, test_dataset, kwargs)
