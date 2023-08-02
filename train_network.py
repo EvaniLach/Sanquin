@@ -14,7 +14,7 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer):
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()
         output = model(data.to(device))
-        loss = F.mse_loss(output, target.to(device))
+        loss = F.cross_entropy(output, target.to(device))
         running_loss += loss.item()
         loss.backward()
         optimizer.step()
@@ -39,7 +39,7 @@ def train(rank, args, model, device, train_dataset, dataloader_kwargs):
             torch.save(model.state_dict(), 'models/kickstart/{}/model_{}'.format(args.seed, epoch))
 
     df = pd.DataFrame(loss_values, columns=["loss"])
-    df.to_csv('results/kickstart/{}/loss_1.csv'.format(args.seed), index=False)
+    df.to_csv('results/kiwhckstart/{}/loss_1.csv'.format(args.seed), index=False)
 
 
 def test(args, model, device, test_dataset, dataloader_kwargs):
@@ -58,7 +58,7 @@ def test_epoch(model, device, data_loader):
     with torch.no_grad():
         for data, target in data_loader:
             output = model(data.to(device))
-            test_loss += F.mse_loss(output, target.to(device), reduction='sum').item()
+            test_loss += F.cross_entropy(output, target.to(device), reduction='sum').item()
             for i in range(len(output)):
                 if torch.argmax(output[i]) == torch.argmax(target[i]):
                     accuracy += 1

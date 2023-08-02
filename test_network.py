@@ -19,7 +19,7 @@ parser.add_argument('--epochs', type=int, default=1, metavar='N',
                     help='number of epochs to train (default: 100)')
 parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
                     help='learning rate (default: 0.001)')
-parser.add_argument('--seed', type=int, default=1, metavar='S',
+parser.add_argument('--seed', type=int, default=10, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=1000, metavar='N',
                     help='how many batches to wait before logging training status')
@@ -29,12 +29,12 @@ parser.add_argument('--cuda', action='store_true', default=False,
 
 class Q_net(nn.Module):
 
-    def __init__(self, input, output, nn, p=0):
+    def __init__(self, input, output, nn):
         super().__init__()
         self.input = input
         self.output = output
         self.nn = nn
-        self.p = p
+        # self.p = p
         self.model = self.define_model()
 
     def define_model(self):
@@ -84,8 +84,9 @@ def test_epoch(model, device, data_loader):
 if __name__ == '__main__':
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    model = Q_net(72, 8, [64, 64]).model
-    model.load_state_dict(torch.load('models/kickstart/1/model_100'))
+    model = Q_net(72, 8, [58, 105, 109]).model
+    # model.load_state_dict(torch.load(
+    #    'C:/Users/evani/OneDrive/AI leiden/Sanquin/Results/kickstart/[58, 105, 109]_a0.00044/models/10/model_20'))
     model.to(device)
     model.share_memory()
 

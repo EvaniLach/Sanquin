@@ -107,7 +107,7 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
 
-    model = Q_net(72, 8, [58, 105, 109]).model
+    model = Q_net(72, 8, [58, 105, 109, 100]).model
     model.to(device)
     model.share_memory()
 

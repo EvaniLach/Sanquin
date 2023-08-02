@@ -20,8 +20,8 @@ DIR = os.getcwd()
 EPOCHS = 100
 BATCHSIZE = 64
 
-N_TRAIN_EXAMPLES = BATCHSIZE * 3000
-N_VALID_EXAMPLES = BATCHSIZE * 750
+N_TRAIN_EXAMPLES = BATCHSIZE * 2000
+N_VALID_EXAMPLES = BATCHSIZE * 500
 
 parser = argparse.ArgumentParser(description='NN settings')
 parser.add_argument('--batch-size', type=int, default=64, metavar='N',
@@ -30,7 +30,7 @@ parser.add_argument('--batch-size', type=int, default=64, metavar='N',
 
 def define_model(trial):
     # We optimize the number of layers, hidden units and dropout ratio in each layer.
-    n_layers = trial.suggest_int("n_layers", 1, 3)
+    n_layers = trial.suggest_int("n_layers", 1, 4)
     layers = []
 
     in_features = INPUT
@@ -98,7 +98,7 @@ def objective(trial):
             data, target = data.view(data.size(0), -1).to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
             output = model(data)
-            train_loss = F.mse_loss(output, target)
+            train_loss = F.cross_entropy(output, target)
             train_loss.backward()
             optimizer.step()
 
@@ -112,7 +112,7 @@ def objective(trial):
                     break
                 data, target = data.view(data.size(0), -1).to(DEVICE), target.to(DEVICE)
                 output = model(data)
-                val_loss += F.mse_loss(output, target)
+                val_loss += F.cross_entropy(output, target)
 
         trial.report(val_loss, epoch)
 
