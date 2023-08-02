@@ -17,7 +17,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 INPUT = 1 * 72
 OUTPUT = 8
 DIR = os.getcwd()
-EPOCHS = 100
+EPOCHS = 50
 BATCHSIZE = 64
 
 N_TRAIN_EXAMPLES = BATCHSIZE * 2000
@@ -26,7 +26,7 @@ N_VALID_EXAMPLES = BATCHSIZE * 500
 parser = argparse.ArgumentParser(description='NN settings')
 parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
-
+torch.cuda.empty_cache()
 
 def define_model(trial):
     # We optimize the number of layers, hidden units and dropout ratio in each layer.

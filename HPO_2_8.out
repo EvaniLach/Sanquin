@@ -1,0 +1,49 @@
+[I 2023-08-03 00:18:26,246] A new study created in memory with name: no-name-facc65a7-0472-4221-b76a-06aedad749a0
+[W 2023-08-03 00:18:26,340] Trial 0 failed with parameters: {'n_layers': 4, 'n_units_l0': 37, 'n_units_l1': 7, 'n_units_l2': 79, 'n_units_l3': 91} because of the following error: RuntimeError('CUDA error: CUDA-capable device(s) is/are busy or unavailable\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1.\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n').
+Traceback (most recent call last):
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/optuna/study/_optimize.py", line 200, in _run_trial
+    value_or_values = func(trial)
+  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 70, in objective
+    model = define_model(trial).to(DEVICE)
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1145, in to
+    return self._apply(convert)
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 797, in _apply
+    module._apply(fn)
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 820, in _apply
+    param_applied = fn(param)
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1143, in convert
+    return t.to(device, dtype if t.is_floating_point() or t.is_complex() else None, non_blocking)
+RuntimeError: CUDA error: CUDA-capable device(s) is/are busy or unavailable
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+[W 2023-08-03 00:18:26,341] Trial 0 failed with value None.
+Traceback (most recent call last):
+  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 128, in <module>
+    study.optimize(objective, n_trials=100, timeout=None)
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/optuna/study/study.py", line 443, in optimize
+    _optimize(
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/optuna/study/_optimize.py", line 66, in _optimize
+    _optimize_sequential(
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/optuna/study/_optimize.py", line 163, in _optimize_sequential
+    frozen_trial = _run_trial(study, func, catch)
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/optuna/study/_optimize.py", line 251, in _run_trial
+    raise func_err
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/optuna/study/_optimize.py", line 200, in _run_trial
+    value_or_values = func(trial)
+  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 70, in objective
+    model = define_model(trial).to(DEVICE)
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1145, in to
+    return self._apply(convert)
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 797, in _apply
+    module._apply(fn)
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 820, in _apply
+    param_applied = fn(param)
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1143, in convert
+    return t.to(device, dtype if t.is_floating_point() or t.is_complex() else None, non_blocking)
+RuntimeError: CUDA error: CUDA-capable device(s) is/are busy or unavailable
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
