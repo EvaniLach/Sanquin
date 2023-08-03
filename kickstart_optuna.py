@@ -44,7 +44,7 @@ def define_model(trial):
         # layers.append(nn.Dropout(p))
 
         in_features = out_features
-    layers.append(nn.Linear(in_features, OUTPUT), nn.Softmax())
+    layers.append((nn.Linear(in_features, OUTPUT), nn.Softmax()))
 
     return nn.Sequential(*layers)
 
