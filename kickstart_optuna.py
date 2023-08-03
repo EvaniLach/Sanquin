@@ -28,6 +28,7 @@ parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
 torch.cuda.empty_cache()
 
+
 def define_model(trial):
     # We optimize the number of layers, hidden units and dropout ratio in each layer.
     n_layers = trial.suggest_int("n_layers", 1, 4)
@@ -43,7 +44,7 @@ def define_model(trial):
         # layers.append(nn.Dropout(p))
 
         in_features = out_features
-    layers.append(nn.Linear(in_features, OUTPUT))
+    layers.append(nn.Linear(in_features, OUTPUT), nn.Softmax())
 
     return nn.Sequential(*layers)
 
