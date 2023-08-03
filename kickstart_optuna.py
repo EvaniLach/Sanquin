@@ -26,7 +26,6 @@ N_VALID_EXAMPLES = BATCHSIZE * 500
 parser = argparse.ArgumentParser(description='NN settings')
 parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
-torch.cuda.empty_cache()
 
 
 def define_model(trial):
@@ -125,6 +124,7 @@ def objective(trial):
 
 
 if __name__ == "__main__":
+    torch.cuda.empty_cache()
     study = optuna.create_study(direction="minimize")
     study.optimize(objective, n_trials=100, timeout=None)
 
