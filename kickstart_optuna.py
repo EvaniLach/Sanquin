@@ -8,6 +8,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import torch.utils.data
+import gc
 
 import argparse
 
@@ -125,6 +126,7 @@ def objective(trial):
 
 if __name__ == "__main__":
     torch.cuda.empty_cache()
+    gc.collect()
     study = optuna.create_study(direction="minimize")
     study.optimize(objective, n_trials=100, timeout=None)
 
