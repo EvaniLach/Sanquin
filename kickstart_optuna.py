@@ -125,8 +125,8 @@ def objective(trial):
 
 
 if __name__ == "__main__":
-    torch.cuda.empty_cache()
-    gc.collect()
+    print(torch.cuda.current_device())
+    print(torch.cuda.is_available())
     study = optuna.create_study(direction="minimize")
     study.optimize(objective, n_trials=100, timeout=None)
 
