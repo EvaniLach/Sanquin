@@ -82,7 +82,11 @@ def test_epoch(model, device, data_loader):
 
 
 if __name__ == '__main__':
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+
+    # Assuming that we are on a CUDA machine, this should print a CUDA device:
+
+    print(device)
 
     model = Q_net(72, 8, [58, 105, 109]).model
     # model.load_state_dict(torch.load(
