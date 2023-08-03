@@ -14,7 +14,7 @@ import argparse
 
 from main_network import Q_net, MyData
 
-DEVICE = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+DEVICE = torch.device('cuda:4' if torch.cuda.is_available() else 'cpu')
 INPUT = 1 * 72
 OUTPUT = 8
 DIR = os.getcwd()
