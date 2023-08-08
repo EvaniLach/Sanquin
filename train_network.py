@@ -36,10 +36,10 @@ def train(rank, args, model, device, train_dataset, dataloader_kwargs):
     for epoch in range(1, args.epochs + 1):
         loss_values.append(train_epoch(epoch, model, args, device, train_loader, optimizer))
         if epoch % args.model_interval == 0:
-            torch.save(model.state_dict(), 'models/kickstart/{}/model_{}'.format(args.seed, epoch))
+            torch.save(model.state_dict(), 'models/kickstart/{}/model_{}.pt'.format(args.seed, epoch))
 
     df = pd.DataFrame(loss_values, columns=["loss"])
-    df.to_csv('results/kiwhckstart/{}/loss_1.csv'.format(args.seed), index=False)
+    df.to_csv('results/kickstart/{}/loss_1.csv'.format(args.seed), index=False)
 
 
 def test(args, model, device, test_dataset, dataloader_kwargs):
