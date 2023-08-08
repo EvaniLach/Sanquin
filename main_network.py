@@ -23,7 +23,7 @@ parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
 parser.add_argument('--epochs', type=int, default=1000, metavar='N',
                     help='number of epochs to train (default: 100)')
-parser.add_argument('--lr', type=float, default=0.00044, metavar='LR',
+parser.add_argument('--lr', type=float, default=0.000377, metavar='LR',
                     help='learning rate (default: 0.001)')
 parser.add_argument('--seed', type=int, default=10, metavar='S',
                     help='random seed (default: 1)')
@@ -107,7 +107,7 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
 
-    model = Q_net(72, 8, [58, 105, 109, 100]).model
+    model = Q_net(72, 8, [128, 108, 68, 60]).model
     model.to(device)
     model.share_memory()
 
