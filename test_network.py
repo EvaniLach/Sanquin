@@ -84,9 +84,9 @@ def test_epoch(model, device, data_loader):
 if __name__ == '__main__':
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
-    model = Q_net(72, 8, [58, 105, 109]).model
+    model = Q_net(72, 8, [128, 108, 68, 60]).model
     model.load_state_dict(torch.load(
-        'C:/Users/evani/OneDrive/AI leiden/Sanquin/Results/kickstart/[58, 105, 109]_a0.00044/models/10/model_980'))
+        'C:/Users/evani/OneDrive/AI leiden/Sanquin/Results/kickstart/[128, 108, 68, 60]_a0.000377/10/model_580.pt'))
     model.to(device)
     model.share_memory()
 
