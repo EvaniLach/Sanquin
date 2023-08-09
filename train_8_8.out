@@ -1,0 +1,36 @@
+Start training
+Train Epoch: 1 	Loss: 20299.311842
+Train Epoch: 2 	Loss: 20212.405173
+Train Epoch: 3 	Loss: 20083.580697
+Train Epoch: 4 	Loss: 19884.298278
+Train Epoch: 5 	Loss: 19665.208742
+Train Epoch: 6 	Loss: 19464.615798
+Train Epoch: 7 	Loss: 19295.110573
+Train Epoch: 8 	Loss: 19149.663827
+Train Epoch: 9 	Loss: 19020.834982
+Train Epoch: 10 	Loss: 18907.881245
+Train Epoch: 11 	Loss: 18806.269298
+Train Epoch: 12 	Loss: 18715.163781
+Train Epoch: 13 	Loss: 18644.743794
+Train Epoch: 14 	Loss: 18565.286454
+Train Epoch: 15 	Loss: 18505.828579
+Train Epoch: 16 	Loss: 18447.069412
+Train Epoch: 17 	Loss: 18403.032882
+Train Epoch: 18 	Loss: 18353.313362
+Train Epoch: 19 	Loss: 18306.084471
+Train Epoch: 20 	Loss: 18267.120071
+Traceback (most recent call last):
+  File "/home/s1949624/RL_matching/main_network.py", line 131, in <module>
+    train(0, args, model, device, train_dataset, kwargs)
+  File "/home/s1949624/RL_matching/train_network.py", line 39, in train
+    torch.save(model.state_dict(), 'models/kickstart/{}/model_{}.pt'.format(args.seed, epoch))
+  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/torch/serialization.py", line 440, in save
+    with _open_zipfile_writer(f) as opened_zipfile:
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/torch/serialization.py", line 315, in _open_zipfile_writer
+    return container(name_or_buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/torch/serialization.py", line 288, in __init__
+    super().__init__(torch._C.PyTorchFileWriter(str(name)))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Parent directory models/kickstart/10 does not exist.

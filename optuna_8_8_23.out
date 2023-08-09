@@ -1,7 +1,7 @@
 0
 True
-[I 2023-08-03 15:36:47,860] A new study created in memory with name: no-name-a8e5b154-7d71-4bd4-9dc9-f895c6959eec
-[W 2023-08-03 15:36:47,884] Trial 0 failed with parameters: {'n_layers': 3, 'n_units_l0': 20, 'n_units_l1': 78, 'n_units_l2': 9} because of the following error: RuntimeError('CUDA error: CUDA-capable device(s) is/are busy or unavailable\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1.\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n').
+[I 2023-08-08 15:22:45,973] A new study created in memory with name: no-name-1c9a7071-ac38-4d13-b447-589fb4e45b26
+[W 2023-08-08 15:22:45,994] Trial 0 failed with parameters: {'n_layers': 2, 'n_units_l0': 90, 'n_units_l1': 80} because of the following error: RuntimeError('CUDA error: CUDA-capable device(s) is/are busy or unavailable\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1.\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n').
 Traceback (most recent call last):
   File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/optuna/study/_optimize.py", line 200, in _run_trial
     value_or_values = func(trial)
@@ -20,7 +20,7 @@ CUDA kernel errors might be asynchronously reported at some other API call, so t
 For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
 Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
 
-[W 2023-08-03 15:36:47,886] Trial 0 failed with value None.
+[W 2023-08-08 15:22:45,995] Trial 0 failed with value None.
 Traceback (most recent call last):
   File "/home/s1949624/RL_matching/kickstart_optuna.py", line 131, in <module>
     study.optimize(objective, n_trials=100, timeout=None)
