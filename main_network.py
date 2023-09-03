@@ -23,7 +23,7 @@ parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
 parser.add_argument('--epochs', type=int, default=1000, metavar='N',
                     help='number of epochs to train (default: 100)')
-parser.add_argument('--lr', type=float, default=0.000377, metavar='LR',
+parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
                     help='learning rate (default: 0.001)')
 parser.add_argument('--seed', type=int, default=10, metavar='S',
                     help='random seed (default: 1)')
@@ -49,7 +49,7 @@ class Q_net(nn.Module):
         layers = []
 
         in_features = self.input
-        for i in range(len(self.nn) - 1):
+        for i in range(len(self.nn)):
             out_features = self.nn[i]
             act = nn.ReLU()
             linear = nn.Linear(in_features, out_features)
@@ -107,14 +107,14 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
 
-    model = Q_net(72, 8, [128, 108, 68, 60]).model
+    model = Q_net(24, 8, [64, 128, 64]).model
     model.to(device)
     model.share_memory()
 
     processes = []
 
-    data_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/states/'
-    target_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/q_matrices/'
+    data_path = 'NN training data/1_1/states/'
+    target_path = 'NN training data/1_1/q-matrices/'
 
     dataset = MyData(data_path, target_path)
 
