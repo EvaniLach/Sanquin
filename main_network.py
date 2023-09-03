@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     use_cuda = args.cuda and torch.cuda.is_available()
     if use_cuda:
-        device = torch.device("cuda")
+        device = torch.device("cuda:5")
     else:
         device = torch.device("cpu")
 
