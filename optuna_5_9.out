@@ -1,0 +1,42 @@
+[I 2023-09-05 11:35:46,374] A new study created in memory with name: no-name-b82dce46-4452-4e6d-8cda-2dcca56906ca
+[W 2023-09-05 11:35:48,416] Trial 0 failed with parameters: {'n_layers': 2, 'n_units_l0': 93, 'n_units_l1': 101, 'lr': 0.06958279405800907} because of the following error: FileNotFoundError(2, 'No such file or directory').
+Traceback (most recent call last):
+  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/_optimize.py", line 200, in _run_trial
+    value_or_values = func(trial)
+                      ^^^^^^^^^^^
+  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 114, in objective
+    train_dataset, val_dataset, train_targets = get_data()
+                                                ^^^^^^^^^^
+  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 70, in get_data
+    dataset = MyData(data_path, target_path)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s1949624/RL_matching/main_network.py", line 67, in __init__
+    for i in os.listdir(data_path):
+             ^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'NN training data/1_1 backup/states/'
+[W 2023-09-05 11:35:48,419] Trial 0 failed with value None.
+Traceback (most recent call last):
+  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 166, in <module>
+    study.optimize(objective, n_trials=100, timeout=None)
+  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/study.py", line 443, in optimize
+    _optimize(
+  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/_optimize.py", line 66, in _optimize
+    _optimize_sequential(
+  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/_optimize.py", line 163, in _optimize_sequential
+    frozen_trial = _run_trial(study, func, catch)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/_optimize.py", line 251, in _run_trial
+    raise func_err
+  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/_optimize.py", line 200, in _run_trial
+    value_or_values = func(trial)
+                      ^^^^^^^^^^^
+  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 114, in objective
+    train_dataset, val_dataset, train_targets = get_data()
+                                                ^^^^^^^^^^
+  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 70, in get_data
+    dataset = MyData(data_path, target_path)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s1949624/RL_matching/main_network.py", line 67, in __init__
+    for i in os.listdir(data_path):
+             ^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'NN training data/1_1 backup/states/'

@@ -13,7 +13,7 @@ import argparse
 
 from main_network import Q_net, MyData
 
-DEVICE = torch.device('cuda:2' if torch.cuda.is_available() else 'cpu')
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 INPUT = 1 * 24
 OUTPUT = 8
 DIR = os.getcwd()
@@ -64,8 +64,8 @@ def define_model(trial):
 
 def get_data():
     # dir = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/NN training data/'
-    data_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/1_1 backup/states/'
-    target_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/1_1 backup/q_matrices/'
+    data_path = 'NN training data/1_1 backup/states/'
+    target_path = 'NN training data/1_1 backup/q-matrices/'
 
     dataset = MyData(data_path, target_path)
 
