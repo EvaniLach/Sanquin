@@ -1,21 +1,20 @@
 import os
 
 import optuna
-import pandas as pd
 from optuna.trial import TrialState
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
 import torch.utils.data
-import gc
+from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader, Subset
 
 import argparse
 
 from main_network import Q_net, MyData
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-INPUT = 1 * 72
+INPUT = 1 * 24
 OUTPUT = 8
 DIR = os.getcwd()
 EPOCHS = 50
@@ -40,30 +39,63 @@ def define_model(trial):
         act = nn.ReLU()
         linear = nn.Linear(in_features, out_features)
         layers += (linear, act)
-        # p = trial.suggest_float("dropout_l{}".format(i), 0.2, 0.5)
-        # layers.append(nn.Dropout(p))
-
         in_features = out_features
     layers.append((nn.Linear(in_features, OUTPUT)))
 
     return nn.Sequential(*layers)
 
 
+# def get_data():
+#     dir = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/NN training data/'
+#     data_path = dir + 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/1_1 backup/states/'
+#     target_path = dir + 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/1_1 backup/q_matrices/'
+#
+#     dataset = MyData(data_path, target_path)
+#
+#     train_size = int(0.85 * len(dataset))
+#     test_size = (len(dataset) - train_size)
+#
+#     train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
+#
+#     train_size = (len(train_dataset) - len(test_dataset))
+#     train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [train_size, test_size])
+#
+#     return train_dataset, val_dataset
+
 def get_data():
-    data_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/states/'
-    target_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/q_matrices/'
+    # dir = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/NN training data/'
+    data_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/1_1 backup/states/'
+    target_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/1_1 backup/q_matrices/'
 
     dataset = MyData(data_path, target_path)
 
     train_size = int(0.85 * len(dataset))
     test_size = (len(dataset) - train_size)
 
-    train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
+    # Split 0.85 of indices for initial train portion
+    train_indices, test_indices, _, _ = train_test_split(
+        range(len(dataset)),
+        dataset.y,
+        stratify=dataset.y,
+        test_size=test_size,
+    )
 
-    train_size = (len(train_dataset) - len(test_dataset))
-    train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [train_size, test_size])
+    # Save target value in train set to calculate class weights later on
+    train_targets = dataset[train_indices][1]
 
-    return train_dataset, val_dataset
+    train_split = Subset(dataset, train_indices)
+
+    # Split again to get 0.7 train and 0.15 validation sets
+    train_indices, val_indices, _, _ = train_test_split(
+        range(len(train_indices)),
+        train_targets,
+        stratify=train_targets,
+        test_size=test_size,
+    )
+
+    val_split = Subset(dataset, val_indices)
+
+    return train_split, val_split, train_targets
 
 
 def objective(trial):
@@ -79,10 +111,15 @@ def objective(trial):
     kwargs = {'batch_size': args.batch_size,
               'shuffle': True}
 
-    train_dataset, val_dataset = get_data()
+    train_dataset, val_dataset, train_targets = get_data()
 
-    train_loader = torch.utils.data.DataLoader(train_dataset, **kwargs)
-    val_loader = torch.utils.data.DataLoader(val_dataset, **kwargs)
+    train_loader = DataLoader(train_dataset, **kwargs)
+    val_loader = DataLoader(val_dataset, **kwargs)
+
+    class_probs = torch.sum(train_targets, dim=0) / len(train_dataset)
+    class_weights = 1 / class_probs
+
+    loss = nn.CrossEntropyLoss(weight=class_weights.to(DEVICE))
 
     if torch.cuda.is_available():
         kwargs.update({'num_workers': 1,
@@ -99,7 +136,7 @@ def objective(trial):
             data, target = data.view(data.size(0), -1).to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
             output = model(data)
-            train_loss = F.cross_entropy(output, target)
+            train_loss = loss(output, target)
             train_loss.backward()
             optimizer.step()
 
@@ -113,7 +150,7 @@ def objective(trial):
                     break
                 data, target = data.view(data.size(0), -1).to(DEVICE), target.to(DEVICE)
                 output = model(data)
-                val_loss += F.cross_entropy(output, target)
+                val_loss += loss(output, target)
 
         trial.report(val_loss, epoch)
 
@@ -125,8 +162,6 @@ def objective(trial):
 
 
 if __name__ == "__main__":
-    print(torch.cuda.current_device())
-    print(torch.cuda.is_available())
     study = optuna.create_study(direction="minimize")
     study.optimize(objective, n_trials=100, timeout=None)
 

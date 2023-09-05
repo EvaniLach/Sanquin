@@ -1,6 +1,7 @@
 from __future__ import print_function
 import argparse
 
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -41,7 +42,7 @@ class Q_net(nn.Module):
         layers = []
 
         in_features = self.input
-        for i in range(len(self.nn) - 1):
+        for i in range(len(self.nn)):
             out_features = self.nn[i]
             act = nn.ReLU()
             linear = nn.Linear(in_features, out_features)
@@ -67,31 +68,34 @@ def test_epoch(model, device, data_loader):
     accuracy = 0
 
     with torch.no_grad():
+        results = np.zeros((1, 2))
         for data, target in data_loader:
             output = model(data.to(device))
-            test_loss += F.mse_loss(output, target.to(device), reduction='sum').item()
             for i in range(len(output)):
-                if torch.argmax(output[i]) == torch.argmax(target[i]):
-                    accuracy += 1
+                results = np.vstack([results, [torch.argmax(target[i]), torch.argmax(output[i])]])
 
     test_loss /= len(data_loader.dataset)
     print('\nTest set: Average loss: {:.4f}\n'.format(
         test_loss))
-    print('\nTest set: Accuracy: {:.4f}.\n'
-          '\n[{}/{}]\n'.format(accuracy / len(data_loader.dataset), accuracy, len(data_loader.dataset)))
+    # print('\nTest set: Accuracy: {:.4f}.\n'
+    #       '\n[{}/{}]\n'.format(accuracy / len(data_loader.dataset), accuracy, len(data_loader.dataset)))
+    df_results = pd.DataFrame(results)
+    df_results.to_csv('results/test/[64_128_64]_1_1.csv')
 
 
 if __name__ == '__main__':
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
-    model = Q_net(72, 8, [128, 108, 68, 60]).model
+    path = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/Results/kickstart/'
+
+    model = Q_net(24, 8, [64, 128, 64]).model
     model.load_state_dict(torch.load(
-        'C:/Users/evani/OneDrive/AI leiden/Sanquin/Results/kickstart/[128, 108, 68, 60]_a0.000377/10/model_580.pt'))
+        path + '[64, 128, 64]_a0.001/models/model_880.pt'))
     model.to(device)
     model.share_memory()
 
-    data_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/states/'
-    target_path = 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/q_matrices/'
+    data_path = 'NN training data/1_1/states/'
+    target_path = 'NN training data/1_1/q-matrices/'
 
     dataset = MyData(data_path, target_path)
 

@@ -3,7 +3,6 @@ import argparse
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.multiprocessing as mp
 from torch.utils.data.sampler import Sampler
 from torch.utils.data import Dataset, DataLoader
@@ -62,27 +61,31 @@ class Q_net(nn.Module):
 
 
 class MyData(Dataset):
-    def __init__(self, data_path, target_path, transform=None):
+    def __init__(self, data_path=None, target_path=None):
+        if (data_path is not None) & (target_path is not None):
+            train_list = []
+            for i in os.listdir(data_path):
+                data = np.load(data_path + i, allow_pickle=True)
+                train_list.append(data)
 
-        train_list = []
-        for i in os.listdir(data_path):
-            data = np.load(data_path + i, allow_pickle=True)
-            train_list.append(data)
+            test_list = []
+            for i in os.listdir(target_path):
+                data = np.load(target_path + i, allow_pickle=True)
+                test_list.append(data)
 
-        test_list = []
-        for i in os.listdir(target_path):
-            data = np.load(target_path + i, allow_pickle=True)
-            test_list.append(data)
-
-        self.x = torch.from_numpy(np.vstack(train_list)).float()
-        self.y = torch.from_numpy(np.vstack(test_list)).float()
-        self.transform = transform
+            self.x = torch.from_numpy(np.vstack(train_list)).float()
+            self.y = torch.from_numpy(np.vstack(test_list)).float()
+        else:
+            self.x = Dataset.x
+            self.y = Dataset.y
 
     def __getitem__(self, idx):
         sample = self.x[idx], self.y[idx]
-        if self.transform:
-            sample = self.transform(sample)
         return sample
+
+    def __getprob__(self):
+        sum = torch.sum(self.y, dim=1)
+        return sum / len(self.y)
 
     def __len__(self):
         return len(self.x)
