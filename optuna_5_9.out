@@ -1,42 +1,113 @@
-[I 2023-09-05 11:35:46,374] A new study created in memory with name: no-name-b82dce46-4452-4e6d-8cda-2dcca56906ca
-[W 2023-09-05 11:35:48,416] Trial 0 failed with parameters: {'n_layers': 2, 'n_units_l0': 93, 'n_units_l1': 101, 'lr': 0.06958279405800907} because of the following error: FileNotFoundError(2, 'No such file or directory').
-Traceback (most recent call last):
-  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/_optimize.py", line 200, in _run_trial
-    value_or_values = func(trial)
-                      ^^^^^^^^^^^
-  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 114, in objective
-    train_dataset, val_dataset, train_targets = get_data()
-                                                ^^^^^^^^^^
-  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 70, in get_data
-    dataset = MyData(data_path, target_path)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/s1949624/RL_matching/main_network.py", line 67, in __init__
-    for i in os.listdir(data_path):
-             ^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: 'NN training data/1_1 backup/states/'
-[W 2023-09-05 11:35:48,419] Trial 0 failed with value None.
-Traceback (most recent call last):
-  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 166, in <module>
-    study.optimize(objective, n_trials=100, timeout=None)
-  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/study.py", line 443, in optimize
-    _optimize(
-  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/_optimize.py", line 66, in _optimize
-    _optimize_sequential(
-  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/_optimize.py", line 163, in _optimize_sequential
-    frozen_trial = _run_trial(study, func, catch)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/_optimize.py", line 251, in _run_trial
-    raise func_err
-  File "/local/s1949624/envs/sanquin2/lib/python3.11/site-packages/optuna/study/_optimize.py", line 200, in _run_trial
-    value_or_values = func(trial)
-                      ^^^^^^^^^^^
-  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 114, in objective
-    train_dataset, val_dataset, train_targets = get_data()
-                                                ^^^^^^^^^^
-  File "/home/s1949624/RL_matching/kickstart_optuna.py", line 70, in get_data
-    dataset = MyData(data_path, target_path)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/s1949624/RL_matching/main_network.py", line 67, in __init__
-    for i in os.listdir(data_path):
-             ^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: 'NN training data/1_1 backup/states/'
+[I 2023-09-05 11:41:33,002] A new study created in memory with name: no-name-f6f9ac21-7254-45f3-8bc5-4e027b268dfe
+[I 2023-09-05 11:54:42,084] Trial 0 finished with value: 8363.6396484375 and parameters: {'n_layers': 4, 'n_units_l0': 87, 'n_units_l1': 94, 'n_units_l2': 52, 'n_units_l3': 63, 'lr': 2.558106565595737e-05}. Best is trial 0 with value: 8363.6396484375.
+[I 2023-09-05 12:08:07,125] Trial 1 finished with value: 8500.119140625 and parameters: {'n_layers': 4, 'n_units_l0': 9, 'n_units_l1': 59, 'n_units_l2': 83, 'n_units_l3': 80, 'lr': 0.0008823864709350963}. Best is trial 0 with value: 8363.6396484375.
+[I 2023-09-05 12:22:10,914] Trial 2 finished with value: 8524.9306640625 and parameters: {'n_layers': 4, 'n_units_l0': 37, 'n_units_l1': 7, 'n_units_l2': 27, 'n_units_l3': 48, 'lr': 0.00018987942403173548}. Best is trial 0 with value: 8363.6396484375.
+[I 2023-09-05 12:34:27,172] Trial 3 finished with value: 7936.03515625 and parameters: {'n_layers': 3, 'n_units_l0': 104, 'n_units_l1': 43, 'n_units_l2': 111, 'lr': 0.00039333117356121446}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 12:46:31,856] Trial 4 finished with value: 8161.33203125 and parameters: {'n_layers': 2, 'n_units_l0': 15, 'n_units_l1': 28, 'lr': 0.0046258962016246}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 12:47:03,795] Trial 5 pruned. 
+[I 2023-09-05 12:58:39,211] Trial 6 finished with value: 8414.5947265625 and parameters: {'n_layers': 3, 'n_units_l0': 99, 'n_units_l1': 53, 'n_units_l2': 34, 'lr': 0.0006178237336207604}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 12:59:08,001] Trial 7 pruned. 
+[I 2023-09-05 13:10:31,745] Trial 8 finished with value: 8207.1044921875 and parameters: {'n_layers': 3, 'n_units_l0': 73, 'n_units_l1': 31, 'n_units_l2': 34, 'lr': 0.00039365204136548084}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 13:10:59,983] Trial 9 pruned. 
+[I 2023-09-05 13:11:28,436] Trial 10 pruned. 
+[I 2023-09-05 13:11:57,429] Trial 11 pruned. 
+[I 2023-09-05 13:22:24,166] Trial 12 finished with value: 8168.3896484375 and parameters: {'n_layers': 2, 'n_units_l0': 124, 'n_units_l1': 39, 'lr': 0.004265430961133027}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 13:22:53,505] Trial 13 pruned. 
+[I 2023-09-05 13:23:23,871] Trial 14 pruned. 
+[I 2023-09-05 13:35:15,740] Trial 15 finished with value: 8268.978515625 and parameters: {'n_layers': 3, 'n_units_l0': 113, 'n_units_l1': 72, 'n_units_l2': 92, 'lr': 0.0018544174629682758}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 13:35:48,514] Trial 16 pruned. 
+[I 2023-09-05 13:36:16,883] Trial 17 pruned. 
+[I 2023-09-05 13:36:47,603] Trial 18 pruned. 
+[I 2023-09-05 13:37:15,875] Trial 19 pruned. 
+[I 2023-09-05 13:37:44,782] Trial 20 pruned. 
+[I 2023-09-05 13:38:13,114] Trial 21 pruned. 
+[I 2023-09-05 13:38:41,985] Trial 22 pruned. 
+[I 2023-09-05 13:49:04,163] Trial 23 finished with value: 8270.2451171875 and parameters: {'n_layers': 1, 'n_units_l0': 104, 'lr': 0.003390174687707858}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 13:49:32,316] Trial 24 pruned. 
+[I 2023-09-05 13:50:02,315] Trial 25 pruned. 
+[I 2023-09-05 13:50:30,229] Trial 26 pruned. 
+[I 2023-09-05 13:51:00,585] Trial 27 pruned. 
+[I 2023-09-05 14:02:22,939] Trial 28 finished with value: 8344.0732421875 and parameters: {'n_layers': 3, 'n_units_l0': 95, 'n_units_l1': 50, 'n_units_l2': 107, 'lr': 0.0033222226836150987}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 14:02:56,137] Trial 29 pruned. 
+[I 2023-09-05 14:03:25,094] Trial 30 pruned. 
+[I 2023-09-05 14:03:55,888] Trial 31 pruned. 
+[I 2023-09-05 14:15:17,031] Trial 32 finished with value: 8393.5908203125 and parameters: {'n_layers': 3, 'n_units_l0': 87, 'n_units_l1': 41, 'n_units_l2': 20, 'lr': 0.0010583076762690096}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 14:15:48,401] Trial 33 pruned. 
+[I 2023-09-05 14:16:18,850] Trial 34 pruned. 
+[I 2023-09-05 14:16:52,336] Trial 35 pruned. 
+[I 2023-09-05 14:17:21,629] Trial 36 pruned. 
+[I 2023-09-05 14:17:52,251] Trial 37 pruned. 
+[I 2023-09-05 14:29:23,720] Trial 38 finished with value: 8273.1591796875 and parameters: {'n_layers': 3, 'n_units_l0': 98, 'n_units_l1': 11, 'n_units_l2': 38, 'lr': 0.00016394129823483493}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 14:29:53,142] Trial 39 pruned. 
+[I 2023-09-05 14:30:25,206] Trial 40 pruned. 
+[I 2023-09-05 14:30:53,903] Trial 41 pruned. 
+[I 2023-09-05 14:31:23,648] Trial 42 pruned. 
+[I 2023-09-05 14:43:10,817] Trial 43 finished with value: 8279.1337890625 and parameters: {'n_layers': 3, 'n_units_l0': 111, 'n_units_l1': 73, 'n_units_l2': 112, 'lr': 0.0026441418307472575}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 14:43:38,821] Trial 44 pruned. 
+[I 2023-09-05 14:44:10,797] Trial 45 pruned. 
+[I 2023-09-05 14:44:41,359] Trial 46 pruned. 
+[I 2023-09-05 14:45:13,672] Trial 47 pruned. 
+[I 2023-09-05 14:45:44,847] Trial 48 pruned. 
+[I 2023-09-05 14:46:17,808] Trial 49 pruned. 
+[I 2023-09-05 14:46:48,377] Trial 50 pruned. 
+[I 2023-09-05 14:47:19,060] Trial 51 pruned. 
+[I 2023-09-05 14:47:49,279] Trial 52 pruned. 
+[I 2023-09-05 14:48:17,868] Trial 53 pruned. 
+[I 2023-09-05 14:48:47,935] Trial 54 pruned. 
+[I 2023-09-05 15:00:06,789] Trial 55 finished with value: 8388.541015625 and parameters: {'n_layers': 1, 'n_units_l0': 113, 'lr': 0.00476485587862676}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 15:00:36,414] Trial 56 pruned. 
+[I 2023-09-05 15:01:04,991] Trial 57 pruned. 
+[I 2023-09-05 15:12:33,293] Trial 58 finished with value: 8342.9833984375 and parameters: {'n_layers': 2, 'n_units_l0': 48, 'n_units_l1': 56, 'lr': 0.010100887218447823}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 15:13:06,045] Trial 59 pruned. 
+[I 2023-09-05 15:24:27,947] Trial 60 finished with value: 8249.8671875 and parameters: {'n_layers': 1, 'n_units_l0': 87, 'lr': 0.0037191678906279974}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 15:34:44,589] Trial 61 finished with value: 8099.078125 and parameters: {'n_layers': 1, 'n_units_l0': 82, 'lr': 0.0035912313526787}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 15:45:06,606] Trial 62 finished with value: 8164.45361328125 and parameters: {'n_layers': 1, 'n_units_l0': 84, 'lr': 0.002453386485657307}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 15:45:34,691] Trial 63 pruned. 
+[I 2023-09-05 15:46:04,126] Trial 64 pruned. 
+[I 2023-09-05 15:46:32,171] Trial 65 pruned. 
+[I 2023-09-05 15:47:00,910] Trial 66 pruned. 
+[I 2023-09-05 15:47:28,790] Trial 67 pruned. 
+[I 2023-09-05 15:47:57,429] Trial 68 pruned. 
+[I 2023-09-05 15:48:26,805] Trial 69 pruned. 
+[I 2023-09-05 15:48:54,834] Trial 70 pruned. 
+[I 2023-09-05 16:00:29,279] Trial 71 finished with value: 8298.9091796875 and parameters: {'n_layers': 3, 'n_units_l0': 79, 'n_units_l1': 107, 'n_units_l2': 16, 'lr': 0.0020023504262472046}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 16:00:58,024] Trial 72 pruned. 
+[I 2023-09-05 16:01:26,934] Trial 73 pruned. 
+[I 2023-09-05 16:01:56,435] Trial 74 pruned. 
+[I 2023-09-05 16:02:24,763] Trial 75 pruned. 
+[I 2023-09-05 16:14:12,122] Trial 76 finished with value: 8244.5234375 and parameters: {'n_layers': 3, 'n_units_l0': 116, 'n_units_l1': 38, 'n_units_l2': 121, 'lr': 0.002058785381975165}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 16:14:42,242] Trial 77 pruned. 
+[I 2023-09-05 16:15:10,527] Trial 78 pruned. 
+[I 2023-09-05 16:15:40,938] Trial 79 pruned. 
+[I 2023-09-05 16:16:08,927] Trial 80 pruned. 
+[I 2023-09-05 16:16:38,010] Trial 81 pruned. 
+[I 2023-09-05 16:27:58,926] Trial 82 finished with value: 8112.2060546875 and parameters: {'n_layers': 3, 'n_units_l0': 116, 'n_units_l1': 44, 'n_units_l2': 109, 'lr': 0.002706828489578257}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 16:28:28,684] Trial 83 pruned. 
+[I 2023-09-05 16:28:58,368] Trial 84 pruned. 
+[I 2023-09-05 16:29:27,792] Trial 85 pruned. 
+[I 2023-09-05 16:40:49,900] Trial 86 finished with value: 8079.97509765625 and parameters: {'n_layers': 3, 'n_units_l0': 125, 'n_units_l1': 51, 'n_units_l2': 122, 'lr': 0.0025777474143830743}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 16:41:21,339] Trial 87 pruned. 
+[I 2023-09-05 16:41:49,713] Trial 88 pruned. 
+[I 2023-09-05 16:42:19,909] Trial 89 pruned. 
+[I 2023-09-05 16:42:51,077] Trial 90 pruned. 
+[I 2023-09-05 16:43:19,838] Trial 91 pruned. 
+[I 2023-09-05 16:43:47,899] Trial 92 pruned. 
+[I 2023-09-05 16:56:17,586] Trial 93 finished with value: 8501.2587890625 and parameters: {'n_layers': 3, 'n_units_l0': 128, 'n_units_l1': 46, 'n_units_l2': 92, 'lr': 0.0025025890511731355}. Best is trial 3 with value: 7936.03515625.
+[I 2023-09-05 16:56:48,492] Trial 94 pruned. 
+[I 2023-09-05 16:57:19,168] Trial 95 pruned. 
+[I 2023-09-05 16:57:50,358] Trial 96 pruned. 
+[I 2023-09-05 16:58:19,551] Trial 97 pruned. 
+[I 2023-09-05 16:58:48,908] Trial 98 pruned. 
+[I 2023-09-05 16:59:17,961] Trial 99 pruned. 
+Study statistics: 
+  Number of finished trials:  100
+  Number of pruned trials:  76
+  Number of complete trials:  24
+Best trial:
+  Value:  7936.03515625
+  Params: 
+    n_layers: 3
+    n_units_l0: 104
+    n_units_l1: 43
+    n_units_l2: 111
+    lr: 0.00039333117356121446

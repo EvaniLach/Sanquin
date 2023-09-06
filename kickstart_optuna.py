@@ -64,8 +64,8 @@ def define_model(trial):
 
 def get_data():
     # dir = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/NN training data/'
-    data_path = 'NN training data/1_1 backup/states/'
-    target_path = 'NN training data/1_1 backup/q-matrices/'
+    data_path = 'NN training data/1_1/states/'
+    target_path = 'NN training data/1_1/q_matrices/'
 
     dataset = MyData(data_path, target_path)
 
