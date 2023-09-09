@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.utils.data
 from sklearn.model_selection import train_test_split
-from torch.utils.data import DataLoader, Subset
+from torch.utils.data import DataLoader, Subset, TensorDataset
 
 import argparse
 import numpy as np
@@ -91,10 +91,8 @@ def get_data():
         test_size=test_size,
     )
 
-    print(dataset[val_indices][0][0])
-
-    val_split = Subset(normalize(dataset[val_indices][0]), val_indices)
-    train_split = Subset(normalize(dataset[train_indices][0]), train_indices)
+    val_split = TensorDataset(normalize(dataset[val_indices][0]), dataset[val_indices][1])
+    train_split = TensorDataset(normalize(dataset[train_indices][0]), dataset[val_indices][1])
 
     return train_split, val_split, train_targets
 
