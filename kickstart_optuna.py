@@ -92,7 +92,7 @@ def get_data():
     )
 
     val_split = TensorDataset(normalize(dataset[val_indices][0]), dataset[val_indices][1])
-    train_split = TensorDataset(normalize(dataset[train_indices][0]), dataset[val_indices][1])
+    train_split = TensorDataset(normalize(dataset[train_indices][0]), dataset[train_indices][1])
 
     return train_split, val_split, train_targets
 
