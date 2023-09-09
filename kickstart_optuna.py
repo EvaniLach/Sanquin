@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, Subset
 
 import argparse
+import numpy as np
 
 from main_network import Q_net, MyData
 
@@ -29,8 +30,7 @@ parser.add_argument('--batch-size', type=int, default=64, metavar='N',
 
 
 def define_model(trial):
-    # We optimize the number of layers, hidden units and dropout ratio in each layer.
-    n_layers = trial.suggest_int("n_layers", 1, 4)
+    n_layers = trial.suggest_int("n_layers", 1, 6)
     layers = []
 
     in_features = INPUT
@@ -83,8 +83,6 @@ def get_data():
     # Save target value in train set to calculate class weights later on
     train_targets = dataset[train_indices][1]
 
-    train_split = Subset(dataset, train_indices)
-
     # Split again to get 0.7 train and 0.15 validation sets
     train_indices, val_indices, _, _ = train_test_split(
         range(len(train_indices)),
@@ -93,9 +91,32 @@ def get_data():
         test_size=test_size,
     )
 
-    val_split = Subset(dataset, val_indices)
+    print(dataset[val_indices][0][0])
+
+    val_split = Subset(normalize(dataset[val_indices][0]), val_indices)
+    train_split = Subset(normalize(dataset[train_indices][0]), train_indices)
 
     return train_split, val_split, train_targets
+
+
+def normalize(matrix):
+    columns = matrix.shape[1]
+    feature_indices = [(i, i + 1) for i in range(columns) if (i % 3 == 0)]
+    min_max = []
+
+    for i in feature_indices:
+        min_max.append((torch.min(matrix[:, i[0]]), torch.max(matrix[:, i[0]])))
+        min_max.append((torch.min(matrix[:, i[1]]), torch.max(matrix[:, i[1]])))
+
+    for i in range(len(matrix)):
+        index = 0
+        for j in feature_indices:
+            matrix[i, j[0]] = (
+                    (matrix[i, j[0]] - min_max[index][0]) / (min_max[index][1] - min_max[index][0]))
+            matrix[i, j[1]] = (
+                    (matrix[i, j[1]] - min_max[index + 1][0]) / (min_max[index + 1][1] - min_max[index + 1][0]))
+            index += 2
+    return matrix
 
 
 def objective(trial):

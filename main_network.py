@@ -5,9 +5,10 @@ import torch
 import torch.nn as nn
 import torch.multiprocessing as mp
 from torch.utils.data.sampler import Sampler
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset, DataLoader, Subset
 from torchvision import datasets, transforms
 from datetime import datetime
+from sklearn.model_selection import train_test_split
 
 import numpy as np
 import os
@@ -20,16 +21,17 @@ parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=1000, metavar='N',
+parser.add_argument('--epochs', type=int, default=500, metavar='N',
                     help='number of epochs to train (default: 100)')
-parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
+parser.add_argument('--lr', type=float, default=0.0004, metavar='LR',
                     help='learning rate (default: 0.001)')
-parser.add_argument('--seed', type=int, default=10, metavar='S',
+parser.add_argument('--seed', type=int, default=20, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=1000, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--model_interval', type=int, default=20,
                     help='interval for saving nn weights')
+
 parser.add_argument('--cuda', action='store_true', default=False,
                     help='enables CUDA training')
 
@@ -62,33 +64,62 @@ class Q_net(nn.Module):
 
 class MyData(Dataset):
     def __init__(self, data_path=None, target_path=None):
-        if (data_path is not None) & (target_path is not None):
-            train_list = []
-            for i in os.listdir(data_path):
-                data = np.load(data_path + i, allow_pickle=True)
-                train_list.append(data)
+        train_list = []
+        for i in os.listdir(data_path):
+            data = np.load(data_path + i, allow_pickle=True)
+            train_list.append(data)
 
-            test_list = []
-            for i in os.listdir(target_path):
-                data = np.load(target_path + i, allow_pickle=True)
-                test_list.append(data)
+        test_list = []
+        for i in os.listdir(target_path):
+            data = np.load(target_path + i, allow_pickle=True)
+            test_list.append(data)
 
-            self.x = torch.from_numpy(np.vstack(train_list)).float()
-            self.y = torch.from_numpy(np.vstack(test_list)).float()
-        else:
-            self.x = Dataset.x
-            self.y = Dataset.y
+        self.x = torch.from_numpy(np.vstack(train_list)).float()
+        self.y = torch.from_numpy(np.vstack(test_list)).float()
 
     def __getitem__(self, idx):
         sample = self.x[idx], self.y[idx]
         return sample
 
-    def __getprob__(self):
-        sum = torch.sum(self.y, dim=1)
-        return sum / len(self.y)
-
     def __len__(self):
         return len(self.x)
+
+
+def get_data():
+    # dir = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/NN training data/'
+    data_path = 'NN training data/1_1/states/'
+    target_path = 'NN training data/1_1/q_matrices/'
+
+    dataset = MyData(data_path, target_path)
+
+    train_size = int(0.85 * len(dataset))
+    test_size = (len(dataset) - train_size)
+
+    # Split 0.85 of indices for initial train portion
+    train_indices, test_indices, _, _ = train_test_split(
+        range(len(dataset)),
+        dataset.y,
+        stratify=dataset.y,
+        test_size=test_size,
+    )
+
+    # Save target value in train set to calculate class weights later on
+    train_targets = dataset[train_indices][1]
+
+    train_split = Subset(dataset, train_indices)
+    test_slit = Subset(dataset, test_indices)
+
+    # Split again to get 0.7 train and 0.15 validation sets
+    train_indices, val_indices, _, _ = train_test_split(
+        range(len(train_indices)),
+        train_targets,
+        stratify=train_targets,
+        test_size=test_size,
+    )
+
+    val_split = Subset(dataset, val_indices)
+
+    return train_split, val_split, test_slit, train_targets
 
 
 if __name__ == '__main__':
@@ -110,28 +141,20 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
 
-    model = Q_net(24, 8, [64, 128, 64]).model
+    model = Q_net(24, 8, [104, 43, 111]).model
     model.to(device)
     model.share_memory()
 
     processes = []
 
-    data_path = 'NN training data/1_1/states/'
-    target_path = 'NN training data/1_1/q-matrices/'
-
-    dataset = MyData(data_path, target_path)
-
-    train_size = int(0.75 * len(dataset))
-    test_size = (len(dataset) - train_size)
-
-    train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
+    train_dataset, val_dataset, test_dataset, targets = get_data()
 
     args = parser.parse_args()
 
     print("Start training")
     startTime = datetime.now()
 
-    train(0, args, model, device, train_dataset, kwargs)
+    train(0, args, model, device, train_dataset, targets, kwargs)
 
     print(datetime.now() - startTime)
 
