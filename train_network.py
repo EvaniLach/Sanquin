@@ -19,7 +19,7 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
         output = model(data.to(device))
         train_loss = loss(output, target.to(device))
         running_loss += train_loss.item()
-        loss.backward()
+        train_loss.backward()
         optimizer.step()
         correct += (output == target).float().sum()
 
