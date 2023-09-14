@@ -10,15 +10,15 @@ import pandas as pd
 def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
     model.train()
     running_loss = 0.0
-    loss = nn.CrossEntropyLoss(weight=weights)
+    loss = nn.CrossEntropyLoss(weight=weights.to(device))
 
     correct = 0
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()
         output = model(data.to(device))
-        loss = loss(output, target.to(device))
-        running_loss += loss.item()
+        train_loss = loss(output, target.to(device))
+        running_loss += train_loss.item()
         loss.backward()
         optimizer.step()
         correct += (output == target).float().sum()
