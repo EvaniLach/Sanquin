@@ -4,9 +4,7 @@ import argparse
 import torch
 import torch.nn as nn
 import torch.multiprocessing as mp
-from torch.utils.data.sampler import Sampler
-from torch.utils.data import Dataset, DataLoader, Subset
-from torchvision import datasets, transforms
+from torch.utils.data import Dataset, TensorDataset, DataLoader
 from datetime import datetime
 from sklearn.model_selection import train_test_split
 
@@ -106,9 +104,6 @@ def get_data():
     # Save target value in train set to calculate class weights later on
     train_targets = dataset[train_indices][1]
 
-    train_split = Subset(dataset, train_indices)
-    test_slit = Subset(dataset, test_indices)
-
     # Split again to get 0.7 train and 0.15 validation sets
     train_indices, val_indices, _, _ = train_test_split(
         range(len(train_indices)),
@@ -117,9 +112,31 @@ def get_data():
         test_size=test_size,
     )
 
-    val_split = Subset(dataset, val_indices)
+    test_split = TensorDataset(normalize(dataset[test_indices][0]), dataset[test_indices][1])
+    val_split = TensorDataset(normalize(dataset[val_indices][0]), dataset[val_indices][1])
+    train_split = TensorDataset(normalize(dataset[train_indices][0]), dataset[train_indices][1])
 
-    return train_split, val_split, test_slit, train_targets
+    return train_split, val_split, test_split, train_targets
+
+
+def normalize(matrix):
+    columns = matrix.shape[1]
+    feature_indices = [(i, i + 1) for i in range(columns) if (i % 3 == 0)]
+    min_max = []
+
+    for i in feature_indices:
+        min_max.append((torch.min(matrix[:, i[0]]), torch.max(matrix[:, i[0]])))
+        min_max.append((torch.min(matrix[:, i[1]]), torch.max(matrix[:, i[1]])))
+
+    for i in range(len(matrix)):
+        index = 0
+        for j in feature_indices:
+            matrix[i, j[0]] = (
+                    (matrix[i, j[0]] - min_max[index][0]) / (min_max[index][1] - min_max[index][0]))
+            matrix[i, j[1]] = (
+                    (matrix[i, j[1]] - min_max[index + 1][0]) / (min_max[index + 1][1] - min_max[index + 1][0]))
+            index += 2
+    return matrix
 
 
 if __name__ == '__main__':
@@ -141,7 +158,7 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
 
-    model = Q_net(24, 8, [104, 43, 111]).model
+    model = Q_net(24, 8, [64, 128, 64]).model
     model.to(device)
     model.share_memory()
 
