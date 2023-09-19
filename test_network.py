@@ -1,14 +1,12 @@
 from __future__ import print_function
 import argparse
 
-import pandas as pd
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+from torch.utils.data import Dataset, TensorDataset, DataLoader
 from torch.utils.data.sampler import Sampler
 
 from main_network import MyData
-import numpy as np
 
 # Training settings
 parser = argparse.ArgumentParser(description='NN settings')
@@ -54,44 +52,94 @@ class Q_net(nn.Module):
         return nn.Sequential(*layers)
 
 
-def test(args, model, device, test_dataset, dataloader_kwargs):
+class MulticlassClassification(nn.Module):
+    def __init__(self, num_feature, num_class):
+        super(MulticlassClassification, self).__init__()
+
+        self.layer_1 = nn.Linear(num_feature, 512)
+        self.layer_2 = nn.Linear(512, 128)
+        self.layer_3 = nn.Linear(128, 64)
+        self.layer_out = nn.Linear(64, num_class)
+
+        self.relu = nn.ReLU()
+        self.dropout = nn.Dropout(p=0.2)
+        self.batchnorm1 = nn.BatchNorm1d(512)
+        self.batchnorm2 = nn.BatchNorm1d(128)
+        self.batchnorm3 = nn.BatchNorm1d(64)
+
+    def forward(self, x):
+        x = self.layer_1(x)
+        x = self.batchnorm1(x)
+        x = self.relu(x)
+
+        x = self.layer_2(x)
+        x = self.batchnorm2(x)
+        x = self.relu(x)
+        x = self.dropout(x)
+
+        x = self.layer_3(x)
+        x = self.batchnorm3(x)
+        x = self.relu(x)
+        x = self.dropout(x)
+
+        x = self.layer_out(x)
+
+        return x
+
+
+def test(model, device, test_dataset):
     torch.manual_seed(args.seed)
 
-    test_loader = torch.utils.data.DataLoader(test_dataset, **dataloader_kwargs)
+    test_loader = DataLoader(test_dataset, batch_size=64)
 
     test_epoch(model, device, test_loader)
 
 
 def test_epoch(model, device, data_loader):
     model.eval()
-    test_loss = 0
-    accuracy = 0
+    epoch_loss = 0
+    epoch_acc = 0
 
+    loss = nn.CrossEntropyLoss()
     with torch.no_grad():
-        results = np.zeros((1, 2))
-        for data, target in data_loader:
-            output = model(data.to(device))
-            for i in range(len(output)):
-                results = np.vstack([results, [torch.argmax(target[i]), torch.argmax(output[i])]])
+        for batch_idx, (data, target) in enumerate(data_loader):
+            data, target = data.to(device), target.to(device)
+            output = model(data)
 
-    test_loss /= len(data_loader.dataset)
-    print('\nTest set: Average loss: {:.4f}\n'.format(
-        test_loss))
-    print('\nTest set: Accuracy: {:.4f}.\n'
-          '\n[{}/{}]\n'.format(accuracy / len(data_loader.dataset), accuracy, len(data_loader.dataset)))
-    df_results = pd.DataFrame(results)
-    df_results.to_csv('results/test/s20_[64_128_128__64]_1_1.csv')
+            batch_loss = loss(output, target)
+            batch_acc = multi_acc(output, target)
+
+            epoch_loss += batch_loss.item()
+            epoch_acc += batch_acc.item()
+
+    rel_loss = epoch_loss / len(data_loader)
+    rel_acc = epoch_acc / len(data_loader)
+
+    print('Test_loss: {:.4f} \tTest_acc: {:.2f}'.format(
+        rel_loss, rel_acc))
+
+
+def multi_acc(y_pred, y_test):
+    y_pred_softmax = torch.log_softmax(y_pred, dim=1)
+    _, y_pred_tags = torch.max(y_pred_softmax, dim=1)
+
+    correct_pred = (y_pred_tags == y_test).float()
+    acc = correct_pred.sum() / len(correct_pred)
+
+    acc = torch.round(acc * 100)
+
+    return acc
 
 
 if __name__ == '__main__':
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
     # path = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/Results/kickstart/'
-    path = 'models/kickstart/20/'
+    path = 'models/kickstart/4/'
 
-    model = Q_net(24, 8, [64, 128, 128, 64]).model
+    model = MulticlassClassification(num_feature=24, num_class=8)
     model.load_state_dict(torch.load(
-        path + 'model_500.pt'))
+        path + 'model_20.pt'))
     model.to(device)
     model.share_memory()
 
@@ -108,4 +156,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     kwargs = {'batch_size': args.batch_size,
               'shuffle': True}
-    test(args, model, device, test_dataset, kwargs)
+    test(model, device, test_dataset)
