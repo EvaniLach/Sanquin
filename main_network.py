@@ -137,9 +137,7 @@ def get_data():
         test_size=test_size,
     )
 
-    # Save target value in train set to calculate class weights later on
     train_targets = dataset[train_indices][1]
-    print(train_targets)
 
     # Split again to get 0.7 train and 0.15 validation sets
     train_indices, val_indices, _, _ = train_test_split(
@@ -148,6 +146,9 @@ def get_data():
         stratify=train_targets,
         test_size=test_size,
     )
+
+    # Save target value in train set to calculate class weights later on
+    train_targets = dataset[train_indices][1]
 
     test_split = TensorDataset(normalize(dataset[test_indices][0]), dataset[test_indices][1])
     val_split = TensorDataset(normalize(dataset[val_indices][0]), dataset[val_indices][1])

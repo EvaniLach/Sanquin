@@ -52,7 +52,7 @@ def inv_weights(targets):
 
 def weighted_sampler(targets):
     class_counts = torch.unique(targets, return_counts=True)[1]
-    class_weights = 1. / torch.tensor(class_counts, dtype=torch.float)
+    class_weights = 1. / class_counts
     class_weights_all = class_weights[targets]
 
     sampler = WeightedRandomSampler(
