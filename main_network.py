@@ -60,20 +60,56 @@ class Q_net(nn.Module):
         return nn.Sequential(*layers)
 
 
+class MulticlassClassification(nn.Module):
+    def __init__(self, num_feature, num_class):
+        super(MulticlassClassification, self).__init__()
+
+        self.layer_1 = nn.Linear(num_feature, 512)
+        self.layer_2 = nn.Linear(512, 128)
+        self.layer_3 = nn.Linear(128, 64)
+        self.layer_out = nn.Linear(64, num_class)
+
+        self.relu = nn.ReLU()
+        self.dropout = nn.Dropout(p=0.2)
+        self.batchnorm1 = nn.BatchNorm1d(512)
+        self.batchnorm2 = nn.BatchNorm1d(128)
+        self.batchnorm3 = nn.BatchNorm1d(64)
+
+    def forward(self, x):
+        x = self.layer_1(x)
+        x = self.batchnorm1(x)
+        x = self.relu(x)
+
+        x = self.layer_2(x)
+        x = self.batchnorm2(x)
+        x = self.relu(x)
+        x = self.dropout(x)
+
+        x = self.layer_3(x)
+        x = self.batchnorm3(x)
+        x = self.relu(x)
+        x = self.dropout(x)
+
+        x = self.layer_out(x)
+
+        return x
+
+
 class MyData(Dataset):
     def __init__(self, data_path=None, target_path=None):
-        train_list = []
+        x_list = []
         for i in os.listdir(data_path):
             data = np.load(data_path + i, allow_pickle=True)
-            train_list.append(data)
+            x_list.append(data)
 
-        test_list = []
+        y_list = []
         for i in os.listdir(target_path):
             data = np.load(target_path + i, allow_pickle=True)
-            test_list.append(data)
+            y_list.append(data)
 
-        self.x = torch.from_numpy(np.vstack(train_list)).float()
-        self.y = torch.from_numpy(np.vstack(test_list)).float()
+        self.x = torch.from_numpy(np.vstack(x_list)).float()
+        self.y = torch.from_numpy(np.vstack(y_list)).float()
+        self.y = (self.y == 1).nonzero()[:, 1]
 
     def __getitem__(self, idx):
         sample = self.x[idx], self.y[idx]
@@ -103,6 +139,7 @@ def get_data():
 
     # Save target value in train set to calculate class weights later on
     train_targets = dataset[train_indices][1]
+    print(train_targets)
 
     # Split again to get 0.7 train and 0.15 validation sets
     train_indices, val_indices, _, _ = train_test_split(
@@ -148,21 +185,15 @@ if __name__ == '__main__':
     else:
         device = torch.device("cpu")
 
-    kwargs = {'batch_size': args.batch_size,
-              'shuffle': True}
-    if use_cuda:
-        kwargs.update({'num_workers': 1,
-                       'pin_memory': True,
-                       })
-
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
 
-    model = Q_net(24, 8, [64, 128, 128, 64]).model
-    model.to(device)
-    model.share_memory()
+    # model = Q_net(24, 8, [64, 128, 128, 64]).model
+    # model.to(device)
+    # model.share_memory()
 
-    processes = []
+    model = MulticlassClassification(num_feature=24, num_class=8)
+    model.to(device)
 
     train_dataset, val_dataset, test_dataset, targets = get_data()
 
@@ -171,8 +202,8 @@ if __name__ == '__main__':
     print("Start training")
     startTime = datetime.now()
 
-    train(0, args, model, device, train_dataset, targets, kwargs)
+    train(0, args, model, device, train_dataset, targets)
 
     print(datetime.now() - startTime)
 
-    test(args, model, device, test_dataset, kwargs)
+    test(args, model, device, test_dataset)

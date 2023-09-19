@@ -77,25 +77,26 @@ def test_epoch(model, device, data_loader):
     test_loss /= len(data_loader.dataset)
     print('\nTest set: Average loss: {:.4f}\n'.format(
         test_loss))
-    # print('\nTest set: Accuracy: {:.4f}.\n'
-    #       '\n[{}/{}]\n'.format(accuracy / len(data_loader.dataset), accuracy, len(data_loader.dataset)))
+    print('\nTest set: Accuracy: {:.4f}.\n'
+          '\n[{}/{}]\n'.format(accuracy / len(data_loader.dataset), accuracy, len(data_loader.dataset)))
     df_results = pd.DataFrame(results)
-    df_results.to_csv('results/test/[64_128_64]_1_1.csv')
+    df_results.to_csv('results/test/s20_[64_128_128__64]_1_1.csv')
 
 
 if __name__ == '__main__':
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
-    path = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/Results/kickstart/'
+    # path = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/Results/kickstart/'
+    path = 'models/kickstart/20/'
 
-    model = Q_net(24, 8, [64, 128, 64]).model
+    model = Q_net(24, 8, [64, 128, 128, 64]).model
     model.load_state_dict(torch.load(
-        path + '[64, 128, 64]_a0.001/models/model_880.pt'))
+        path + 'model_500.pt'))
     model.to(device)
     model.share_memory()
 
     data_path = 'NN training data/1_1/states/'
-    target_path = 'NN training data/1_1/q-matrices/'
+    target_path = 'NN training data/1_1/q_matrices/'
 
     dataset = MyData(data_path, target_path)
 
