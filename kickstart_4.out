@@ -1,0 +1,50 @@
+Start training
+Train Epoch: 1 	Train_loss: 1.2261 	Train_acc: 13.21
+	Val_loss: 4.6207 	Val_acc: 0.49
+Train Epoch: 2 	Train_loss: 1.1074 	Train_acc: 17.25
+	Val_loss: 4.5225 	Val_acc: 0.58
+Train Epoch: 3 	Train_loss: 1.0028 	Train_acc: 19.56
+	Val_loss: 4.4166 	Val_acc: 0.63
+Train Epoch: 4 	Train_loss: 0.9477 	Train_acc: 20.46
+	Val_loss: 4.4097 	Val_acc: 0.64
+Train Epoch: 5 	Train_loss: 0.9097 	Train_acc: 21.05
+	Val_loss: 4.2844 	Val_acc: 0.69
+Train Epoch: 6 	Train_loss: 0.8817 	Train_acc: 21.67
+	Val_loss: 4.3237 	Val_acc: 0.72
+Train Epoch: 7 	Train_loss: 0.8593 	Train_acc: 22.26
+	Val_loss: 4.2839 	Val_acc: 0.78
+Train Epoch: 8 	Train_loss: 0.8403 	Train_acc: 22.81
+	Val_loss: 4.2859 	Val_acc: 0.85
+Train Epoch: 9 	Train_loss: 0.8244 	Train_acc: 23.19
+	Val_loss: 4.2181 	Val_acc: 0.86
+Train Epoch: 10 	Train_loss: 0.8127 	Train_acc: 23.57
+	Val_loss: 4.2299 	Val_acc: 0.95
+Train Epoch: 11 	Train_loss: 0.7995 	Train_acc: 24.01
+	Val_loss: 4.1893 	Val_acc: 0.99
+Train Epoch: 12 	Train_loss: 0.7882 	Train_acc: 24.31
+	Val_loss: 4.1901 	Val_acc: 1.02
+Train Epoch: 13 	Train_loss: 0.7785 	Train_acc: 24.57
+	Val_loss: 4.1812 	Val_acc: 1.10
+Train Epoch: 14 	Train_loss: 0.7700 	Train_acc: 24.93
+	Val_loss: 4.1735 	Val_acc: 1.09
+Train Epoch: 15 	Train_loss: 0.7648 	Train_acc: 25.04
+	Val_loss: 4.2052 	Val_acc: 1.12
+Train Epoch: 16 	Train_loss: 0.7565 	Train_acc: 25.26
+	Val_loss: 4.1206 	Val_acc: 1.19
+Train Epoch: 17 	Train_loss: 0.7444 	Train_acc: 25.64
+	Val_loss: 4.0926 	Val_acc: 1.24
+Train Epoch: 18 	Train_loss: 0.7420 	Train_acc: 25.76
+	Val_loss: 4.1284 	Val_acc: 1.27
+Train Epoch: 19 	Train_loss: 0.7395 	Train_acc: 25.91
+	Val_loss: 4.1052 	Val_acc: 1.25
+Train Epoch: 20 	Train_loss: 0.7329 	Train_acc: 26.04
+	Val_loss: 4.0832 	Val_acc: 1.26
+Train Epoch: 21 	Train_loss: 0.7277 	Train_acc: 26.18
+	Val_loss: 4.1241 	Val_acc: 1.27
+Train Epoch: 22 	Train_loss: 0.7223 	Train_acc: 26.38
+	Val_loss: 4.0736 	Val_acc: 1.29
+Train Epoch: 23 	Train_loss: 0.7212 	Train_acc: 26.40
+	Val_loss: 4.0864 	Val_acc: 1.34
+Train Epoch: 24 	Train_loss: 0.7124 	Train_acc: 26.64
+	Val_loss: 4.0118 	Val_acc: 1.41
+./shells/kickstart_4.sh: line 1: 38096 Killed                  python3 -u main_network.py --seed 4
