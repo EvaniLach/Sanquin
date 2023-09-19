@@ -27,7 +27,7 @@ parser.add_argument('--seed', type=int, default=20, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=1000, metavar='N',
                     help='how many batches to wait before logging training status')
-parser.add_argument('--model_interval', type=int, default=20,
+parser.add_argument('--model_interval', type=int, default=10,
                     help='interval for saving nn weights')
 
 parser.add_argument('--cuda', action='store_true', default=False,
@@ -203,7 +203,7 @@ if __name__ == '__main__':
     print("Start training")
     startTime = datetime.now()
 
-    train(0, args, model, device, train_dataset, targets)
+    train(0, args, model, device, train_dataset, targets, val_dataset)
 
     print(datetime.now() - startTime)
 
