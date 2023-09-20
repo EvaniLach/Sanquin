@@ -150,8 +150,8 @@ def get_data():
     # Split 0.80 of indices for initial train portion
     train_indices, test_indices, _, _ = train_test_split(
         range(len(dataset)),
-        dataset.y,
-        stratify=dataset.y,
+        dataset[1],
+        stratify=dataset[1],
         test_size=test_size,
     )
 
