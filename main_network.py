@@ -4,7 +4,7 @@ import argparse
 import torch
 import torch.nn as nn
 import torch.multiprocessing as mp
-from torch.utils.data import Dataset, TensorDataset, DataLoader
+from torch.utils.data import Dataset, TensorDataset, DataLoader, Subset
 from datetime import datetime
 from sklearn.model_selection import train_test_split
 
@@ -21,7 +21,7 @@ parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
 parser.add_argument('--epochs', type=int, default=500, metavar='N',
                     help='number of epochs to train (default: 100)')
-parser.add_argument('--lr', type=float, default=0.01, metavar='LR',
+parser.add_argument('--lr', type=float, default=0.0001, metavar='LR',
                     help='learning rate (default: 0.001)')
 parser.add_argument('--seed', type=int, default=20, metavar='S',
                     help='random seed (default: 1)')
@@ -132,6 +132,17 @@ def get_data():
     target_path = 'NN training data/1_1/q_matrices/'
 
     dataset = MyData(data_path, target_path)
+
+    # Use 10% of total training data for testing model
+    subset_size = int(0.10 * len(dataset))
+
+    subset_indices, _, _, _ = train_test_split(
+        range(len(dataset)),
+        dataset.y,
+        stratify=dataset.y,
+    )
+
+    dataset = dataset[subset_indices]
 
     train_size = int(0.80 * len(dataset))
     test_size = (len(dataset) - train_size)
