@@ -134,45 +134,25 @@ def get_data():
     dataset = MyData(data_path, target_path)
 
     # Use 10% of total training data for testing model
-    subset_size = int(0.10 * len(dataset))
-
-    subset_indices, _, _, _ = train_test_split(
+    subset_indices, _ = train_test_split(
         range(len(dataset)),
-        dataset.y,
         stratify=dataset.y,
+        train_size=0.1,
+        random_state=args.seed
     )
 
-    dataset = dataset[subset_indices]
-
-    train_size = int(0.80 * len(dataset))
-    test_size = (len(dataset) - train_size)
-
-    # Split 0.80 of indices for initial train portion
-    train_indices, test_indices, _, _ = train_test_split(
-        range(len(dataset)),
-        dataset[1],
-        stratify=dataset[1],
-        test_size=test_size,
+    # Split 80/20 for training and validation
+    train_set, val_set = train_test_split(
+        subset_indices,
+        stratify=dataset.y[subset_indices],
+        test_size=0.2,
+        random_state=args.seed
     )
 
-    train_targets = dataset[train_indices][1]
+    val_split = TensorDataset(normalize(dataset.x[val_set]), dataset.y[val_set])
+    train_split = TensorDataset(normalize(dataset.x[train_set]), dataset.y[train_set])
 
-    # Split again to get 0.7 train and 0.15 validation sets
-    # train_indices, val_indices, _, _ = train_test_split(
-    #     range(len(train_indices)),
-    #     train_targets,
-    #     stratify=train_targets,
-    #     test_size=test_size,
-    # )
-    #
-    # # Save target value in train set to calculate class weights later on
-    # train_targets = dataset[train_indices][1]
-
-    # test_split = TensorDataset(normalize(dataset[test_indices][0]), dataset[test_indices][1])
-    val_split = TensorDataset(normalize(dataset[test_indices][0]), dataset[test_indices][1])
-    train_split = TensorDataset(normalize(dataset[train_indices][0]), dataset[train_indices][1])
-
-    return train_split, val_split, train_targets
+    return train_split, val_split, dataset.y[train_set]
 
 
 def normalize(matrix):
