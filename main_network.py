@@ -133,10 +133,10 @@ def get_data():
 
     dataset = MyData(data_path, target_path)
 
-    train_size = int(0.85 * len(dataset))
+    train_size = int(0.80 * len(dataset))
     test_size = (len(dataset) - train_size)
 
-    # Split 0.85 of indices for initial train portion
+    # Split 0.80 of indices for initial train portion
     train_indices, test_indices, _, _ = train_test_split(
         range(len(dataset)),
         dataset.y,
@@ -147,21 +147,21 @@ def get_data():
     train_targets = dataset[train_indices][1]
 
     # Split again to get 0.7 train and 0.15 validation sets
-    train_indices, val_indices, _, _ = train_test_split(
-        range(len(train_indices)),
-        train_targets,
-        stratify=train_targets,
-        test_size=test_size,
-    )
+    # train_indices, val_indices, _, _ = train_test_split(
+    #     range(len(train_indices)),
+    #     train_targets,
+    #     stratify=train_targets,
+    #     test_size=test_size,
+    # )
+    #
+    # # Save target value in train set to calculate class weights later on
+    # train_targets = dataset[train_indices][1]
 
-    # Save target value in train set to calculate class weights later on
-    train_targets = dataset[train_indices][1]
-
-    test_split = TensorDataset(normalize(dataset[test_indices][0]), dataset[test_indices][1])
-    val_split = TensorDataset(normalize(dataset[val_indices][0]), dataset[val_indices][1])
+    # test_split = TensorDataset(normalize(dataset[test_indices][0]), dataset[test_indices][1])
+    val_split = TensorDataset(normalize(dataset[test_indices][0]), dataset[test_indices][1])
     train_split = TensorDataset(normalize(dataset[train_indices][0]), dataset[train_indices][1])
 
-    return train_split, val_split, test_split, train_targets
+    return train_split, val_split, train_targets
 
 
 def normalize(matrix):
@@ -196,14 +196,16 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
 
-    # model = Q_net(24, 8, [64, 128, 128, 64]).model
-    # model.to(device)
-    # model.share_memory()
-
-    model = MulticlassClassification(num_feature=24, num_class=8)
+    model = Q_net(24, 8, [128, 64]).model
     model.to(device)
+    model.share_memory()
 
-    train_dataset, val_dataset, test_dataset, targets = get_data()
+    # model = MulticlassClassification(num_feature=24, num_class=8)
+    # model.to(device)
+
+    # train_dataset, val_dataset, test_dataset, targets = get_data()
+
+    train_dataset, val_dataset, targets = get_data()
 
     args = parser.parse_args()
 
@@ -214,4 +216,4 @@ if __name__ == '__main__':
 
     print(datetime.now() - startTime)
 
-    test(args, model, device, test_dataset)
+    # test(args, model, device, test_dataset)
