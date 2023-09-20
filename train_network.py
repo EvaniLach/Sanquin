@@ -56,13 +56,13 @@ def validate(model, val_loader, device):
 
             batch_loss = loss(output, target)
             batch_acc = multi_acc(output, target)
-
+            print(batch_acc)
             epoch_loss += batch_loss.item()
             epoch_acc += batch_acc.item()
 
     rel_loss = epoch_loss / len(val_loader)
     rel_acc = epoch_acc / len(val_loader)
-
+    print(len(val_loader))
     print('\tVal_loss: {:.4f} \tVal_acc: {:.2f}'.format(
         rel_loss, rel_acc))
 
