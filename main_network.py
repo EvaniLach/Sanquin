@@ -133,18 +133,18 @@ def get_data():
 
     dataset = MyData(data_path, target_path)
 
-    # Use 10% of total training data for testing model
-    subset_indices, _ = train_test_split(
-        range(len(dataset)),
-        stratify=dataset.y,
-        train_size=0.1,
-        random_state=args.seed
-    )
+    # # Use 10% of total training data for testing model
+    # subset_indices, _ = train_test_split(
+    #     range(len(dataset)),
+    #     stratify=dataset.y,
+    #     train_size=0.1,
+    #     random_state=args.seed
+    # )
 
     # Split 80/20 for training and validation
     train_set, val_set = train_test_split(
-        subset_indices,
-        stratify=dataset.y[subset_indices],
+        range(len(dataset)),
+        stratify=dataset.y,
         test_size=0.2,
         random_state=args.seed
     )
