@@ -18,7 +18,6 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
 
         batch_loss = loss(output, target)
         batch_acc = multi_acc(output, target)
-        break
 
         epoch_loss += batch_loss.item()
         epoch_acc += batch_acc.item()
@@ -107,6 +106,7 @@ def train(rank, args, model, device, train_dataset, targets, val_dataset):
     for epoch in range(1, args.epochs + 1):
         epoch_tloss, epoch_tacc = train_epoch(epoch, model, args, device, train_loader, optimizer, cw)
         epoch_vloss, epoch_vacc = validate(model, val_loader, device)
+        break
 
         train_loss.append(epoch_tloss), train_acc.append(epoch_tacc)
         val_loss.append(epoch_vloss), val_acc.append(epoch_vacc)
