@@ -30,7 +30,7 @@ parser.add_argument('--log-interval', type=int, default=1000, metavar='N',
 parser.add_argument('--model_interval', type=int, default=10,
                     help='interval for saving nn weights')
 
-parser.add_argument('--cuda', action='store_true', default=False,
+parser.add_argument('--cuda', action='store_true', default=True,
                     help='enables CUDA training')
 
 
