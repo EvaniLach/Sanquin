@@ -178,11 +178,7 @@ def normalize(matrix):
 if __name__ == '__main__':
     args = parser.parse_args()
 
-    use_cuda = args.cuda and torch.cuda.is_available()
-    if use_cuda:
-        device = torch.device("cuda")
-    else:
-        device = torch.device("cpu")
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     torch.manual_seed(args.seed)
     mp.set_start_method('spawn', force=True)
