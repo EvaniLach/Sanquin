@@ -151,7 +151,7 @@ def get_data():
 
     val_split = TensorDataset(normalize(dataset.x[val_set]), dataset.y[val_set])
     train_split = TensorDataset(normalize(dataset.x[train_set]), dataset.y[train_set])
-
+    print(len(train_split))
     return train_split, val_split, dataset.y[train_set]
 
 
@@ -180,7 +180,7 @@ if __name__ == '__main__':
 
     use_cuda = args.cuda and torch.cuda.is_available()
     if use_cuda:
-        device = torch.device("cpu")
+        device = torch.device("cuda")
     else:
         device = torch.device("cpu")
 

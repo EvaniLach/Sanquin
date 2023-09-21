@@ -4,15 +4,6 @@ from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
 
 import pandas as pd
 
-accuracy_stats = {
-    'train': [],
-    "val": []
-}
-loss_stats = {
-    'train': [],
-    "val": []
-}
-
 
 def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
     model.train()
@@ -23,7 +14,7 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()
-        output = model(data.to(device))
+        output = model(data)
 
         batch_loss = loss(output, target)
         batch_acc = multi_acc(output, target)
@@ -110,8 +101,6 @@ def train(rank, args, model, device, train_dataset, targets, val_dataset):
 
     train_loss, train_acc = [], []
     val_loss, val_acc = [], []
-
-    validate(model, val_loader, device)
 
     for epoch in range(1, args.epochs + 1):
         epoch_tloss, epoch_tacc = train_epoch(epoch, model, args, device, train_loader, optimizer, cw)
