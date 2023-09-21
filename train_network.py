@@ -21,7 +21,7 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
 
         epoch_loss += batch_loss.item()
         epoch_acc += batch_acc.item()
-
+        print(batch_idx)
         batch_loss.backward()
         optimizer.step()
 
