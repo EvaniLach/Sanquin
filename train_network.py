@@ -98,7 +98,7 @@ def train(rank, args, model, device, train_dataset, targets, val_dataset):
     val_loader = DataLoader(val_dataset, batch_size=64)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
-
+    validate(model, train_loader, device)
     train_loss, train_acc = [], []
     val_loss, val_acc = [], []
 
