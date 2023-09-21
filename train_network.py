@@ -22,6 +22,10 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
         epoch_loss += batch_loss.item()
         epoch_acc += batch_acc.item()
 
+        print("loss", batch_loss.requires_grad)
+        print(output.requires_grad)
+        print(target.requires_grad)
+
         batch_loss.backward()
         optimizer.step()
 
