@@ -62,7 +62,6 @@ def validate(model, val_loader, device):
 
     rel_loss = epoch_loss / len(val_loader)
     rel_acc = epoch_acc / len(val_loader)
-    print(len(val_loader))
     print('\tVal_loss: {:.4f} \tVal_acc: {:.2f}'.format(
         rel_loss, rel_acc))
 
@@ -73,7 +72,6 @@ def multi_acc(y_pred, y_test):
     y_pred_softmax = torch.log_softmax(y_pred, dim=1)
     _, y_pred_tags = torch.max(y_pred_softmax, dim=1)
     correct_pred = (y_pred_tags == y_test).float()
-    print(correct_pred)
 
     acc = correct_pred.sum() / len(correct_pred)
 
@@ -112,8 +110,6 @@ def train(rank, args, model, device, train_dataset, targets, val_dataset):
 
     train_loss, train_acc = [], []
     val_loss, val_acc = [], []
-
-    print("Val acc & loss: ", validate(model, val_loader, device))
 
     for epoch in range(1, args.epochs + 1):
         epoch_tloss, epoch_tacc = train_epoch(epoch, model, args, device, train_loader, optimizer, cw)
