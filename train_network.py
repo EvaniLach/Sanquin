@@ -16,9 +16,8 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
         optimizer.zero_grad()
         output = model(data)
 
-        print(model.device)
-        print(data.device)
-        print(target.device)
+        print(data.get_device())
+        print(target.get_device())
 
         batch_loss = loss(output, target)
         batch_acc = multi_acc(output, target)
