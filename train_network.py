@@ -111,6 +111,8 @@ def train(rank, args, model, device, train_dataset, targets, val_dataset):
     train_loss, train_acc = [], []
     val_loss, val_acc = [], []
 
+    validate(model, val_loader, device)
+
     for epoch in range(1, args.epochs + 1):
         epoch_tloss, epoch_tacc = train_epoch(epoch, model, args, device, train_loader, optimizer, cw)
         epoch_vloss, epoch_vacc = validate(model, val_loader, device)
