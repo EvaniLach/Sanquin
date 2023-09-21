@@ -18,6 +18,7 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
 
         batch_loss = loss(output, target)
         batch_acc = multi_acc(output, target)
+        break
 
         epoch_loss += batch_loss.item()
         epoch_acc += batch_acc.item()
