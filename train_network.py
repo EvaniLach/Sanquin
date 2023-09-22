@@ -21,9 +21,6 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
 
         epoch_loss += batch_loss.item()
         epoch_acc += batch_acc.item()
-        print("acc", batch_acc)
-        print("batch", batch_idx)
-        print("loss", loss)
         batch_loss.backward()
         optimizer.step()
 
@@ -65,6 +62,7 @@ def multi_acc(y_pred, y_test):
     y_pred_softmax = torch.log_softmax(y_pred, dim=1)
     _, y_pred_tags = torch.max(y_pred_softmax, dim=1)
     print(y_pred_tags)
+    print(y_test)
     correct_pred = (y_pred_tags == y_test).float()
 
     acc = correct_pred.sum() / len(correct_pred)
