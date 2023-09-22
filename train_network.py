@@ -18,6 +18,7 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
 
         batch_loss = loss(output, target)
         batch_acc = multi_acc(output, target)
+        print(batch_idx)
 
         epoch_loss += batch_loss.item()
         epoch_acc += batch_acc.item()
@@ -46,6 +47,7 @@ def validate(model, val_loader, device):
 
             batch_loss = loss(output, target)
             batch_acc = multi_acc(output, target)
+            print("batch", batch_idx)
 
             epoch_loss += batch_loss.item()
             epoch_acc += batch_acc.item()
@@ -62,7 +64,6 @@ def multi_acc(y_pred, y_test):
     y_pred_softmax = torch.log_softmax(y_pred, dim=1)
     _, y_pred_tags = torch.max(y_pred_softmax, dim=1)
     print(y_pred_tags)
-    print(y_test)
     correct_pred = (y_pred_tags == y_test).float()
 
     acc = correct_pred.sum() / len(correct_pred)
