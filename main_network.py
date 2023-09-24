@@ -184,7 +184,7 @@ if __name__ == '__main__':
 
     model = Q_net(24, 8, [128, 64]).model
     model.to(device)
-    model.share_memory()
+    # model.share_memory()
 
     # model = MulticlassClassification(num_feature=24, num_class=8)
     # model.to(device)
