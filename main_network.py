@@ -29,7 +29,6 @@ parser.add_argument('--log-interval', type=int, default=1000, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--model_interval', type=int, default=10,
                     help='interval for saving nn weights')
-
 parser.add_argument('--cuda', action='store_true', default=True,
                     help='enables CUDA training')
 
@@ -181,7 +180,7 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     torch.manual_seed(args.seed)
-    mp.set_start_method('spawn', force=True)
+    # mp.set_start_method('spawn', force=True)
 
     model = Q_net(24, 8, [128, 64]).model
     model.to(device)
