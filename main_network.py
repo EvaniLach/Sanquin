@@ -31,6 +31,7 @@ parser.add_argument('--model_interval', type=int, default=10,
                     help='interval for saving nn weights')
 parser.add_argument('--cuda', action='store_true', default=True,
                     help='enables CUDA training')
+import platform
 
 
 class Q_net(nn.Module):
@@ -185,7 +186,7 @@ if __name__ == '__main__':
     model = Q_net(24, 8, [128, 64]).model
     model.to(device)
     # model.share_memory()
-
+    print(model)
     # model = MulticlassClassification(num_feature=24, num_class=8)
     # model.to(device)
 

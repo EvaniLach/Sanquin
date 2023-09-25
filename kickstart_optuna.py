@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.utils.data
 from sklearn.model_selection import train_test_split
-from torch.utils.data import DataLoader, Subset, TensorDataset
+from torch.utils.data import DataLoader, TensorDataset, WeightedRandomSampler
 
 import argparse
 import numpy as np
@@ -18,15 +18,15 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 INPUT = 1 * 24
 OUTPUT = 8
 DIR = os.getcwd()
-EPOCHS = 50
+EPOCHS = 100
 BATCHSIZE = 64
-
-N_TRAIN_EXAMPLES = BATCHSIZE * 2000
-N_VALID_EXAMPLES = BATCHSIZE * 500
 
 parser = argparse.ArgumentParser(description='NN settings')
 parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
+parser.add_argument('--seed', type=int, default=20, metavar='N',
+                    help='seed')
+args = parser.parse_args()
 
 
 def define_model(trial):
@@ -45,23 +45,6 @@ def define_model(trial):
     return nn.Sequential(*layers)
 
 
-# def get_data():
-#     dir = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/NN training data/'
-#     data_path = dir + 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/1_1 backup/states/'
-#     target_path = dir + 'NN training data/reg_ABDCcEeKkFyaFybJkaJkbMNSs/1_1 backup/q_matrices/'
-#
-#     dataset = MyData(data_path, target_path)
-#
-#     train_size = int(0.85 * len(dataset))
-#     test_size = (len(dataset) - train_size)
-#
-#     train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
-#
-#     train_size = (len(train_dataset) - len(test_dataset))
-#     train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [train_size, test_size])
-#
-#     return train_dataset, val_dataset
-
 def get_data():
     # dir = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/NN training data/'
     data_path = 'NN training data/1_1/states/'
@@ -69,32 +52,26 @@ def get_data():
 
     dataset = MyData(data_path, target_path)
 
-    train_size = int(0.85 * len(dataset))
-    test_size = (len(dataset) - train_size)
-
-    # Split 0.85 of indices for initial train portion
-    train_indices, test_indices, _, _ = train_test_split(
+    # Use 10% of total training data for testing model
+    subset_indices, _ = train_test_split(
         range(len(dataset)),
-        dataset.y,
         stratify=dataset.y,
-        test_size=test_size,
+        train_size=0.1,
+        random_state=args.seed
     )
 
-    # Save target value in train set to calculate class weights later on
-    train_targets = dataset[train_indices][1]
-
-    # Split again to get 0.7 train and 0.15 validation sets
-    train_indices, val_indices, _, _ = train_test_split(
-        range(len(train_indices)),
-        train_targets,
-        stratify=train_targets,
-        test_size=test_size,
+    # Split 80/20 for training and validation
+    train_set, val_set = train_test_split(
+        subset_indices,
+        stratify=dataset.y[subset_indices],
+        test_size=0.2,
+        random_state=args.seed
     )
 
-    val_split = TensorDataset(normalize(dataset[val_indices][0]), dataset[val_indices][1])
-    train_split = TensorDataset(normalize(dataset[train_indices][0]), dataset[train_indices][1])
+    val_split = TensorDataset(normalize(dataset.x[val_set]), dataset.y[val_set])
+    train_split = TensorDataset(normalize(dataset.x[train_set]), dataset.y[train_set])
 
-    return train_split, val_split, train_targets
+    return train_split, val_split, dataset.y[train_set]
 
 
 def normalize(matrix):
@@ -117,7 +94,22 @@ def normalize(matrix):
     return matrix
 
 
+def weighted_sampler(targets):
+    class_counts = torch.unique(targets, return_counts=True)[1]
+    class_weights = 1. / class_counts
+    class_weights_all = class_weights[targets]
+
+    sampler = WeightedRandomSampler(
+        weights=class_weights_all,
+        num_samples=len(class_weights_all),
+        replacement=True
+    )
+
+    return sampler, class_weights
+
+
 def objective(trial):
+    torch.manual_seed(args.seed)
     # Generate the model.
     model = define_model(trial).to(DEVICE)
 
@@ -126,33 +118,20 @@ def objective(trial):
     lr = trial.suggest_float("lr", 1e-5, 1e-1, log=True)
     optimizer = getattr(optim, optimizer_name)(model.parameters(), lr=lr)
 
-    args = parser.parse_args()
-    kwargs = {'batch_size': args.batch_size,
-              'shuffle': True}
-
     train_dataset, val_dataset, train_targets = get_data()
 
-    train_loader = DataLoader(train_dataset, **kwargs)
-    val_loader = DataLoader(val_dataset, **kwargs)
+    sampler, cw = weighted_sampler(train_targets)
 
-    class_probs = torch.sum(train_targets, dim=0) / len(train_dataset)
-    class_weights = 1 / class_probs
+    train_loader = DataLoader(train_dataset, batch_size=64, sampler=sampler)
+    val_loader = DataLoader(val_dataset, batch_size=64)
 
-    loss = nn.CrossEntropyLoss(weight=class_weights.to(DEVICE))
-
-    if torch.cuda.is_available():
-        kwargs.update({'num_workers': 1,
-                       'pin_memory': True,
-                       })
+    loss = nn.CrossEntropyLoss()
 
     # Training of the model.
     for epoch in range(EPOCHS):
         model.train()
         for batch_idx, (data, target) in enumerate(train_loader):
-            # Limiting training data for faster epochs.
-            if batch_idx * BATCHSIZE >= N_TRAIN_EXAMPLES:
-                break
-            data, target = data.view(data.size(0), -1).to(DEVICE), target.to(DEVICE)
+            data, target = data.to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
             output = model(data)
             train_loss = loss(output, target)
@@ -164,13 +143,11 @@ def objective(trial):
         val_loss = 0
         with torch.no_grad():
             for batch_idx, (data, target) in enumerate(val_loader):
-                # Limiting validation data.
-                if batch_idx * BATCHSIZE >= N_VALID_EXAMPLES:
-                    break
-                data, target = data.view(data.size(0), -1).to(DEVICE), target.to(DEVICE)
+                data, target = data.to(DEVICE), target.to(DEVICE)
                 output = model(data)
-                val_loss += loss(output, target)
+                val_loss += loss(output, target).item()
 
+        val_loss = val_loss / len(val_loader)
         trial.report(val_loss, epoch)
 
         # Handle pruning based on the intermediate value.
