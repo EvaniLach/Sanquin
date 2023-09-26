@@ -14,7 +14,7 @@ import numpy as np
 
 from main_network import Q_net, MyData
 
-DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+DEVICE = torch.device('cuda:6' if torch.cuda.is_available() else 'cpu')
 INPUT = 1 * 24
 OUTPUT = 8
 DIR = os.getcwd()
@@ -160,7 +160,7 @@ def objective(trial):
 
     sampler, cw = weighted_sampler(train_targets)
 
-    train_loader = DataLoader(train_dataset, batch_size=64, sampler=sampler)
+    train_loader = DataLoader(train_dataset, batch_size=65, sampler=sampler)
     val_loader = DataLoader(val_dataset, batch_size=64)
 
     loss = nn.CrossEntropyLoss()
@@ -175,7 +175,7 @@ def objective(trial):
             data, target = data.to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
             output = model(data)
-            train_loss = loss(output, target).item()
+            train_loss = loss(output, target)
             train_loss.backward()
             optimizer.step()
 
