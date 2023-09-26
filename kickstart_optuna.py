@@ -18,8 +18,10 @@ DEVICE = torch.device('cuda:6' if torch.cuda.is_available() else 'cpu')
 INPUT = 1 * 24
 OUTPUT = 8
 DIR = os.getcwd()
-EPOCHS = 100
+EPOCHS = 75
 BATCHSIZE = 64
+N_TRAIN_EXAMPLES = BATCHSIZE * 100
+N_VALID_EXAMPLES = BATCHSIZE * 20
 
 parser = argparse.ArgumentParser(description='NN settings')
 parser.add_argument('--batch-size', type=int, default=64, metavar='N',
@@ -58,18 +60,18 @@ def get_data():
 
     dataset = MyData(data_path, target_path)
 
-    # Use 10% of total training data for testing model
-    subset_indices, _ = train_test_split(
-        range(len(dataset)),
-        stratify=dataset.y,
-        train_size=0.1,
-        random_state=args.seed
-    )
+    # # Use 10% of total training data for testing model
+    # subset_indices, _ = train_test_split(
+    #     range(len(dataset)),
+    #     stratify=dataset.y,
+    #     train_size=0.1,
+    #     random_state=args.seed
+    # )
 
     # Split 80/20 for training and validation
     train_set, val_set = train_test_split(
-        subset_indices,
-        stratify=dataset.y[subset_indices],
+        range(len(dataset)),
+        stratify=dataset.y,
         test_size=0.2,
         random_state=args.seed
     )
@@ -172,6 +174,8 @@ def objective(trial):
     for epoch in range(EPOCHS):
         model.train()
         for batch_idx, (data, target) in enumerate(train_loader):
+            if batch_idx * BATCHSIZE >= N_TRAIN_EXAMPLES:
+                break
             data, target = data.to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
             output = model(data)
