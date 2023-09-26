@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import os
 
-from train_network import train, test
+from train_network import train
 
 # Training settings
 parser = argparse.ArgumentParser(description='NN settings')
@@ -150,7 +150,7 @@ def get_data():
     )
 
     val_split = TensorDataset(normalize(dataset.x[val_set]), dataset.y[val_set])
-    train_split = TensorDataset(normalize(dataset.x[train_set]), dataset.y[train_set])
+    train_split = TensorDataset(normalize(cap_outliers(dataset.x[train_set])), dataset.y[train_set])
 
     return train_split, val_split, dataset.y[train_set]
 
@@ -175,6 +175,25 @@ def normalize(matrix):
     return matrix
 
 
+def cap_outliers(matrix):
+    feature_indices = []
+    for i in range(matrix.shape[1]):
+        if i % 3 == 0:
+            feature_indices.append(i)
+            feature_indices.append(i + 1)
+
+    for c in feature_indices:
+        low = torch.quantile(matrix[:, c], 0.1)
+        high = torch.quantile(matrix[:, c], 0.99)
+        for r in range(matrix.shape[0]):
+            if matrix[r, c] < low:
+                matrix[r, c] = low
+            elif matrix[r, c] > high:
+                matrix[r, c] = high
+
+    return matrix
+
+
 if __name__ == '__main__':
     args = parser.parse_args()
 
@@ -183,12 +202,12 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     # mp.set_start_method('spawn', force=True)
 
-    model = Q_net(24, 8, [128, 64]).model
-    model.to(device)
+    # model = Q_net(24, 8, [128, 64]).model
+    # .to(device)
     # model.share_memory()
-    print(model)
-    # model = MulticlassClassification(num_feature=24, num_class=8)
-    # model.to(device)
+
+    model = MulticlassClassification(num_feature=24, num_class=8)
+    model.to(device)
 
     # train_dataset, val_dataset, test_dataset, targets = get_data()
 

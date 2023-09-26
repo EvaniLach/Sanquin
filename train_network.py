@@ -9,7 +9,7 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
     model.train()
     epoch_loss = 0.0
     epoch_acc = 0.0
-    loss = nn.CrossEntropyLoss(weight=weights.to(device))
+    loss = nn.CrossEntropyLoss()
 
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
@@ -59,7 +59,6 @@ def validate(model, val_loader, device):
 
 
 def multi_acc(y_pred, y_test):
-    print(y_pred)
     y_pred_softmax = torch.log_softmax(y_pred, dim=1)
     _, y_pred_tags = torch.max(y_pred_softmax, dim=1)
     correct_pred = (y_pred_tags == y_test).float()
@@ -94,7 +93,7 @@ def train(rank, args, model, device, train_dataset, targets, val_dataset):
     torch.manual_seed(args.seed)
     sampler, cw = weighted_sampler(targets)
 
-    train_loader = DataLoader(train_dataset, batch_size=64, sampler=sampler)
+    train_loader = DataLoader(train_dataset, batch_size=65, sampler=sampler)
     val_loader = DataLoader(val_dataset, batch_size=64)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
@@ -117,35 +116,3 @@ def train(rank, args, model, device, train_dataset, targets, val_dataset):
 
     train_df.to_csv('results/kickstart/{}/train_4.csv'.format(args.seed), index=False)
     val_df.to_csv('results/kickstart/{}/val_4.csv'.format(args.seed), index=False)
-
-
-def test(args, model, device, test_dataset):
-    torch.manual_seed(args.seed)
-
-    test_loader = DataLoader(test_dataset, batch_size=64)
-
-    test_epoch(model, device, test_loader)
-
-
-def test_epoch(model, device, data_loader):
-    model.eval()
-    epoch_loss = 0
-    epoch_acc = 0
-
-    loss = nn.CrossEntropyLoss()
-    with torch.no_grad():
-        for batch_idx, (data, target) in enumerate(data_loader):
-            data, target = data.to(device), target.to(device)
-            output = model(data)
-
-            batch_loss = loss(output, target)
-            batch_acc = multi_acc(output, target)
-
-            epoch_loss += batch_loss.item()
-            epoch_acc += batch_acc.item()
-
-    rel_loss = epoch_loss / len(data_loader)
-    rel_acc = epoch_acc / len(data_loader)
-
-    print('Test_loss: {:.4f} \tTest_acc: {:.2f}'.format(
-        rel_loss, rel_acc))

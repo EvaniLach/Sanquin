@@ -30,16 +30,22 @@ args = parser.parse_args()
 
 
 def define_model(trial):
-    n_layers = trial.suggest_int("n_layers", 1, 6)
+    n_layers = trial.suggest_int("n_layers", 1, 5)
     layers = []
 
     in_features = INPUT
+    p = trial.suggest_float("dropout", 0.1, 0.8)
     for i in range(n_layers):
-        out_features = trial.suggest_int("n_units_l{}".format(i), 4, 128)
+        neurons = trial.suggest_int("n_units_l{}".format(i), 4, 512)
+        out_features = neurons
         act = nn.ReLU()
         linear = nn.Linear(in_features, out_features)
         layers += (linear, act)
+        layers.append(nn.BatchNorm1d(neurons))
         in_features = out_features
+        if i > 1:
+            layers.append(nn.Dropout(p))
+
     layers.append((nn.Linear(in_features, OUTPUT)))
 
     return nn.Sequential(*layers)
@@ -69,12 +75,13 @@ def get_data():
     )
 
     val_split = TensorDataset(normalize(dataset.x[val_set]), dataset.y[val_set])
-    train_split = TensorDataset(normalize(dataset.x[train_set]), dataset.y[train_set])
+    train_split = TensorDataset(normalize(cap_outliers(dataset.x[train_set])), dataset.y[train_set])
 
     return train_split, val_split, dataset.y[train_set]
 
 
 def normalize(matrix):
+    matrix.to(DEVICE)
     columns = matrix.shape[1]
     feature_indices = [(i, i + 1) for i in range(columns) if (i % 3 == 0)]
     min_max = []
@@ -94,6 +101,26 @@ def normalize(matrix):
     return matrix
 
 
+def cap_outliers(matrix):
+    feature_indices = []
+
+    for i in range(matrix.shape[1]):
+        if i % 3 == 0:
+            feature_indices.append(i)
+            feature_indices.append(i + 1)
+
+    for c in feature_indices:
+        low = torch.quantile(matrix[:, c], 0.1)
+        high = torch.quantile(matrix[:, c], 0.99)
+        for r in range(matrix.shape[0]):
+            if matrix[r, c] < low:
+                matrix[r, c] = low
+            elif matrix[r, c] > high:
+                matrix[r, c] = high
+
+    return matrix
+
+
 def weighted_sampler(targets):
     class_counts = torch.unique(targets, return_counts=True)[1]
     class_weights = 1. / class_counts
@@ -106,6 +133,17 @@ def weighted_sampler(targets):
     )
 
     return sampler, class_weights
+
+
+def multi_acc(y_pred, y_test):
+    y_pred_softmax = torch.log_softmax(y_pred, dim=1)
+    _, y_pred_tags = torch.max(y_pred_softmax, dim=1)
+    correct_pred = (y_pred_tags == y_test).float()
+
+    acc = correct_pred.sum() / len(correct_pred)
+
+    acc = torch.round(acc * 100)
+    return acc
 
 
 def objective(trial):
@@ -127,6 +165,9 @@ def objective(trial):
 
     loss = nn.CrossEntropyLoss()
 
+    val_loss = 0
+    val_acc = 0
+
     # Training of the model.
     for epoch in range(EPOCHS):
         model.train()
@@ -134,25 +175,33 @@ def objective(trial):
             data, target = data.to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
             output = model(data)
-            train_loss = loss(output, target)
+            train_loss = loss(output, target).item()
             train_loss.backward()
             optimizer.step()
 
         # Validation of the model.
         model.eval()
         val_loss = 0
-        with torch.no_grad():
+        val_acc = 0
+        with torch.inference_mode():
             for batch_idx, (data, target) in enumerate(val_loader):
                 data, target = data.to(DEVICE), target.to(DEVICE)
                 output = model(data)
+
                 val_loss += loss(output, target).item()
 
+                batch_acc = multi_acc(output, target)
+                val_acc += batch_acc.item()
+
         val_loss = val_loss / len(val_loader)
+        val_acc = val_acc / len(val_loader)
         trial.report(val_loss, epoch)
 
         # Handle pruning based on the intermediate value.
         if trial.should_prune():
             raise optuna.exceptions.TrialPruned()
+
+    print('Val_acc: {:.2f}'.format(val_acc))
 
     return val_loss
 
