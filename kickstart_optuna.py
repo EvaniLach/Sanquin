@@ -189,6 +189,8 @@ def objective(trial):
         val_acc = 0
         with torch.inference_mode():
             for batch_idx, (data, target) in enumerate(val_loader):
+                if batch_idx * BATCHSIZE >= N_VALID_EXAMPLES:
+                    break
                 data, target = data.to(DEVICE), target.to(DEVICE)
                 output = model(data)
 
