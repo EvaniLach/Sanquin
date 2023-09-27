@@ -19,9 +19,9 @@ INPUT = 1 * 24
 OUTPUT = 8
 DIR = os.getcwd()
 EPOCHS = 75
-BATCHSIZE = 64
-N_TRAIN_EXAMPLES = BATCHSIZE * 100
-N_VALID_EXAMPLES = BATCHSIZE * 20
+
+N_TRAIN_BATCHES = 500
+N_VALID_BATCHES = 100
 
 parser = argparse.ArgumentParser(description='NN settings')
 parser.add_argument('--batch-size', type=int, default=64, metavar='N',
@@ -153,17 +153,27 @@ def objective(trial):
     # Generate the model.
     model = define_model(trial).to(DEVICE)
 
+    print("model defined")
+
     # Generate the optimizers.
     optimizer_name = "Adam"
     lr = trial.suggest_float("lr", 1e-5, 1e-1, log=True)
     optimizer = getattr(optim, optimizer_name)(model.parameters(), lr=lr)
 
+    print("getting data")
+
     train_dataset, val_dataset, train_targets = get_data()
+
+    print("got data")
 
     sampler, cw = weighted_sampler(train_targets)
 
+    print("Getting data from loader")
+
     train_loader = DataLoader(train_dataset, batch_size=65, sampler=sampler)
     val_loader = DataLoader(val_dataset, batch_size=64)
+
+    print("Got data from loader")
 
     loss = nn.CrossEntropyLoss()
 
@@ -173,8 +183,9 @@ def objective(trial):
     # Training of the model.
     for epoch in range(EPOCHS):
         model.train()
+        print("Epoch: ", epoch)
         for batch_idx, (data, target) in enumerate(train_loader):
-            if batch_idx * BATCHSIZE >= N_TRAIN_EXAMPLES:
+            if batch_idx >= N_TRAIN_BATCHES:
                 break
             data, target = data.to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
@@ -189,7 +200,8 @@ def objective(trial):
         val_acc = 0
         with torch.inference_mode():
             for batch_idx, (data, target) in enumerate(val_loader):
-                if batch_idx * BATCHSIZE >= N_VALID_EXAMPLES:
+                print('batch_idx', batch_idx)
+                if batch_idx >= N_VALID_BATCHES:
                     break
                 data, target = data.to(DEVICE), target.to(DEVICE)
                 output = model(data)
@@ -199,17 +211,16 @@ def objective(trial):
                 batch_acc = multi_acc(output, target)
                 val_acc += batch_acc.item()
 
-        val_loss = val_loss / len(val_loader)
-        val_acc = val_acc / len(val_loader)
-        trial.report(val_loss, epoch)
+        val_loss = val_loss / N_VALID_BATCHES
+        val_acc = val_acc / N_VALID_BATCHES
+
+        trial.report(val_acc, epoch)
 
         # Handle pruning based on the intermediate value.
         if trial.should_prune():
             raise optuna.exceptions.TrialPruned()
 
-    print('Val_acc: {:.2f}'.format(val_acc))
-
-    return val_loss
+    return val_acc
 
 
 if __name__ == "__main__":
