@@ -18,7 +18,7 @@ DEVICE = torch.device('cuda:6' if torch.cuda.is_available() else 'cpu')
 INPUT = 1 * 24
 OUTPUT = 8
 DIR = os.getcwd()
-EPOCHS = 75
+EPOCHS = 50
 
 N_TRAIN_BATCHES = 500
 N_VALID_BATCHES = 100
@@ -149,7 +149,7 @@ def multi_acc(y_pred, y_test):
     return acc
 
 
-def objective(trial):
+def objective(trial, train, val, targets):
     torch.manual_seed(args.seed)
     # Generate the model.
     model = define_model(trial).to(DEVICE)
@@ -159,12 +159,10 @@ def objective(trial):
     lr = trial.suggest_float("lr", 1e-5, 1e-1, log=True)
     optimizer = getattr(optim, optimizer_name)(model.parameters(), lr=lr)
 
-    train_dataset, val_dataset, train_targets = get_data()
+    sampler, cw = weighted_sampler(targets)
 
-    sampler, cw = weighted_sampler(train_targets)
-
-    train_loader = DataLoader(train_dataset, batch_size=65, sampler=sampler)
-    val_loader = DataLoader(val_dataset, batch_size=64)
+    train_loader = DataLoader(train, batch_size=65, sampler=sampler)
+    val_loader = DataLoader(val, batch_size=64)
 
     loss = nn.CrossEntropyLoss()
 
@@ -173,6 +171,7 @@ def objective(trial):
 
     # Training of the model.
     for epoch in range(EPOCHS):
+        print("epoch", epoch)
         model.train()
         for batch_idx, (data, target) in enumerate(train_loader):
             if batch_idx >= N_TRAIN_BATCHES:
@@ -214,7 +213,9 @@ def objective(trial):
 
 if __name__ == "__main__":
     study = optuna.create_study(direction="minimize")
-    study.optimize(objective, n_trials=100, timeout=None)
+    train, val, targets = get_data()
+
+    study.optimize(objective(train, val, targets), n_trials=100, timeout=None)
 
     pruned_trials = study.get_trials(deepcopy=False, states=[TrialState.PRUNED])
     complete_trials = study.get_trials(deepcopy=False, states=[TrialState.COMPLETE])
