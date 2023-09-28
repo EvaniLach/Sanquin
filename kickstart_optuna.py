@@ -15,7 +15,7 @@ import numpy as np
 
 from main_network import Q_net, MyData
 
-DEVICE = torch.device('cuda:6')
+DEVICE = torch.device('cuda')
 INPUT = 1 * 24
 OUTPUT = 8
 DIR = os.getcwd()
