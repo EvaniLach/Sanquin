@@ -165,6 +165,7 @@ def objective(trial):
         print("epoch", epoch)
         model.train()
         for batch_idx, (data, target) in enumerate(train_loader):
+            print(batch_idx)
             if batch_idx >= N_TRAIN_BATCHES:
                 break
             data, target = data.to(DEVICE), target.to(DEVICE)
