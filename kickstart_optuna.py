@@ -95,6 +95,7 @@ def normalize(matrix):
     for i in range(len(matrix)):
         index = 0
         for j in feature_indices:
+            print("column", j)
             matrix[i, j[0]] = (
                     (matrix[i, j[0]] - min_max[index][0]) / (min_max[index][1] - min_max[index][0]))
             matrix[i, j[1]] = (
