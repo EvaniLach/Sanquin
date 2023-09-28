@@ -139,7 +139,7 @@ def multi_acc(y_pred, y_test):
     return acc
 
 
-def objective(trial, train, val, targets):
+def objective(train, val, targets):
     torch.manual_seed(args.seed)
     # Generate the model.
     model = define_model(trial).to(DEVICE)
