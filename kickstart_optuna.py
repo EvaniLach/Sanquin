@@ -8,6 +8,7 @@ import torch.optim as optim
 import torch.utils.data
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, TensorDataset, WeightedRandomSampler
+from sklearn.preprocessing import MinMaxScaler
 
 import argparse
 import numpy as np
@@ -84,25 +85,12 @@ def get_data():
 
 def normalize(matrix):
     matrix.to(DEVICE)
-    columns = matrix.shape[1]
-    feature_indices = [(i, i + 1) for i in range(columns) if (i % 3 == 0)]
-    min_max = []
 
-    for i in feature_indices:
-        min_max.append((torch.min(matrix[:, i[0]]), torch.max(matrix[:, i[0]])))
-        min_max.append((torch.min(matrix[:, i[1]]), torch.max(matrix[:, i[1]])))
+    scaler = MinMaxScaler()
+    scaler.fit(matrix)
+    scaled = scaler.transform(matrix)
 
-    for i in range(len(matrix)):
-        index = 0
-        for j in feature_indices:
-            print("column", j)
-            matrix[i, j[0]] = (
-                    (matrix[i, j[0]] - min_max[index][0]) / (min_max[index][1] - min_max[index][0]))
-            matrix[i, j[1]] = (
-                    (matrix[i, j[1]] - min_max[index + 1][0]) / (min_max[index + 1][1] - min_max[index + 1][0]))
-            index += 2
-
-    return matrix
+    return scaled
 
 
 def cap_outliers(matrix):
