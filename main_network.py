@@ -150,7 +150,7 @@ def get_data():
     )
 
     val_split = TensorDataset(normalize(dataset.x[val_set]), dataset.y[val_set])
-    train_split = TensorDataset(normalize(cap_outliers(dataset.x[train_set])), dataset.y[train_set])
+    train_split = TensorDataset(normalize(dataset.x[train_set]), dataset.y[train_set])
 
     return train_split, val_split, dataset.y[train_set]
 

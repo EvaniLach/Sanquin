@@ -77,7 +77,7 @@ def get_data():
     )
 
     val_split = TensorDataset(normalize(dataset.x[val_set]), dataset.y[val_set])
-    train_split = TensorDataset(normalize(cap_outliers(dataset.x[train_set])), dataset.y[train_set])
+    train_split = TensorDataset(normalize(dataset.x[train_set]), dataset.y[train_set])
 
     return train_split, val_split, dataset.y[train_set]
 
@@ -100,6 +100,7 @@ def normalize(matrix):
             matrix[i, j[1]] = (
                     (matrix[i, j[1]] - min_max[index + 1][0]) / (min_max[index + 1][1] - min_max[index + 1][0]))
             index += 2
+
     return matrix
 
 
@@ -153,27 +154,17 @@ def objective(trial):
     # Generate the model.
     model = define_model(trial).to(DEVICE)
 
-    print("model defined")
-
     # Generate the optimizers.
     optimizer_name = "Adam"
     lr = trial.suggest_float("lr", 1e-5, 1e-1, log=True)
     optimizer = getattr(optim, optimizer_name)(model.parameters(), lr=lr)
 
-    print("getting data")
-
     train_dataset, val_dataset, train_targets = get_data()
-
-    print("got data")
 
     sampler, cw = weighted_sampler(train_targets)
 
-    print("Getting data from loader")
-
     train_loader = DataLoader(train_dataset, batch_size=65, sampler=sampler)
     val_loader = DataLoader(val_dataset, batch_size=64)
-
-    print("Got data from loader")
 
     loss = nn.CrossEntropyLoss()
 
@@ -183,7 +174,6 @@ def objective(trial):
     # Training of the model.
     for epoch in range(EPOCHS):
         model.train()
-        print("Epoch: ", epoch)
         for batch_idx, (data, target) in enumerate(train_loader):
             if batch_idx >= N_TRAIN_BATCHES:
                 break
@@ -200,7 +190,6 @@ def objective(trial):
         val_acc = 0
         with torch.inference_mode():
             for batch_idx, (data, target) in enumerate(val_loader):
-                print('batch_idx', batch_idx)
                 if batch_idx >= N_VALID_BATCHES:
                     break
                 data, target = data.to(DEVICE), target.to(DEVICE)
