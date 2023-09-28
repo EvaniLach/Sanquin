@@ -77,20 +77,21 @@ def get_data():
         random_state=args.seed
     )
 
-    val_split = TensorDataset(normalize(dataset.x[val_set]), dataset.y[val_set])
-    train_split = TensorDataset(normalize(dataset.x[train_set]), dataset.y[train_set])
+    scaler = MinMaxScaler()
+    scaler.fit(dataset.x[val_set])
+
+    val_split = TensorDataset(normalize(dataset.x[val_set], scaler), dataset.y[val_set])
+    train_split = TensorDataset(normalize(dataset.x[train_set], scaler), dataset.y[train_set])
 
     return train_split, val_split, dataset.y[train_set]
 
 
-def normalize(matrix):
+def normalize(matrix, scaler):
     matrix.to(DEVICE)
 
-    scaler = MinMaxScaler()
-    scaler.fit(matrix)
-    scaled = scaler.transform(matrix)
+    scaled = scaler.transform(matrix.numpy())
 
-    return scaled
+    return torch.from_numpy(scaled)
 
 
 def cap_outliers(matrix):
