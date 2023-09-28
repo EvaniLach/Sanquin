@@ -143,6 +143,7 @@ def objective(trial):
     torch.manual_seed(args.seed)
     # Generate the model.
     model = define_model(trial).to(DEVICE)
+    print(DEVICE)
 
     # Generate the optimizers.
     optimizer_name = "Adam"
