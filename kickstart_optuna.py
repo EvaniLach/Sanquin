@@ -139,7 +139,7 @@ def multi_acc(y_pred, y_test):
     return acc
 
 
-def objective(train, val, targets):
+def objective(trial):
     torch.manual_seed(args.seed)
     # Generate the model.
     model = define_model(trial).to(DEVICE)
@@ -149,6 +149,7 @@ def objective(train, val, targets):
     lr = trial.suggest_float("lr", 1e-5, 1e-1, log=True)
     optimizer = getattr(optim, optimizer_name)(model.parameters(), lr=lr)
 
+    train, val, targets = get_data()
     sampler, cw = weighted_sampler(targets)
 
     train_loader = DataLoader(train, batch_size=65, sampler=sampler)
@@ -203,9 +204,8 @@ def objective(train, val, targets):
 
 if __name__ == "__main__":
     study = optuna.create_study(direction="minimize")
-    train, val, targets = get_data()
 
-    study.optimize(objective(train, val, targets), n_trials=100, timeout=None)
+    study.optimize(objective, n_trials=100, timeout=None)
 
     pruned_trials = study.get_trials(deepcopy=False, states=[TrialState.PRUNED])
     complete_trials = study.get_trials(deepcopy=False, states=[TrialState.COMPLETE])
