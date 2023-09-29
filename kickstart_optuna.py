@@ -15,8 +15,7 @@ import numpy as np
 
 from main_network import Q_net, MyData
 
-torch.cuda.device(2)
-DEVICE = torch.device('cuda:2')
+DEVICE = ('cuda' if torch.cuda.is_available() else 'cpu')
 INPUT = 1 * 24
 OUTPUT = 8
 DIR = os.getcwd()
@@ -205,7 +204,6 @@ def objective(trial):
 
 
 if __name__ == "__main__":
-    print("deviceeee", torch.cuda.current_device())
     study = optuna.create_study(direction="minimize")
     study.optimize(objective, n_trials=100, timeout=None)
 
