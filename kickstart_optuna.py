@@ -205,11 +205,12 @@ def objective(trial):
 
 
 if __name__ == "__main__":
-    study = optuna.create_study(direction="minimize")
 
     max_memory_allocated = torch.cuda.max_memory_allocated()
 
     print(max_memory_allocated)
+
+    study = optuna.create_study(direction="minimize")
 
     study.optimize(objective, n_trials=100, timeout=None)
 
