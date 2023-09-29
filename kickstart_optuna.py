@@ -15,6 +15,10 @@ import numpy as np
 
 from main_network import Q_net, MyData
 
+max_memory_allocated = torch.cuda.max_memory_allocated()
+
+print(max_memory_allocated)
+
 DEVICE = torch.device('cuda')
 INPUT = 1 * 24
 OUTPUT = 8
@@ -205,10 +209,6 @@ def objective(trial):
 
 
 if __name__ == "__main__":
-
-    max_memory_allocated = torch.cuda.max_memory_allocated()
-
-    print(max_memory_allocated)
 
     study = optuna.create_study(direction="minimize")
 
