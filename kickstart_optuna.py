@@ -19,7 +19,7 @@ DEVICE = ('cuda' if torch.cuda.is_available() else 'cpu')
 INPUT = 1 * 24
 OUTPUT = 8
 DIR = os.getcwd()
-EPOCHS = 50
+EPOCHS = 75
 
 N_TRAIN_BATCHES = 500
 N_VALID_BATCHES = 100
@@ -162,10 +162,8 @@ def objective(trial):
 
     # Training of the model.
     for epoch in range(EPOCHS):
-        print("epoch", epoch)
         model.train()
         for batch_idx, (data, target) in enumerate(train_loader):
-            print(batch_idx)
             if batch_idx >= N_TRAIN_BATCHES:
                 break
             data, target = data.to(DEVICE), target.to(DEVICE)
