@@ -192,13 +192,16 @@ def objective(trial):
         val_loss = val_loss / N_VALID_BATCHES
         val_acc = val_acc / N_VALID_BATCHES
 
-        trial.report(val_acc, epoch)
+        trial.report(val_loss, epoch)
 
         # Handle pruning based on the intermediate value.
         if trial.should_prune():
             raise optuna.exceptions.TrialPruned()
 
-    return val_acc
+    print('\tVal_loss: {:.4f} \tVal_acc: {:.2f}'.format(
+        val_loss, val_acc))
+
+    return val_loss
 
 
 if __name__ == "__main__":
