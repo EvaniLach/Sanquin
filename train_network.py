@@ -114,5 +114,5 @@ def train(rank, args, model, device, train_dataset, targets, val_dataset):
     train_df = pd.DataFrame(list(zip(train_loss, train_acc)), columns=["loss", "accuracy"])
     val_df = pd.DataFrame(list(zip(val_loss, val_acc)), columns=["loss", "accuracy"])
 
-    train_df.to_csv('results/kickstart/{}/train_4.csv'.format(args.seed), index=False)
-    val_df.to_csv('results/kickstart/{}/val_4.csv'.format(args.seed), index=False)
+    train_df.to_csv('results/kickstart/{}/train_.csv'.format(args.seed), index=False)
+    val_df.to_csv('results/kickstart/{}/val_.csv'.format(args.seed), index=False)

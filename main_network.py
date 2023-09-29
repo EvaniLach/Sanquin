@@ -23,7 +23,7 @@ parser.add_argument('--epochs', type=int, default=500, metavar='N',
                     help='number of epochs to train (default: 100)')
 parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
                     help='learning rate (default: 0.001)')
-parser.add_argument('--seed', type=int, default=99, metavar='S',
+parser.add_argument('--seed', type=int, default=20, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=1000, metavar='N',
                     help='how many batches to wait before logging training status')
@@ -65,9 +65,17 @@ class MulticlassClassification(nn.Module):
         super(MulticlassClassification, self).__init__()
 
         self.layer_1 = nn.Linear(num_feature, 512)
+        nn.init.kaiming_normal_(self.layer_1.weight, mode='fan_in', nonlinearity='relu')
+        nn.init.zeros_(self.layer_1.bias)
         self.layer_2 = nn.Linear(512, 256)
+        nn.init.kaiming_normal_(self.layer_2.weight, mode='fan_in', nonlinearity='relu')
+        nn.init.zeros_(self.layer_2.bias)
         self.layer_3 = nn.Linear(256, 128)
+        nn.init.kaiming_normal_(self.layer_3.weight, mode='fan_in', nonlinearity='relu')
+        nn.init.zeros_(self.layer_3.bias)
         self.layer_4 = nn.Linear(128, 64)
+        nn.init.kaiming_normal_(self.layer_4.weight, mode='fan_in', nonlinearity='relu')
+        nn.init.zeros_(self.layer_4.bias)
         self.layer_out = nn.Linear(64, num_class)
 
         self.relu = nn.ReLU()
@@ -133,18 +141,18 @@ def get_data():
 
     dataset = MyData(data_path, target_path)
 
-    # Use 10% of total training data for testing model
-    subset_indices, _ = train_test_split(
-        range(len(dataset)),
-        stratify=dataset.y,
-        train_size=0.1,
-        random_state=args.seed
-    )
+    # # Use 10% of total training data for testing model
+    # subset_indices, _ = train_test_split(
+    #     range(len(dataset)),
+    #     stratify=dataset.y,
+    #     train_size=0.1,
+    #     random_state=args.seed
+    # )
 
     # Split 80/20 for training and validation
     train_set, val_set = train_test_split(
-        subset_indices,
-        stratify=dataset.y[subset_indices],
+        range(len(dataset)),
+        stratify=dataset.y,
         test_size=0.2,
         random_state=args.seed
     )
@@ -197,7 +205,7 @@ def cap_outliers(matrix):
 if __name__ == '__main__':
     args = parser.parse_args()
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = ('cuda' if torch.cuda.is_available() else 'cpu')
 
     torch.manual_seed(args.seed)
     # mp.set_start_method('spawn', force=True)
