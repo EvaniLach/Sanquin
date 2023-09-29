@@ -15,10 +15,6 @@ import numpy as np
 
 from main_network import Q_net, MyData
 
-max_memory_allocated = torch.cuda.max_memory_allocated()
-
-print(max_memory_allocated)
-
 DEVICE = torch.device('cuda')
 INPUT = 1 * 24
 OUTPUT = 8
@@ -209,9 +205,8 @@ def objective(trial):
 
 
 if __name__ == "__main__":
-
     study = optuna.create_study(direction="minimize")
-
+    print(DEVICE)
     study.optimize(objective, n_trials=100, timeout=None)
 
     pruned_trials = study.get_trials(deepcopy=False, states=[TrialState.PRUNED])
