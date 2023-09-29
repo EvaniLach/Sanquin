@@ -87,7 +87,7 @@ def get_data():
 
 
 def normalize(matrix, scaler):
-    matrix.to(DEVICE)
+    matrix.cuda(1)
 
     scaled = scaler.transform(matrix.numpy())
 
@@ -142,8 +142,7 @@ def multi_acc(y_pred, y_test):
 def objective(trial):
     torch.manual_seed(args.seed)
     # Generate the model.
-    model = define_model(trial).to(DEVICE)
-    print(DEVICE)
+    model = define_model(trial).cuda(1)
 
     # Generate the optimizers.
     optimizer_name = "Adam"
@@ -169,7 +168,7 @@ def objective(trial):
             print(batch_idx)
             if batch_idx >= N_TRAIN_BATCHES:
                 break
-            data, target = data.to(DEVICE), target.to(DEVICE)
+            data, target = data.cuda(1), target.cuda(1)
             optimizer.zero_grad()
             output = model(data)
             train_loss = loss(output, target)
@@ -184,7 +183,7 @@ def objective(trial):
             for batch_idx, (data, target) in enumerate(val_loader):
                 if batch_idx >= N_VALID_BATCHES:
                     break
-                data, target = data.to(DEVICE), target.to(DEVICE)
+                data, target = data.cuda(1), target.cuda(1)
                 output = model(data)
 
                 val_loss += loss(output, target).item()
@@ -206,7 +205,6 @@ def objective(trial):
 
 if __name__ == "__main__":
     study = optuna.create_study(direction="minimize")
-    print(DEVICE)
     study.optimize(objective, n_trials=100, timeout=None)
 
     pruned_trials = study.get_trials(deepcopy=False, states=[TrialState.PRUNED])
