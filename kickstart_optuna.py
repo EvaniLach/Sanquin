@@ -15,7 +15,8 @@ import numpy as np
 
 from main_network import Q_net, MyData
 
-DEVICE = torch.device('cuda')
+torch.cuda.device(2)
+DEVICE = torch.device('cuda:2')
 INPUT = 1 * 24
 OUTPUT = 8
 DIR = os.getcwd()
@@ -87,7 +88,7 @@ def get_data():
 
 
 def normalize(matrix, scaler):
-    matrix.cuda(1)
+    matrix.to(DEVICE)
 
     scaled = scaler.transform(matrix.numpy())
 
@@ -142,7 +143,7 @@ def multi_acc(y_pred, y_test):
 def objective(trial):
     torch.manual_seed(args.seed)
     # Generate the model.
-    model = define_model(trial).cuda(1)
+    model = define_model(trial).to(DEVICE)
 
     # Generate the optimizers.
     optimizer_name = "Adam"
@@ -168,7 +169,7 @@ def objective(trial):
             print(batch_idx)
             if batch_idx >= N_TRAIN_BATCHES:
                 break
-            data, target = data.cuda(1), target.cuda(1)
+            data, target = data.to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
             output = model(data)
             train_loss = loss(output, target)
@@ -183,7 +184,7 @@ def objective(trial):
             for batch_idx, (data, target) in enumerate(val_loader):
                 if batch_idx >= N_VALID_BATCHES:
                     break
-                data, target = data.cuda(1), target.cuda(1)
+                data, target = data.to(DEVICE), target.to(DEVICE)
                 output = model(data)
 
                 val_loss += loss(output, target).item()
