@@ -196,6 +196,8 @@ def objective(trial):
 
         # Handle pruning based on the intermediate value.
         if trial.should_prune():
+            print('\tVal_loss: {:.4f} \tVal_acc: {:.2f}'.format(
+                val_loss, val_acc))
             raise optuna.exceptions.TrialPruned()
 
     print('\tVal_loss: {:.4f} \tVal_acc: {:.2f}'.format(
