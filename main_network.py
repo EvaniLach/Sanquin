@@ -114,13 +114,13 @@ class MulticlassClassification(nn.Module):
 class MyData(Dataset):
     def __init__(self, data_path=None, target_path=None):
         x_list = []
-        for i in os.listdir(data_path):
+        for i in sorted(os.listdir(data_path)):
             print(i)
             data = np.load(data_path + i, allow_pickle=True)
             x_list.append(data)
 
         y_list = []
-        for i in os.listdir(target_path):
+        for i in sorted(os.listdir(target_path)):
             print(i)
             data = np.load(target_path + i, allow_pickle=True)
             y_list.append(data)
