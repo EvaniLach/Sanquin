@@ -71,7 +71,7 @@ def multi_acc(y_pred, y_test):
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    device = ('cuda' if torch.cuda.is_available() else 'cpu')
+    device = ('cpu' if torch.cuda.is_available() else 'cpu')
 
     # path = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/Results/kickstart/'
     path = 'models/kickstart/20/'
