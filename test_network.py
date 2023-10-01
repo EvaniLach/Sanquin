@@ -6,7 +6,6 @@ import torch.nn as nn
 from torch.utils.data import Dataset, TensorDataset, DataLoader
 
 from main_network import MulticlassClassification, get_data
-from train_network import multi_acc
 
 # Training settings
 parser = argparse.ArgumentParser(description='NN settings')
@@ -56,6 +55,18 @@ def test_epoch(model, device, data_loader):
 
     print('Test_loss: {:.4f} \tTest_acc: {:.2f}'.format(
         rel_loss, rel_acc))
+
+
+def multi_acc(y_pred, y_test):
+    y_pred_softmax = torch.log_softmax(y_pred, dim=1)
+    _, y_pred_tags = torch.max(y_pred_softmax, dim=1)
+    correct_pred = (y_pred_tags == y_test).float()
+    print("predicted: ", y_pred_tags)
+    print("true labels: ", y_test)
+    acc = correct_pred.sum() / len(correct_pred)
+
+    acc = torch.round(acc * 100)
+    return acc
 
 
 if __name__ == '__main__':
