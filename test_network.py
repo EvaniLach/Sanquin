@@ -80,7 +80,8 @@ if __name__ == '__main__':
     model.load_state_dict(torch.load(
         path + 'model_3.pt'))
     model.to(device)
-    model.share_memory()
+    for param in model.parameters():
+        print(param)
 
     train_dataset, val_dataset, targets = get_data()
 
