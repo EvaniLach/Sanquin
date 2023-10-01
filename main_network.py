@@ -7,6 +7,7 @@ import torch.multiprocessing as mp
 from torch.utils.data import Dataset, TensorDataset, DataLoader, Subset
 from datetime import datetime
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
 
 import numpy as np
 import os
@@ -157,30 +158,39 @@ def get_data():
         random_state=args.seed
     )
 
-    val_split = TensorDataset(normalize(dataset.x[val_set]), dataset.y[val_set])
-    train_split = TensorDataset(normalize(dataset.x[train_set]), dataset.y[train_set])
+    scaler = MinMaxScaler()
+    scaler.fit(dataset.x[train_set])
+
+    val_split = TensorDataset(normalize(dataset.x[val_set], scaler), dataset.y[val_set])
+    train_split = TensorDataset(normalize(dataset.x[train_set], scaler), dataset.y[train_set])
 
     return train_split, val_split, dataset.y[train_set]
 
 
-def normalize(matrix):
-    columns = matrix.shape[1]
-    feature_indices = [(i, i + 1) for i in range(columns) if (i % 3 == 0)]
-    min_max = []
+def normalize(matrix, scaler):
+    scaled = scaler.transform(matrix.numpy())
 
-    for i in feature_indices:
-        min_max.append((torch.min(matrix[:, i[0]]), torch.max(matrix[:, i[0]])))
-        min_max.append((torch.min(matrix[:, i[1]]), torch.max(matrix[:, i[1]])))
+    return torch.from_numpy(scaled)
 
-    for i in range(len(matrix)):
-        index = 0
-        for j in feature_indices:
-            matrix[i, j[0]] = (
-                    (matrix[i, j[0]] - min_max[index][0]) / (min_max[index][1] - min_max[index][0]))
-            matrix[i, j[1]] = (
-                    (matrix[i, j[1]] - min_max[index + 1][0]) / (min_max[index + 1][1] - min_max[index + 1][0]))
-            index += 2
-    return matrix
+
+# def normalize(matrix):
+#     columns = matrix.shape[1]
+#     feature_indices = [(i, i + 1) for i in range(columns) if (i % 3 == 0)]
+#     min_max = []
+#
+#     for i in feature_indices:
+#         min_max.append((torch.min(matrix[:, i[0]]), torch.max(matrix[:, i[0]])))
+#         min_max.append((torch.min(matrix[:, i[1]]), torch.max(matrix[:, i[1]])))
+#
+#     for i in range(len(matrix)):
+#         index = 0
+#         for j in feature_indices:
+#             matrix[i, j[0]] = (
+#                     (matrix[i, j[0]] - min_max[index][0]) / (min_max[index][1] - min_max[index][0]))
+#             matrix[i, j[1]] = (
+#                     (matrix[i, j[1]] - min_max[index + 1][0]) / (min_max[index + 1][1] - min_max[index + 1][0]))
+#             index += 2
+#     return matrix
 
 
 def cap_outliers(matrix):

@@ -77,14 +77,10 @@ if __name__ == '__main__':
 
     model = MulticlassClassification(num_feature=24, num_class=8)
     model.load_state_dict(torch.load(
-        path + 'model_3.pt'))
+        path + 'model_2.pt'))
     model.to(device)
 
     train_dataset, val_dataset, targets = get_data()
-    print(val_dataset[0])
-    print(val_dataset[80])
-    print(val_dataset[105])
-    print(val_dataset[3])
 
     kwargs = {'batch_size': args.batch_size,
               'shuffle': True}
