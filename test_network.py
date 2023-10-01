@@ -42,8 +42,6 @@ def test_epoch(model, device, data_loader):
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate(data_loader):
             data, target = data.to(device), target.to(device)
-            if batch_idx == 1:
-                print(data)
             output = model(data)
 
             batch_loss = loss(output, target)
@@ -83,6 +81,7 @@ if __name__ == '__main__':
     model.to(device)
 
     train_dataset, val_dataset, targets = get_data()
+    print(val_dataset[0])
 
     kwargs = {'batch_size': args.batch_size,
               'shuffle': True}
