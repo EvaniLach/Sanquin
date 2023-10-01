@@ -42,6 +42,8 @@ def test_epoch(model, device, data_loader):
     with torch.no_grad():
         for batch_idx, (data, target) in enumerate(data_loader):
             data, target = data.to(device), target.to(device)
+            if batch_idx == 1:
+                print(data)
             output = model(data)
 
             batch_loss = loss(output, target)
@@ -61,8 +63,7 @@ def multi_acc(y_pred, y_test):
     y_pred_softmax = torch.log_softmax(y_pred, dim=1)
     _, y_pred_tags = torch.max(y_pred_softmax, dim=1)
     correct_pred = (y_pred_tags == y_test).float()
-    print("predicted: ", y_pred_tags)
-    print("true labels: ", y_test)
+
     acc = correct_pred.sum() / len(correct_pred)
 
     acc = torch.round(acc * 100)
@@ -80,8 +81,6 @@ if __name__ == '__main__':
     model.load_state_dict(torch.load(
         path + 'model_3.pt'))
     model.to(device)
-    for param in model.parameters():
-        print(param)
 
     train_dataset, val_dataset, targets = get_data()
 
