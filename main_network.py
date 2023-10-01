@@ -158,6 +158,11 @@ def get_data():
         random_state=args.seed
     )
 
+    print(dataset.x[val_set][55])
+    print(dataset.x[val_set][100])
+    print(dataset.x[val_set][899])
+    print(dataset.x[val_set][3])
+
     scaler = MinMaxScaler()
     scaler.fit(dataset.x[train_set])
 
