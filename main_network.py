@@ -115,11 +115,13 @@ class MyData(Dataset):
     def __init__(self, data_path=None, target_path=None):
         x_list = []
         for i in os.listdir(data_path):
+            print(i)
             data = np.load(data_path + i, allow_pickle=True)
             x_list.append(data)
 
         y_list = []
         for i in os.listdir(target_path):
+            print(i)
             data = np.load(target_path + i, allow_pickle=True)
             y_list.append(data)
 
@@ -157,11 +159,6 @@ def get_data():
         test_size=0.2,
         random_state=args.seed
     )
-
-    print(dataset.x[val_set][55])
-    print(dataset.x[val_set][100])
-    print(dataset.x[val_set][899])
-    print(dataset.x[val_set][3])
 
     scaler = MinMaxScaler()
     scaler.fit(dataset.x[train_set])
