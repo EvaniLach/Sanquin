@@ -82,6 +82,9 @@ if __name__ == '__main__':
 
     train_dataset, val_dataset, targets = get_data()
     print(val_dataset[0])
+    print(val_dataset[80])
+    print(val_dataset[105])
+    print(val_dataset[3])
 
     kwargs = {'batch_size': args.batch_size,
               'shuffle': True}
