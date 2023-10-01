@@ -4,9 +4,9 @@ import argparse
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, TensorDataset, DataLoader
-from torch.utils.data.sampler import Sampler
 
-from main_network import MyData
+from main_network import MulticlassClassification, get_data
+from train_network import multi_acc
 
 # Training settings
 parser = argparse.ArgumentParser(description='NN settings')
@@ -26,72 +26,9 @@ parser.add_argument('--cuda', action='store_true', default=False,
                     help='enables CUDA training')
 
 
-class Q_net(nn.Module):
-
-    def __init__(self, input, output, nn):
-        super().__init__()
-        self.input = input
-        self.output = output
-        self.nn = nn
-        # self.p = p
-        self.model = self.define_model()
-
-    def define_model(self):
-        layers = []
-
-        in_features = self.input
-        for i in range(len(self.nn)):
-            out_features = self.nn[i]
-            act = nn.ReLU()
-            linear = nn.Linear(in_features, out_features)
-            layers += (linear, act)
-            # layers.append(nn.Dropout(self.p[i]))
-            in_features = out_features
-        layers.append(nn.Linear(in_features, self.output))
-
-        return nn.Sequential(*layers)
-
-
-class MulticlassClassification(nn.Module):
-    def __init__(self, num_feature, num_class):
-        super(MulticlassClassification, self).__init__()
-
-        self.layer_1 = nn.Linear(num_feature, 512)
-        self.layer_2 = nn.Linear(512, 128)
-        self.layer_3 = nn.Linear(128, 64)
-        self.layer_out = nn.Linear(64, num_class)
-
-        self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(p=0.2)
-        self.batchnorm1 = nn.BatchNorm1d(512)
-        self.batchnorm2 = nn.BatchNorm1d(128)
-        self.batchnorm3 = nn.BatchNorm1d(64)
-
-    def forward(self, x):
-        x = self.layer_1(x)
-        x = self.batchnorm1(x)
-        x = self.relu(x)
-
-        x = self.layer_2(x)
-        x = self.batchnorm2(x)
-        x = self.relu(x)
-        x = self.dropout(x)
-
-        x = self.layer_3(x)
-        x = self.batchnorm3(x)
-        x = self.relu(x)
-        x = self.dropout(x)
-
-        x = self.layer_out(x)
-
-        return x
-
-
 def test(model, device, test_dataset):
     torch.manual_seed(args.seed)
-
     test_loader = DataLoader(test_dataset, batch_size=64)
-
     test_epoch(model, device, test_loader)
 
 
@@ -99,6 +36,8 @@ def test_epoch(model, device, data_loader):
     model.eval()
     epoch_loss = 0
     epoch_acc = 0
+
+    torch.manual_seed(args.seed)
 
     loss = nn.CrossEntropyLoss()
     with torch.no_grad():
@@ -119,41 +58,21 @@ def test_epoch(model, device, data_loader):
         rel_loss, rel_acc))
 
 
-def multi_acc(y_pred, y_test):
-    y_pred_softmax = torch.log_softmax(y_pred, dim=1)
-    _, y_pred_tags = torch.max(y_pred_softmax, dim=1)
-
-    correct_pred = (y_pred_tags == y_test).float()
-    acc = correct_pred.sum() / len(correct_pred)
-
-    acc = torch.round(acc * 100)
-
-    return acc
-
-
 if __name__ == '__main__':
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    args = parser.parse_args()
+    device = ('cuda' if torch.cuda.is_available() else 'cpu')
 
     # path = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/Results/kickstart/'
-    path = 'models/kickstart/4/'
+    path = 'models/kickstart/20/'
 
     model = MulticlassClassification(num_feature=24, num_class=8)
     model.load_state_dict(torch.load(
-        path + 'model_20.pt'))
+        path + 'model_3.pt'))
     model.to(device)
     model.share_memory()
 
-    data_path = 'NN training data/1_1/states/'
-    target_path = 'NN training data/1_1/q_matrices/'
+    train_dataset, val_dataset, targets = get_data()
 
-    dataset = MyData(data_path, target_path)
-
-    train_size = int(0.75 * len(dataset))
-    test_size = (len(dataset) - train_size)
-
-    train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
-
-    args = parser.parse_args()
     kwargs = {'batch_size': args.batch_size,
               'shuffle': True}
-    test(model, device, test_dataset)
+    test(model, device, val_dataset)

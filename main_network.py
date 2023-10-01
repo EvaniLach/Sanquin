@@ -27,11 +27,11 @@ parser.add_argument('--seed', type=int, default=20, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=1000, metavar='N',
                     help='how many batches to wait before logging training status')
-parser.add_argument('--model_interval', type=int, default=10,
+parser.add_argument('--model_interval', type=int, default=1,
                     help='interval for saving nn weights')
 parser.add_argument('--cuda', action='store_true', default=True,
                     help='enables CUDA training')
-import platform
+args = parser.parse_args()
 
 
 class Q_net(nn.Module):

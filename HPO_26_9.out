@@ -1,2 +1,0 @@
-[I 2023-09-26 15:41:30,039] A new study created in memory with name: no-name-4e369ce6-cd4e-4516-b844-2b6af07f3c29
-./shells/optuna.sh: line 1: 14777 Killed                  python3 -u kickstart_optuna.py

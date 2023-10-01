@@ -1,1 +1,0 @@
-./shells/kickstart_20.sh: line 1: 21317 Killed                  python3 -u main_network.py --seed 20
