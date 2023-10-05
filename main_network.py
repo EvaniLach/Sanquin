@@ -20,7 +20,7 @@ parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=500, metavar='N',
+parser.add_argument('--epochs', type=int, default=150, metavar='N',
                     help='number of epochs to train (default: 100)')
 parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
                     help='learning rate (default: 0.001)')
@@ -28,7 +28,7 @@ parser.add_argument('--seed', type=int, default=19, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=1000, metavar='N',
                     help='how many batches to wait before logging training status')
-parser.add_argument('--model_interval', type=int, default=1,
+parser.add_argument('--model_interval', type=int, default=10,
                     help='interval for saving nn weights')
 parser.add_argument('--cuda', action='store_true', default=True,
                     help='enables CUDA training')
