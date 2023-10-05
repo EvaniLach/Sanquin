@@ -115,13 +115,11 @@ class MyData(Dataset):
     def __init__(self, data_path=None, target_path=None):
         x_list = []
         for i in sorted(os.listdir(data_path)):
-            print(i)
             data = np.load(data_path + i, allow_pickle=True)
             x_list.append(data)
 
         y_list = []
         for i in sorted(os.listdir(target_path)):
-            print(i)
             data = np.load(target_path + i, allow_pickle=True)
             y_list.append(data)
 
@@ -139,8 +137,8 @@ class MyData(Dataset):
 
 def get_data():
     # dir = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/NN training data/'
-    data_path = 'NN training data/1_1/states/'
-    target_path = 'NN training data/1_1/q_matrices/'
+    data_path = 'NN training data/35_8/states/'
+    target_path = 'NN training data/35_8/q_matrices/'
 
     dataset = MyData(data_path, target_path)
 
