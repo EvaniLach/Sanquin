@@ -10,7 +10,6 @@ def train_epoch(epoch, model, args, device, train_loader, optimizer, weights):
     epoch_loss = 0.0
     epoch_acc = 0.0
     loss = nn.CrossEntropyLoss()
-
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()

@@ -227,7 +227,7 @@ if __name__ == '__main__':
     # .to(device)
     # model.share_memory()
 
-    model = MulticlassClassification(num_feature=24, num_class=8)
+    model = MulticlassClassification(num_feature=8 * 43, num_class=8)
     model.to(device)
 
     # train_dataset, val_dataset, test_dataset, targets = get_data()
