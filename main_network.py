@@ -20,14 +20,12 @@ parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
 parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                     help='input batch size for testing (default: 1000)')
-parser.add_argument('--epochs', type=int, default=500, metavar='N',
+parser.add_argument('--epochs', type=int, default=150, metavar='N',
                     help='number of epochs to train (default: 100)')
-parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
+parser.add_argument('--lr', type=float, default=0.0005, metavar='LR',
                     help='learning rate (default: 0.001)')
 parser.add_argument('--seed', type=int, default=20, metavar='S',
                     help='random seed (default: 1)')
-parser.add_argument('--log-interval', type=int, default=1000, metavar='N',
-                    help='how many batches to wait before logging training status')
 parser.add_argument('--model_interval', type=int, default=10,
                     help='interval for saving nn weights')
 parser.add_argument('--cuda', action='store_true', default=True,
@@ -65,26 +63,26 @@ class MulticlassClassification(nn.Module):
     def __init__(self, num_feature, num_class):
         super(MulticlassClassification, self).__init__()
 
-        self.layer_1 = nn.Linear(num_feature, 512)
+        self.layer_1 = nn.Linear(num_feature, 479)
         nn.init.kaiming_normal_(self.layer_1.weight, mode='fan_in', nonlinearity='relu')
         nn.init.zeros_(self.layer_1.bias)
-        self.layer_2 = nn.Linear(512, 256)
+        self.layer_2 = nn.Linear(479, 456)
         nn.init.kaiming_normal_(self.layer_2.weight, mode='fan_in', nonlinearity='relu')
         nn.init.zeros_(self.layer_2.bias)
-        self.layer_3 = nn.Linear(256, 128)
+        self.layer_3 = nn.Linear(456, 91)
         nn.init.kaiming_normal_(self.layer_3.weight, mode='fan_in', nonlinearity='relu')
         nn.init.zeros_(self.layer_3.bias)
-        self.layer_4 = nn.Linear(128, 64)
-        nn.init.kaiming_normal_(self.layer_4.weight, mode='fan_in', nonlinearity='relu')
-        nn.init.zeros_(self.layer_4.bias)
+        # self.layer_4 = nn.Linear(128, 64)
+        # nn.init.kaiming_normal_(self.layer_4.weight, mode='fan_in', nonlinearity='relu')
+        # nn.init.zeros_(self.layer_4.bias)
         self.layer_out = nn.Linear(64, num_class)
 
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(p=0.2)
-        self.batchnorm1 = nn.BatchNorm1d(512)
-        self.batchnorm2 = nn.BatchNorm1d(256)
-        self.batchnorm3 = nn.BatchNorm1d(128)
-        self.batchnorm4 = nn.BatchNorm1d(64)
+        self.dropout = nn.Dropout(p=0.18)
+        self.batchnorm1 = nn.BatchNorm1d(479)
+        self.batchnorm2 = nn.BatchNorm1d(456)
+        self.batchnorm3 = nn.BatchNorm1d(91)
+        # self.batchnorm4 = nn.BatchNorm1d(64)
 
     def forward(self, x):
         x = self.layer_1(x)
@@ -101,10 +99,10 @@ class MulticlassClassification(nn.Module):
         x = self.relu(x)
         x = self.dropout(x)
 
-        x = self.layer_4(x)
-        x = self.batchnorm4(x)
-        x = self.relu(x)
-        x = self.dropout(x)
+        # x = self.layer_4(x)
+        # x = self.batchnorm4(x)
+        # x = self.relu(x)
+        # x = self.dropout(x)
 
         x = self.layer_out(x)
 
@@ -142,11 +140,10 @@ def get_data():
 
     dataset = MyData(data_path, target_path)
 
-    # Use 10% of total training data for testing model
     subset_indices, _ = train_test_split(
         range(len(dataset)),
         stratify=dataset.y,
-        train_size=0.1,
+        train_size=0.5,
         random_state=args.seed
     )
 
@@ -180,11 +177,9 @@ if __name__ == '__main__':
     print("DEVICE: ", device)
 
     torch.manual_seed(args.seed)
-    # mp.set_start_method('spawn', force=True)
 
-    # model = Q_net(24, 8, [128, 64]).model
-    # .to(device)
-    # model.share_memory()
+    # model = Q_net(24, 8, [128, 64], 0.18).model
+    # model.to(device)
 
     model = MulticlassClassification(num_feature=8 * 43, num_class=8)
     model.to(device)
