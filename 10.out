@@ -1,0 +1,34 @@
+cuda
+Start training
+Train Epoch: 1 	Train_loss: 0.6937 	Train_acc: 75.93
+	Val_loss: 0.7198 	Val_acc: 79.80
+Train Epoch: 2 	Train_loss: 0.4845 	Train_acc: 83.18
+	Val_loss: 0.7266 	Val_acc: 79.77
+Train Epoch: 3 	Train_loss: 0.4224 	Train_acc: 85.38
+	Val_loss: 0.6914 	Val_acc: 80.04
+Train Epoch: 4 	Train_loss: 0.3891 	Train_acc: 86.17
+	Val_loss: 0.7289 	Val_acc: 78.74
+Train Epoch: 5 	Train_loss: 0.3695 	Train_acc: 86.72
+	Val_loss: 0.7033 	Val_acc: 79.69
+Train Epoch: 6 	Train_loss: 0.3453 	Train_acc: 87.65
+	Val_loss: 0.7525 	Val_acc: 77.48
+Train Epoch: 7 	Train_loss: 0.3307 	Train_acc: 87.88
+	Val_loss: 0.7692 	Val_acc: 77.33
+Train Epoch: 8 	Train_loss: 0.3159 	Train_acc: 88.45
+	Val_loss: 0.7540 	Val_acc: 77.65
+Train Epoch: 9 	Train_loss: 0.3017 	Train_acc: 88.90
+	Val_loss: 0.7685 	Val_acc: 77.85
+Train Epoch: 10 	Train_loss: 0.2937 	Train_acc: 89.22
+	Val_loss: 0.7933 	Val_acc: 76.40
+Traceback (most recent call last):
+  File "/home/s1949624/Sanquin/main_network.py", line 240, in <module>
+    train(0, args, model, device, train_dataset, targets, val_dataset)
+  File "/home/s1949624/Sanquin/train_network.py", line 111, in train
+    torch.save(model.state_dict(), 'models/kickstart/{}/model_{}.pt'.format(args.seed, epoch))
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/torch/serialization.py", line 440, in save
+    with _open_zipfile_writer(f) as opened_zipfile:
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/torch/serialization.py", line 315, in _open_zipfile_writer
+    return container(name_or_buffer)
+  File "/local/s1949624/conda_envs/sanquin2/lib/python3.10/site-packages/torch/serialization.py", line 288, in __init__
+    super().__init__(torch._C.PyTorchFileWriter(str(name)))
+RuntimeError: Parent directory models/kickstart/10 does not exist.
