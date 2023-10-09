@@ -16,10 +16,10 @@ import numpy as np
 from main_network import Q_net, MyData
 
 DEVICE = ('cuda' if torch.cuda.is_available() else 'cpu')
-INPUT = 1 * 24
+INPUT = 8 * 43
 OUTPUT = 8
 DIR = os.getcwd()
-EPOCHS = 75
+EPOCHS = 50
 
 N_TRAIN_BATCHES = 500
 N_VALID_BATCHES = 100
@@ -56,23 +56,23 @@ def define_model(trial):
 
 def get_data():
     # dir = 'C:/Users/evani/OneDrive/AI leiden/Sanquin/NN training data/'
-    data_path = 'NN training data/1_1/states/'
-    target_path = 'NN training data/1_1/q_matrices/'
+    data_path = 'NN training data/35_8/states/'
+    target_path = 'NN training data/35_8/q_matrices/'
 
     dataset = MyData(data_path, target_path)
 
-    # # Use 10% of total training data for testing model
-    # subset_indices, _ = train_test_split(
-    #     range(len(dataset)),
-    #     stratify=dataset.y,
-    #     train_size=0.1,
-    #     random_state=args.seed
-    # )
+    # Use 10% of total training data for testing model
+    subset_indices, _ = train_test_split(
+        range(len(dataset)),
+        stratify=dataset.y,
+        train_size=0.9,
+        random_state=args.seed
+    )
 
     # Split 80/20 for training and validation
     train_set, val_set = train_test_split(
-        range(len(dataset)),
-        stratify=dataset.y,
+        subset_indices,
+        stratify=dataset.y[subset_indices],
         test_size=0.2,
         random_state=args.seed
     )
@@ -92,26 +92,6 @@ def normalize(matrix, scaler):
     scaled = scaler.transform(matrix.numpy())
 
     return torch.from_numpy(scaled)
-
-
-def cap_outliers(matrix):
-    feature_indices = []
-
-    for i in range(matrix.shape[1]):
-        if i % 3 == 0:
-            feature_indices.append(i)
-            feature_indices.append(i + 1)
-
-    for c in feature_indices:
-        low = torch.quantile(matrix[:, c], 0.1)
-        high = torch.quantile(matrix[:, c], 0.99)
-        for r in range(matrix.shape[0]):
-            if matrix[r, c] < low:
-                matrix[r, c] = low
-            elif matrix[r, c] > high:
-                matrix[r, c] = high
-
-    return matrix
 
 
 def weighted_sampler(targets):

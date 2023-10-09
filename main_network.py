@@ -24,7 +24,7 @@ parser.add_argument('--epochs', type=int, default=500, metavar='N',
                     help='number of epochs to train (default: 100)')
 parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
                     help='learning rate (default: 0.001)')
-parser.add_argument('--seed', type=int, default=19, metavar='S',
+parser.add_argument('--seed', type=int, default=20, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--log-interval', type=int, default=1000, metavar='N',
                     help='how many batches to wait before logging training status')
@@ -173,50 +173,11 @@ def normalize(matrix, scaler):
     return torch.from_numpy(scaled)
 
 
-# def normalize(matrix):
-#     columns = matrix.shape[1]
-#     feature_indices = [(i, i + 1) for i in range(columns) if (i % 3 == 0)]
-#     min_max = []
-#
-#     for i in feature_indices:
-#         min_max.append((torch.min(matrix[:, i[0]]), torch.max(matrix[:, i[0]])))
-#         min_max.append((torch.min(matrix[:, i[1]]), torch.max(matrix[:, i[1]])))
-#
-#     for i in range(len(matrix)):
-#         index = 0
-#         for j in feature_indices:
-#             matrix[i, j[0]] = (
-#                     (matrix[i, j[0]] - min_max[index][0]) / (min_max[index][1] - min_max[index][0]))
-#             matrix[i, j[1]] = (
-#                     (matrix[i, j[1]] - min_max[index + 1][0]) / (min_max[index + 1][1] - min_max[index + 1][0]))
-#             index += 2
-#     return matrix
-
-
-def cap_outliers(matrix):
-    feature_indices = []
-    for i in range(matrix.shape[1]):
-        if i % 3 == 0:
-            feature_indices.append(i)
-            feature_indices.append(i + 1)
-
-    for c in feature_indices:
-        low = torch.quantile(matrix[:, c], 0.1)
-        high = torch.quantile(matrix[:, c], 0.99)
-        for r in range(matrix.shape[0]):
-            if matrix[r, c] < low:
-                matrix[r, c] = low
-            elif matrix[r, c] > high:
-                matrix[r, c] = high
-
-    return matrix
-
-
 if __name__ == '__main__':
     args = parser.parse_args()
 
     device = ('cuda' if torch.cuda.is_available() else 'cpu')
-    print(device)
+    print("DEVICE: ", device)
 
     torch.manual_seed(args.seed)
     # mp.set_start_method('spawn', force=True)
