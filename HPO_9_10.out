@@ -1,0 +1,214 @@
+[I 2023-10-09 10:30:55,005] A new study created in memory with name: no-name-8bd35607-f924-43aa-94e9-86c563529e60
+	Val_loss: 0.6375 	Val_acc: 80.44
+[I 2023-10-09 10:34:22,291] Trial 0 finished with value: 0.637525444328785 and parameters: {'n_layers': 4, 'dropout': 0.21232248818957242, 'n_units_l0': 257, 'n_units_l1': 503, 'n_units_l2': 286, 'n_units_l3': 345, 'lr': 6.854417022994296e-05}. Best is trial 0 with value: 0.637525444328785.
+	Val_loss: 0.6955 	Val_acc: 79.66
+[I 2023-10-09 10:36:51,501] Trial 1 finished with value: 0.6955348765850067 and parameters: {'n_layers': 2, 'dropout': 0.12225112090452156, 'n_units_l0': 194, 'n_units_l1': 363, 'lr': 0.003840278766867077}. Best is trial 0 with value: 0.637525444328785.
+	Val_loss: 0.6521 	Val_acc: 79.77
+[I 2023-10-09 10:39:19,497] Trial 2 finished with value: 0.6521370330452919 and parameters: {'n_layers': 2, 'dropout': 0.18364288990816852, 'n_units_l0': 463, 'n_units_l1': 59, 'lr': 0.0023826565184773482}. Best is trial 0 with value: 0.637525444328785.
+	Val_loss: 0.6638 	Val_acc: 78.64
+[I 2023-10-09 10:41:39,278] Trial 3 finished with value: 0.6638457933068276 and parameters: {'n_layers': 1, 'dropout': 0.6813053582434446, 'n_units_l0': 468, 'lr': 0.00010641503813399557}. Best is trial 0 with value: 0.637525444328785.
+	Val_loss: 0.6289 	Val_acc: 80.12
+[I 2023-10-09 10:44:37,984] Trial 4 finished with value: 0.6289168629050255 and parameters: {'n_layers': 3, 'dropout': 0.1766734512661446, 'n_units_l0': 479, 'n_units_l1': 456, 'n_units_l2': 91, 'lr': 0.0009023959423181614}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.6900 	Val_acc: 78.38
+[I 2023-10-09 10:47:01,629] Trial 5 finished with value: 0.6900458154082298 and parameters: {'n_layers': 2, 'dropout': 0.6831811776702877, 'n_units_l0': 388, 'n_units_l1': 360, 'lr': 0.0005945319535343763}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.7172 	Val_acc: 79.97
+[I 2023-10-09 10:47:09,558] Trial 6 pruned. 
+	Val_loss: 0.9282 	Val_acc: 79.66
+[I 2023-10-09 10:47:18,486] Trial 7 pruned. 
+	Val_loss: 0.7149 	Val_acc: 80.07
+[I 2023-10-09 10:47:26,825] Trial 8 pruned. 
+	Val_loss: 0.7181 	Val_acc: 80.75
+[I 2023-10-09 10:47:35,925] Trial 9 pruned. 
+	Val_loss: 0.7230 	Val_acc: 80.70
+[I 2023-10-09 10:47:44,719] Trial 10 pruned. 
+	Val_loss: 0.8036 	Val_acc: 79.54
+[I 2023-10-09 10:47:53,929] Trial 11 pruned. 
+	Val_loss: 0.7587 	Val_acc: 79.35
+[I 2023-10-09 10:48:02,847] Trial 12 pruned. 
+	Val_loss: 0.6797 	Val_acc: 80.30
+[I 2023-10-09 10:48:20,015] Trial 13 pruned. 
+	Val_loss: 1.0379 	Val_acc: 78.61
+[I 2023-10-09 10:48:29,473] Trial 14 pruned. 
+	Val_loss: 0.6829 	Val_acc: 80.65
+[I 2023-10-09 10:48:38,301] Trial 15 pruned. 
+	Val_loss: 1.1468 	Val_acc: 79.79
+[I 2023-10-09 10:48:47,858] Trial 16 pruned. 
+	Val_loss: 11995.6139 	Val_acc: 80.26
+[I 2023-10-09 10:48:57,252] Trial 17 pruned. 
+	Val_loss: 0.6963 	Val_acc: 80.54
+[I 2023-10-09 10:49:06,189] Trial 18 pruned. 
+	Val_loss: 0.6939 	Val_acc: 79.39
+[I 2023-10-09 10:49:14,986] Trial 19 pruned. 
+	Val_loss: 0.7645 	Val_acc: 79.38
+[I 2023-10-09 10:49:23,293] Trial 20 pruned. 
+	Val_loss: 0.6726 	Val_acc: 80.75
+[I 2023-10-09 10:49:34,471] Trial 21 pruned. 
+	Val_loss: 0.6840 	Val_acc: 80.15
+[I 2023-10-09 10:52:03,840] Trial 22 finished with value: 0.6840454268455506 and parameters: {'n_layers': 2, 'dropout': 0.19522125236467613, 'n_units_l0': 506, 'n_units_l1': 148, 'lr': 0.0034745202369099986}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.6864 	Val_acc: 80.19
+[I 2023-10-09 10:52:12,990] Trial 23 pruned. 
+	Val_loss: 0.6731 	Val_acc: 78.64
+[I 2023-10-09 10:52:21,130] Trial 24 pruned. 
+	Val_loss: 0.7065 	Val_acc: 80.72
+[I 2023-10-09 10:52:30,483] Trial 25 pruned. 
+	Val_loss: 0.7687 	Val_acc: 78.83
+[I 2023-10-09 10:52:38,778] Trial 26 pruned. 
+	Val_loss: 0.7448 	Val_acc: 80.18
+[I 2023-10-09 10:55:46,090] Trial 27 finished with value: 0.7448065787553787 and parameters: {'n_layers': 3, 'dropout': 0.10169948922701098, 'n_units_l0': 476, 'n_units_l1': 300, 'n_units_l2': 293, 'lr': 0.008760676456384809}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.6714 	Val_acc: 80.57
+[I 2023-10-09 10:55:54,429] Trial 28 pruned. 
+	Val_loss: 0.6535 	Val_acc: 79.86
+[I 2023-10-09 10:58:14,418] Trial 29 finished with value: 0.6535396540164947 and parameters: {'n_layers': 1, 'dropout': 0.13147380838762307, 'n_units_l0': 218, 'lr': 0.001103494277161639}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.6941 	Val_acc: 80.75
+[I 2023-10-09 10:58:22,953] Trial 30 pruned. 
+	Val_loss: 0.7177 	Val_acc: 78.63
+[I 2023-10-09 10:58:30,975] Trial 31 pruned. 
+	Val_loss: 0.6650 	Val_acc: 80.37
+[I 2023-10-09 10:58:39,268] Trial 32 pruned. 
+	Val_loss: 0.6919 	Val_acc: 79.17
+[I 2023-10-09 10:58:47,364] Trial 33 pruned. 
+	Val_loss: 0.6755 	Val_acc: 79.91
+[I 2023-10-09 10:58:55,724] Trial 34 pruned. 
+	Val_loss: 0.6847 	Val_acc: 79.49
+[I 2023-10-09 10:59:03,839] Trial 35 pruned. 
+	Val_loss: 0.6754 	Val_acc: 79.11
+[I 2023-10-09 10:59:11,912] Trial 36 pruned. 
+	Val_loss: 0.7076 	Val_acc: 79.45
+[I 2023-10-09 10:59:20,169] Trial 37 pruned. 
+	Val_loss: 0.7077 	Val_acc: 78.83
+[I 2023-10-09 11:02:26,696] Trial 38 finished with value: 0.707707579433918 and parameters: {'n_layers': 3, 'dropout': 0.21533151875018675, 'n_units_l0': 431, 'n_units_l1': 346, 'n_units_l2': 215, 'lr': 0.001106281186625427}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.7098 	Val_acc: 80.45
+[I 2023-10-09 11:02:36,879] Trial 39 pruned. 
+	Val_loss: 0.6916 	Val_acc: 79.57
+[I 2023-10-09 11:02:46,901] Trial 40 pruned. 
+	Val_loss: 0.7075 	Val_acc: 78.59
+[I 2023-10-09 11:02:55,751] Trial 41 pruned. 
+	Val_loss: 0.7266 	Val_acc: 79.90
+[I 2023-10-09 11:03:04,238] Trial 42 pruned. 
+	Val_loss: 0.7241 	Val_acc: 78.99
+[I 2023-10-09 11:03:13,209] Trial 43 pruned. 
+	Val_loss: 0.7149 	Val_acc: 79.68
+[I 2023-10-09 11:03:21,685] Trial 44 pruned. 
+	Val_loss: 0.6815 	Val_acc: 79.62
+[I 2023-10-09 11:03:30,716] Trial 45 pruned. 
+	Val_loss: 0.6726 	Val_acc: 79.94
+[I 2023-10-09 11:03:39,730] Trial 46 pruned. 
+	Val_loss: 0.6862 	Val_acc: 79.87
+[I 2023-10-09 11:05:55,067] Trial 47 finished with value: 0.6862270238995553 and parameters: {'n_layers': 4, 'dropout': 0.41990842379420623, 'n_units_l0': 98, 'n_units_l1': 355, 'n_units_l2': 316, 'n_units_l3': 330, 'lr': 0.0009353217931988265}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.6882 	Val_acc: 80.73
+[I 2023-10-09 11:06:03,325] Trial 48 pruned. 
+	Val_loss: 0.8622 	Val_acc: 80.26
+[I 2023-10-09 11:06:12,459] Trial 49 pruned. 
+	Val_loss: 0.6907 	Val_acc: 79.86
+[I 2023-10-09 11:06:19,567] Trial 50 pruned. 
+	Val_loss: 0.7014 	Val_acc: 79.47
+[I 2023-10-09 11:08:01,042] Trial 51 finished with value: 0.7013533973693847 and parameters: {'n_layers': 2, 'dropout': 0.18542314989365807, 'n_units_l0': 485, 'n_units_l1': 141, 'lr': 0.0019277888602204961}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.6744 	Val_acc: 80.25
+[I 2023-10-09 11:08:08,683] Trial 52 pruned. 
+	Val_loss: 0.6821 	Val_acc: 80.45
+[I 2023-10-09 11:08:16,016] Trial 53 pruned. 
+	Val_loss: 0.6922 	Val_acc: 80.46
+[I 2023-10-09 11:08:35,302] Trial 54 pruned. 
+	Val_loss: 0.6820 	Val_acc: 80.28
+[I 2023-10-09 11:08:43,570] Trial 55 pruned. 
+	Val_loss: 0.6850 	Val_acc: 78.20
+[I 2023-10-09 11:10:24,588] Trial 56 finished with value: 0.6849675795435906 and parameters: {'n_layers': 2, 'dropout': 0.26342927258360294, 'n_units_l0': 407, 'n_units_l1': 232, 'lr': 0.0007302127397046069}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.6665 	Val_acc: 79.58
+[I 2023-10-09 11:10:33,491] Trial 57 pruned. 
+	Val_loss: 0.6889 	Val_acc: 80.04
+[I 2023-10-09 11:10:40,607] Trial 58 pruned. 
+	Val_loss: 0.6627 	Val_acc: 80.73
+[I 2023-10-09 11:10:48,288] Trial 59 pruned. 
+	Val_loss: 0.6542 	Val_acc: 79.71
+[I 2023-10-09 11:12:29,221] Trial 60 finished with value: 0.6541971889138222 and parameters: {'n_layers': 2, 'dropout': 0.2939351562147283, 'n_units_l0': 436, 'n_units_l1': 207, 'lr': 0.00030274498262791846}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.7597 	Val_acc: 76.36
+[I 2023-10-09 11:12:36,663] Trial 61 pruned. 
+	Val_loss: 0.6994 	Val_acc: 79.36
+[I 2023-10-09 11:12:43,813] Trial 62 pruned. 
+	Val_loss: 0.6754 	Val_acc: 79.17
+[I 2023-10-09 11:14:23,320] Trial 63 finished with value: 0.6754112938046455 and parameters: {'n_layers': 2, 'dropout': 0.2423376246935197, 'n_units_l0': 465, 'n_units_l1': 217, 'lr': 0.0006537575781978371}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.6903 	Val_acc: 78.44
+[I 2023-10-09 11:14:30,306] Trial 64 pruned. 
+	Val_loss: 0.6847 	Val_acc: 79.63
+[I 2023-10-09 11:14:37,728] Trial 65 pruned. 
+	Val_loss: 0.6614 	Val_acc: 80.56
+[I 2023-10-09 11:14:45,505] Trial 66 pruned. 
+	Val_loss: 0.6615 	Val_acc: 80.20
+[I 2023-10-09 11:14:52,037] Trial 67 pruned. 
+	Val_loss: 0.6952 	Val_acc: 79.24
+[I 2023-10-09 11:14:59,114] Trial 68 pruned. 
+	Val_loss: 0.7260 	Val_acc: 78.84
+[I 2023-10-09 11:15:06,366] Trial 69 pruned. 
+	Val_loss: 0.6871 	Val_acc: 79.69
+[I 2023-10-09 11:15:13,149] Trial 70 pruned. 
+	Val_loss: 0.6781 	Val_acc: 80.67
+[I 2023-10-09 11:15:20,186] Trial 71 pruned. 
+	Val_loss: 0.6592 	Val_acc: 80.34
+[I 2023-10-09 11:15:27,962] Trial 72 pruned. 
+	Val_loss: 0.6815 	Val_acc: 79.26
+[I 2023-10-09 11:17:05,089] Trial 73 finished with value: 0.6814614400267601 and parameters: {'n_layers': 2, 'dropout': 0.24028866883178474, 'n_units_l0': 443, 'n_units_l1': 487, 'lr': 0.0023121731387097545}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.7029 	Val_acc: 80.19
+[I 2023-10-09 11:17:12,211] Trial 74 pruned. 
+	Val_loss: 0.7000 	Val_acc: 79.04
+[I 2023-10-09 11:17:19,219] Trial 75 pruned. 
+	Val_loss: 0.6929 	Val_acc: 78.86
+[I 2023-10-09 11:17:26,253] Trial 76 pruned. 
+	Val_loss: 0.7575 	Val_acc: 71.12
+[I 2023-10-09 11:17:32,752] Trial 77 pruned. 
+	Val_loss: 0.6794 	Val_acc: 77.42
+[I 2023-10-09 11:17:39,717] Trial 78 pruned. 
+	Val_loss: 0.6975 	Val_acc: 80.27
+[I 2023-10-09 11:17:47,180] Trial 79 pruned. 
+	Val_loss: 0.7791 	Val_acc: 79.92
+[I 2023-10-09 11:17:53,980] Trial 80 pruned. 
+	Val_loss: 0.6804 	Val_acc: 80.35
+[I 2023-10-09 11:18:00,431] Trial 81 pruned. 
+	Val_loss: 0.6930 	Val_acc: 80.15
+[I 2023-10-09 11:18:06,890] Trial 82 pruned. 
+	Val_loss: 0.6869 	Val_acc: 80.18
+[I 2023-10-09 11:18:13,371] Trial 83 pruned. 
+	Val_loss: 0.7134 	Val_acc: 78.11
+[I 2023-10-09 11:18:19,707] Trial 84 pruned. 
+	Val_loss: 0.6575 	Val_acc: 79.68
+[I 2023-10-09 11:19:44,212] Trial 85 finished with value: 0.6574552369117737 and parameters: {'n_layers': 2, 'dropout': 0.23005190400539205, 'n_units_l0': 412, 'n_units_l1': 79, 'lr': 0.0009090311043438814}. Best is trial 4 with value: 0.6289168629050255.
+	Val_loss: 0.7205 	Val_acc: 80.71
+[I 2023-10-09 11:19:51,761] Trial 86 pruned. 
+	Val_loss: 0.7040 	Val_acc: 77.12
+[I 2023-10-09 11:19:58,433] Trial 87 pruned. 
+	Val_loss: 0.6636 	Val_acc: 80.56
+[I 2023-10-09 11:20:05,134] Trial 88 pruned. 
+	Val_loss: 0.7682 	Val_acc: 80.60
+[I 2023-10-09 11:20:12,126] Trial 89 pruned. 
+	Val_loss: 0.6853 	Val_acc: 79.21
+[I 2023-10-09 11:20:18,850] Trial 90 pruned. 
+	Val_loss: 0.6561 	Val_acc: 80.33
+[I 2023-10-09 11:20:25,827] Trial 91 pruned. 
+	Val_loss: 0.6791 	Val_acc: 78.69
+[I 2023-10-09 11:20:33,045] Trial 92 pruned. 
+	Val_loss: 0.6757 	Val_acc: 80.29
+[I 2023-10-09 11:20:40,111] Trial 93 pruned. 
+	Val_loss: 0.7119 	Val_acc: 79.86
+[I 2023-10-09 11:20:47,695] Trial 94 pruned. 
+	Val_loss: 0.6700 	Val_acc: 80.29
+[I 2023-10-09 11:20:55,396] Trial 95 pruned. 
+	Val_loss: 0.7196 	Val_acc: 80.13
+[I 2023-10-09 11:21:03,252] Trial 96 pruned. 
+	Val_loss: 0.6927 	Val_acc: 80.25
+[I 2023-10-09 11:21:34,865] Trial 97 pruned. 
+	Val_loss: 0.7064 	Val_acc: 79.16
+[I 2023-10-09 11:21:41,946] Trial 98 pruned. 
+	Val_loss: 0.6635 	Val_acc: 80.45
+[I 2023-10-09 11:21:49,123] Trial 99 pruned. 
+Study statistics: 
+  Number of finished trials:  100
+  Number of pruned trials:  83
+  Number of complete trials:  17
+Best trial:
+  Value:  0.6289168629050255
+  Params: 
+    n_layers: 3
+    dropout: 0.1766734512661446
+    n_units_l0: 479
+    n_units_l1: 456
+    n_units_l2: 91
+    lr: 0.0009023959423181614
