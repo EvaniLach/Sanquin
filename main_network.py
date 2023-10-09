@@ -63,25 +63,25 @@ class MulticlassClassification(nn.Module):
     def __init__(self, num_feature, num_class):
         super(MulticlassClassification, self).__init__()
 
-        self.layer_1 = nn.Linear(num_feature, 479)
+        self.layer_1 = nn.Linear(num_feature, 64)
         nn.init.kaiming_normal_(self.layer_1.weight, mode='fan_in', nonlinearity='relu')
         nn.init.zeros_(self.layer_1.bias)
-        self.layer_2 = nn.Linear(479, 456)
+        self.layer_2 = nn.Linear(64, 32)
         nn.init.kaiming_normal_(self.layer_2.weight, mode='fan_in', nonlinearity='relu')
         nn.init.zeros_(self.layer_2.bias)
-        self.layer_3 = nn.Linear(456, 91)
-        nn.init.kaiming_normal_(self.layer_3.weight, mode='fan_in', nonlinearity='relu')
-        nn.init.zeros_(self.layer_3.bias)
+        # self.layer_3 = nn.Linear(64, 32)
+        # nn.init.kaiming_normal_(self.layer_3.weight, mode='fan_in', nonlinearity='relu')
+        # nn.init.zeros_(self.layer_3.bias)
         # self.layer_4 = nn.Linear(128, 64)
         # nn.init.kaiming_normal_(self.layer_4.weight, mode='fan_in', nonlinearity='relu')
         # nn.init.zeros_(self.layer_4.bias)
-        self.layer_out = nn.Linear(91, num_class)
+        self.layer_out = nn.Linear(32, num_class)
 
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(p=0.18)
-        self.batchnorm1 = nn.BatchNorm1d(479)
-        self.batchnorm2 = nn.BatchNorm1d(456)
-        self.batchnorm3 = nn.BatchNorm1d(91)
+        self.dropout = nn.Dropout(p=0.2)
+        self.batchnorm1 = nn.BatchNorm1d(64)
+        self.batchnorm2 = nn.BatchNorm1d(32)
+        # self.batchnorm3 = nn.BatchNorm1d(32)
         # self.batchnorm4 = nn.BatchNorm1d(64)
 
     def forward(self, x):
@@ -94,10 +94,10 @@ class MulticlassClassification(nn.Module):
         x = self.relu(x)
         x = self.dropout(x)
 
-        x = self.layer_3(x)
-        x = self.batchnorm3(x)
-        x = self.relu(x)
-        x = self.dropout(x)
+        # x = self.layer_3(x)
+        # x = self.batchnorm3(x)
+        # x = self.relu(x)
+        # x = self.dropout(x)
 
         # x = self.layer_4(x)
         # x = self.batchnorm4(x)
@@ -140,17 +140,17 @@ def get_data():
 
     dataset = MyData(data_path, target_path)
 
-    subset_indices, _ = train_test_split(
-        range(len(dataset)),
-        stratify=dataset.y,
-        train_size=0.5,
-        random_state=args.seed
-    )
+    # subset_indices, _ = train_test_split(
+    #     range(len(dataset)),
+    #     stratify=dataset.y,
+    #     train_size=0.5,
+    #     random_state=args.seed
+    # )
 
     # Split 80/20 for training and validation
     train_set, val_set = train_test_split(
-        subset_indices,
-        stratify=dataset.y[subset_indices],
+        range(len(dataset)),
+        stratify=dataset.y,
         test_size=0.2,
         random_state=args.seed
     )
