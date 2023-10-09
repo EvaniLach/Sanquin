@@ -75,7 +75,7 @@ class MulticlassClassification(nn.Module):
         # self.layer_4 = nn.Linear(128, 64)
         # nn.init.kaiming_normal_(self.layer_4.weight, mode='fan_in', nonlinearity='relu')
         # nn.init.zeros_(self.layer_4.bias)
-        self.layer_out = nn.Linear(64, num_class)
+        self.layer_out = nn.Linear(91, num_class)
 
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(p=0.18)
